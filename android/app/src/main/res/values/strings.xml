@@ -1,0 +1,7 @@
+<?xml version = "1.0" encoding ="utf-8" ?>
+<resources>
+<string name="app_name">baby health care</string>
+<string name="facebook_app_id">944694280234884</string>
+<string name="fb_login_protocol_scheme">fb944694280234884</string>
+<string name="facebook_client_token">8011aff3146ece64d04512b8b8d93096</string>
+</resources>
