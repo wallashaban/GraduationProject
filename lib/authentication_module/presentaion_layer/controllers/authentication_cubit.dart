@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:graduation_project/core/error/failure.dart';
+
 
 import 'package:graduation_project/core/utils/exports.dart';
 
@@ -12,6 +11,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   final LoginWithFacebookUseCase loginWithFacebookUseCase;
   final ForgetPasswordUseCase forgetPasswordUseCase;
   final UpdatePasswordUseCase updatePasswordUseCase;
+  final CheckCodeUseCase checkCodeUseCase;
   AuthenticationCubit(
     this.loginUserUseCase,
     this.registerUserUseCase,
@@ -19,6 +19,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     this.loginWithFacebookUseCase,
     this.forgetPasswordUseCase,
     this.updatePasswordUseCase,
+    this.checkCodeUseCase,
   ) : super(AuthenticationInitial());
 
   Authentication user = const AuthenticationModel(
@@ -32,6 +33,21 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Failure serverFailure = const ServerFailure(
     message: 'message',
   );
+
+  String gender = AppStrings.male;
+  chooseGender(String gender) {
+    this.gender = gender;
+    emit(GenderState());
+    emit(AuthDone());
+  }
+
+  void getToken() async {
+    await FirebaseMessaging.instance.getToken().then((tok) {
+      AppStrings.token = tok.toString();
+      debugPrint('token ${AppStrings.token}');
+    });
+  }
+
   Future registerUser(RegisterUserParameters parameters) async {
     emit(
       RegisterUserLoadingState(),
@@ -49,6 +65,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       (r) {
         user = r;
         emit(RegisterUserSuccessState());
+        emit(AuthDone());
       },
     );
   }
@@ -59,16 +76,18 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     );
     final result = await loginUserUseCase(parameters);
     result.fold(
-      (l) {
+      (l) async {
         serverFailure = l;
         emit(
           LoginUserErrorState(
             error: l.message,
           ),
         );
+        // await Future.delayed(Duration(seconds: 2)).then((value) =>         emit(AuthDone()));
       },
       (r) {
         user = r;
+        debugPrint('token func ${r.accessToken}');
         emit(LoginUserSuccessState());
       },
     );
@@ -87,6 +106,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             error: l.message,
           ),
         );
+        emit(AuthDone());
       },
       (r) {
         user = r;
@@ -100,7 +120,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     emit(
       LoginWithFacebookLoadingState(),
     );
-   final result= await loginWithFacebookUseCase(parameters);
+    final result = await loginWithFacebookUseCase(parameters);
     result.fold(
       (l) {
         serverFailure = l;
@@ -109,6 +129,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             error: l.message,
           ),
         );
+        emit(AuthDone());
       },
       (r) {
         user = r;
@@ -121,10 +142,11 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     emit(
       ForgetPasswordLoadingState(),
     );
-   final result= await forgetPasswordUseCase(email);
+    final result = await forgetPasswordUseCase(email);
     result.fold(
       (l) {
         serverFailure = l;
+        debugPrint('erroor email ${l.message}');
         emit(
           ForgetPasswordErrorState(
             error: l.message,
@@ -141,9 +163,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     emit(
       UpdatePasswordLoadingState(),
     );
-   final result= await updatePasswordUseCase(parameters);
+    final result = await updatePasswordUseCase(parameters);
     result.fold(
-      (l) {
+      (l) async {
         serverFailure = l;
         emit(
           UpdatePasswordErrorState(
@@ -155,5 +177,30 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         emit(UpdatePasswordSuccessState());
       },
     );
+  }
+
+  Future checkCode(String code) async {
+    emit(CheckCodeLoadingState());
+    final result = await checkCodeUseCase(code);
+    result.fold(
+      (l) async {
+        serverFailure = l;
+        emit(
+          CheckCodeErrorState(
+            error: l.message,
+          ),
+        );
+      },
+      (r) {
+        emit(CheckCodeSuccessState());
+      },
+    );
+  }
+
+  bool isPassword = true;
+  obscurePassword() {
+    isPassword = !isPassword;
+    emit(ChangePasswordState());
+    emit(AuthDone());
   }
 }

@@ -1,29 +1,34 @@
-import 'package:flutter/material.dart';
-import 'package:graduation_project/authentication_module/presentaion_layer/screens/login_screen.dart';
-import 'package:graduation_project/core/services/auth_services.dart';
 
+import 'package:graduation_project/core/routes/app_routes.dart';
+import 'package:graduation_project/medication_reminder_module/presentation_layer/controllers/medication_reminder_cubit.dart';
+
+import 'core/utils/bloc_observer.dart';
 import 'core/utils/exports.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  await Firebase.initializeApp();
+// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+//   // If you're going to use other Firebase services in the background, such as Firestore,
+//   // make sure you call `initializeApp` before using other Firebase services.
+//   await Firebase.initializeApp();
 
-  // debugPrint("Handling a background message: ${message.messageId}");
-}
+//   // debugPrint("Handling a background message: ${message.messageId}");
+// }
 
-String token = '';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = MyBlocObserver();
   await Firebase.initializeApp();
   ServiceLocator().init();
-  FirebaseMessaging.onMessage.listen((((RemoteMessage message) {
-    debugPrint('Message ${message.data}');
-    if (message.notification != null) {
-      debugPrint('Notification ${message.notification}');
-    }
-  })));
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await CashHelper.init();
+ debugPrint('token cache >${AppStrings.token}');
+  //print('shared' + CashHelper.getData(key: 'token'));
+  //  sl<MedicalCubit>().getAllAllergy();
+  // FirebaseMessaging.onMessage.listen((((RemoteMessage message) {
+  //   debugPrint('Message ${message.data}');
+  //   if (message.notification != null) {
+  //     debugPrint('Notification ${message.notification}');
+  //   }
+  // })));
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   // AuthenticationCubit(
   //         LoginUserUseCase(
   //             AuthenticationRepository(AuthenticationRemoteDataSource())),
@@ -34,28 +39,15 @@ void main() async {
   //   password: '',
   //   fcmToken: '',
   // ));
-  AuthServices().signInWithFacebook();
   runApp(const MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
 }
 
 //cR6dpQMzQzKNbcIFQiAKyr:APA91bGyWsLqivIIhN1x62AJLFslZf1STfRJ
 //_i5G-iQB17W1G-JU6o-vQYBukXtUi94x21Cv4h5QJMqHeiM3y_kkasAgPR__yfHQpFJOg5M0fLxYK1KhkNyjkQ_O_prkJ__aHTRkS3av
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    requestPermission();
-    getToken();
-  }
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
-  Future<void> setupInteractedMessage() async {
+  /*  Future<void> setupInteractedMessage() async {
     // Get any messages which caused the application to open from
     // a terminated state.
     RemoteMessage? initialMessage =
@@ -104,35 +96,53 @@ class _MyAppState extends State<MyApp> {
       token = tok.toString();
       debugPrint('token $token');
     });
-  }
+  } */
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<AuthenticationCubit>()
-      /* ..loginUser(LoginUserParameters(
-          email: 'omnia@gmail.com',
-          password: '12345678',
-          fcmToken:
-              'cR6dpQMzQzKNbcIFQiAKyr:APA91bGyWsLqivIIhN1x62AJLFslZf1STfRJ_i5G-iQB17W1G-JU6o-vQYBukXtUi94x21Cv4h5QJMqHeiM3y_kkasAgPR__yfHQpFJOg5M0fLxYK1KhkNyjkQ_O_prkJ__aHTRkS3av',
-        )), */
-      ,
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          // This is the theme of your application.
-          //
-          // Try running your application with "flutter run". You'll see the
-          // application has a blue toolbar. Then, without quitting the app, try
-          // changing the primarySwatch below to Colors.green and then invoke
-          // "hot reload" (press "r" in the console where you ran "flutter run",
-          // or simply save your changes to "hot reload" in a Flutter IDE).
-          // Notice that the counter didn't reset back to zero; the application
-          // is not restarted.
-          primarySwatch: Colors.blue,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<AuthenticationCubit>()..getToken()
+          ,
         ),
-        home: const LoginScreen(),
+        BlocProvider(
+          create: (context) => sl<MedicationReminderCubit>()
+          ,
+        ),
+         BlocProvider(
+          create: (context) => sl<TeethDevelopmentCubit>()..getAllteeth()
+          ,
+        ),
+        BlocProvider(
+            create: (context) => sl<MedicalCubit>()
+              ..getAllAllergy()
+              ..getChronicDiseases()
+              ..getSkinDiseases()
+              ..getGeneticDiseases()),
+      ],
+      child: ScreenUtilInit(
+        minTextAdapt: true,
+        splitScreenMode: true,
+        designSize: const Size(360, 690),
+        builder: (context, child) => MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+              // primarySwatch: Colors.blue,
+              scaffoldBackgroundColor: AppColors.white,
+              fontFamily: 'IBM Plex Sans Arabic',
+              appBarTheme: AppBarTheme(
+                elevation: 0.0,
+                toolbarHeight: 80.h,
+                backgroundColor: AppColors.appBarColor,
+
+                // color: AppColors.darkColor,
+              )),
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: onGenerate,
+          initialRoute: AppRoutes.splashScreen,
+        ),
       ),
     );
   }

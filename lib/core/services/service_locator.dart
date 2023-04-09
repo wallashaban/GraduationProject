@@ -1,20 +1,18 @@
-import 'package:get_it/get_it.dart';
-import 'package:graduation_project/authentication_module/data_layer/data_sourde/auth_remote_data_source.dart';
-import 'package:graduation_project/authentication_module/data_layer/repository/auth_repository.dart';
-import 'package:graduation_project/authentication_module/domain_layer/repository/base_auth_reposutory.dart';
-import 'package:graduation_project/authentication_module/domain_layer/use_cases/forget_password_use_case.dart';
-import 'package:graduation_project/authentication_module/domain_layer/use_cases/login_user_use_case.dart';
-import 'package:graduation_project/authentication_module/domain_layer/use_cases/login_with_facebook_use_case.dart';
-import 'package:graduation_project/authentication_module/domain_layer/use_cases/login_with_google_use_case.dart';
-import 'package:graduation_project/authentication_module/domain_layer/use_cases/register_user_use_case.dart';
-import 'package:graduation_project/authentication_module/domain_layer/use_cases/update_password_use_case.dart';
-import 'package:graduation_project/authentication_module/presentaion_layer/controllers/authentication_cubit.dart';
+
+
+
+import 'package:graduation_project/core/utils/exports.dart';
+import 'package:graduation_project/medication_reminder_module/presentation_layer/controllers/medication_reminder_cubit.dart';
+
+import '../../medication_reminder_module/data_layer/repository/medication_reminder_repository.dart';
 
 final sl = GetIt.instance;
 
 
 class ServiceLocator {
   void init(){
+    /////////////////////////////////
+    ///auth
      /// Authentication remoteDataSource
     sl.registerLazySingleton<BaseAuthenticationRemoteDataSource>(
       () => AuthenticationRemoteDataSource(),
@@ -56,10 +54,229 @@ class ServiceLocator {
       () => UpdatePasswordUseCase(sl()),
     );
 
+     /// Authentication update password UseCase
+    sl.registerLazySingleton(
+      () => CheckCodeUseCase(sl()),
+    );
      /// Authentication cubit
     sl.registerFactory(
-      () => AuthenticationCubit(sl(),sl(),sl(),sl(),sl(),sl(),),
+      () => AuthenticationCubit(sl(),sl(),sl(),sl(),sl(),sl(),sl(),),
     );
+    //////////////////////////////////
+    ///medical  details
+     
+      /// medical remoteDataSource
+    sl.registerLazySingleton<BaseMedicalRemoteDataSource >(
+      () => MedicalRemoteDataSource(),
+    );
+
+    /// medical Repository
+    sl.registerLazySingleton<BaseMedicalDetailsRepository>(
+      () => MedicalRepository(sl()),
+    );
+    /////////////////////////////////
+     ///medical  details
+     
+      /// medical remoteDataSource
+    sl.registerLazySingleton<BasePrescriptionRemotDataSource >(
+      () => PrescriptionRemoteDataSource(),
+    );
+
+    /// medical Repository
+    sl.registerLazySingleton<BasePrescriptionRepository>(
+      () => PrescriptionRepository(sl()),
+    );
+
+    /////////////////////////////////
+    ///medical  details
+     
+      /// medical remoteDataSource
+    sl.registerLazySingleton<BaseMedicalTestsRemoteDataSource >(
+      () => MedicalTestsRemoteDataSource(),
+    );
+
+    /// medical Repository
+    sl.registerLazySingleton<BaseMedicalTestsRepository>(
+      () => MedicalTestsRepository(sl()),
+    );
+    /////////////////////////////////
+   
+    ///medical  details
+     
+      /// medical remoteDataSource
+    sl.registerLazySingleton<BaseTeethDevelopmentRemoteDataSource >(
+      () => TeethDevelopmentRemoteDataSource(),
+    );
+
+    /// medical Repository
+    sl.registerLazySingleton<BaseTeetDevelopmentRepository>(
+      () => TeethDevelopmentRepository(sl()),
+    );
+
+     ///medical  details
+     
+      /// medical remoteDataSource
+    sl.registerLazySingleton<BaseMedicationReminderRemoteDataSource >(
+      () => MedicationReminderRemoteDataSource(),
+    );
+
+    /// medical Repository
+    sl.registerLazySingleton<BaseMedicationReminderRepository>(
+      () => MedicationRepository(sl()),
+    );
+    /////////////////////////////////
+   
+    ///medical details
+    
+    /// medical details use case
+    sl.registerLazySingleton(
+      () => StoreMedicalDetailsUseCase(sl()),
+    );
+    /// get all allergies details
+    sl.registerLazySingleton(
+      () => GetAllAllergiesUseCase(sl()),
+    );
+    /// get all skin diseases use case
+    sl.registerLazySingleton(
+      () => GetAllSkinDiseasesUseCase(sl()),
+    );
+
+    /// medical genetic
+    sl.registerLazySingleton(
+      () => GetAllGeneticUseCase(sl()),
+    );
+    /// medical chronic
+    sl.registerLazySingleton(
+      () => GetAllChronicDiseasesUseCase(sl()),
+    );
+//////////////////////////////////
+///medical tests
+    /// store medical tests
+    sl.registerLazySingleton(
+      () => StoreMedicalTestsUseCase(sl()),
+    );
+    ///get medical tests
+    sl.registerLazySingleton(
+      () => GetAllAllMedicalTestUseCase(sl()),
+    );
+
+   ///get single medical test
+    sl.registerLazySingleton(
+      () => GetSingleMedicalTestUseCase(sl()),
+    );
+
+    ///update  medical test
+    sl.registerLazySingleton(
+      () => UpdateMedicalTestUseCase(sl()),
+    );
+
+    ///delete medical test
+    sl.registerLazySingleton(
+      () => DeleteMedicalTestUseCase(sl()),
+    );
+    ////////////////////////////////
+    ///prescription
+/// store prescriptin 
+    sl.registerLazySingleton(
+      () => StorePrescriptionUseCase(sl()),
+    );
+
+    /// delete pres 
+    sl.registerLazySingleton(
+      () => DeletePrescriptionUseCase(sl()),
+    );
+
+    /// get all pres 
+    sl.registerLazySingleton(
+      () => GetAllPrescriptionsUseCase(sl()),
+    );
+    /// get single pres 
+    sl.registerLazySingleton(
+      () => GetSinglePrescriptionUseCase(sl()),
+    );
+    /// update press
+    sl.registerLazySingleton(
+      () => UpdatePrescriptionUseCase(sl()),
+    );
+
+    //////////////////////////////
+    ///teeth development
+    
+    /// store teeth 
+    sl.registerLazySingleton(
+      () => StoreTeethDevelopmentUseCase(sl()),
+    );
+    /// get all teeeth 
+    sl.registerLazySingleton(
+      () => GetTeethUseCase(sl()),
+    );
+
+    /// get single teeth
+    sl.registerLazySingleton(
+      () => GetSingleToothUseCase(sl()),
+    );
+    /// update tooth
+    sl.registerLazySingleton(
+      () => UpdateTeethDevelopmentUseCase(sl()),
+    );
+
+    /// delete tooth
+    sl.registerLazySingleton(
+      () => DeleteTeethUseCase(sl()),
+    );
+
+    /// /// store teeth 
+    sl.registerLazySingleton(
+      () => StoreReminderUseCase(sl()),
+    );
+    /// get all teeeth 
+    sl.registerLazySingleton(
+      () => GetAllMedicationReminderUseCase(sl()),
+    );
+
+    /// get single teeth
+    sl.registerLazySingleton(
+      () => GetSingleRminderUseCase(sl()),
+    );
+    /// update tooth
+    sl.registerLazySingleton(
+      () => UpdateReminderUseCase(sl()),
+    );
+
+    /// delete tooth
+    sl.registerLazySingleton(
+      () => DeleteReminderUseCase(sl()),
+    );
+     /// delete tooth
+    sl.registerLazySingleton(
+      () => GetAllDaysUseCase(sl()),
+    );
+
+     /// medical cubit
+    sl.registerFactory(
+      () => MedicalCubit(sl(),sl(),sl(),sl(),sl(),),
+    );
+
+    /// precription cubit
+    sl.registerFactory(
+      () => PrescriptionCubit(sl(),sl(),sl(),sl(),sl(),),
+    );
+
+    /// teeth cubit
+    sl.registerFactory(
+      () => TeethDevelopmentCubit(sl(),sl(),sl(),sl(),sl(),),
+    );
+
+    /// medical test cubit
+    sl.registerFactory(
+      () => MedicalTestsCubit(sl(),sl(),sl(),sl(),sl(),),
+    );
+
+  /// medical test cubit
+    sl.registerFactory(
+      () => MedicationReminderCubit(sl(),sl(),sl(),sl(),sl(),sl(),),
+    );
+
 
   }
 }

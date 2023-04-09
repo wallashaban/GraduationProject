@@ -1,6 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:graduation_project/core/error/exception.dart';
-import 'package:graduation_project/core/error/failure.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 
 abstract class BaseAuthenticationRepository {

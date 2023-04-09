@@ -12,12 +12,12 @@ class AuthenticationModel extends Authentication {
 
   factory AuthenticationModel.fromJson(Map<String, dynamic> json) {
     return AuthenticationModel(
-      id: json['user']['id'],
-      name: json['user']['name'],
-      email: json['user']['email'],
-      gender: json['user']['gender'],
-      birthDate: json['user']['birth_date'],
-      accessToken: json['access_token'],
+      id: json['data']['user']['id'],
+      name: json['data']['user']['name'],
+      email: json['data']['user']['email'],
+      gender: json['data']['user']['gender'],
+      birthDate: json['data']['user']['birth_date'],
+      accessToken: json['data']['access_token'],
     );
   }
 }

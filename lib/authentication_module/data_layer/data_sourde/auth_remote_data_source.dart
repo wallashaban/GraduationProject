@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:graduation_project/core/error/exception.dart';
-import 'package:graduation_project/core/network/error_message_model.dart';
+
 import 'package:graduation_project/core/utils/exports.dart';
 
 abstract class BaseAuthenticationRemoteDataSource {
@@ -37,7 +35,7 @@ class AuthenticationRemoteDataSource
       'password': parameters.password,
       'fcm_token': parameters.fcmToken,
     });
-    if (response.data['status'] == 'true') {
+    if (response.data['status'] == true) {
       debugPrint('login remote data ${response.data}');
       return AuthenticationModel.fromJson(response.data);
     } else {
@@ -60,10 +58,11 @@ class AuthenticationRemoteDataSource
       'birth_date': parameters.birthDate,
       'fcm_token': parameters.fcmToken,
     });
-    if (response.data['status'] == 'true') {
+    if (response.data['status'] == true) {
       debugPrint('register remote data ${response.data}');
       return AuthenticationModel.fromJson(response.data);
     } else {
+      debugPrint('error${response.data}');
       throw ServerException(
         errorMessageModel: ErrorMessageModel.fromJson(response.data),
       );
@@ -76,7 +75,7 @@ class AuthenticationRemoteDataSource
         await dio!.post(AppConstants.checkCode, queryParameters: {
       'code': code,
     });
-    if (response.data['status'] == 'true') {
+    if (response.data['status'] == true) {
       debugPrint('check code remote data ${response.data}');
     } else {
       throw ServerException(
@@ -91,7 +90,7 @@ class AuthenticationRemoteDataSource
         await dio!.post(AppConstants.forgetPassword, queryParameters: {
       'email': email,
     });
-    if (response.data['status'] == 'true') {
+    if (response.data['status'] == true) {
       debugPrint('forgetPassword remote data ${response.data}');
     } else {
       throw ServerException(
@@ -109,7 +108,7 @@ class AuthenticationRemoteDataSource
       'provider': parameters.provider,
       'fcm_token': parameters.fcmToken,
     });
-    if (response.data['status'] == 'true') {
+    if (response.data['status'] == true) {
       debugPrint('Login with facebook remote data ${response.data}');
       return AuthenticationModel.fromJson(response.data);
     } else {
@@ -130,7 +129,7 @@ class AuthenticationRemoteDataSource
       'provider': 'google',
       'fcm_token': parameters.fcmToken,
     });
-    if (response.data['status'] == 'true') {
+    if (response.data['status'] == true) {
       debugPrint('Login with facebook remote data ${response.data}');
       return AuthenticationModel.fromJson(response.data);
     } else {
@@ -148,7 +147,7 @@ class AuthenticationRemoteDataSource
       'password': parameters.password,
       'password confirmation': parameters.passwordConfirm,
     });
-    if (response.data['status'] == 'true') {
+    if (response.data['status'] == true) {
       debugPrint('update password remote data ${response.data}');
     }else{
       throw ServerException(errorMessageModel: ErrorMessageModel.fromJson(response.data),);

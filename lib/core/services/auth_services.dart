@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -22,10 +21,10 @@ class AuthServices {
         //permissions: ['email', 'public_profile'],
         );
     String? accessToken = result.accessToken!.token;
-    debugPrint('accessToken -------${accessToken}');
+    debugPrint('accessToken -------$accessToken');
     final userData = await FacebookAuth.instance
         .getUserData(fields: 'id,name,email,picture');
-    debugPrint('userData ${userData}');
+    debugPrint('userData $userData');
     await FacebookAuth.instance.logOut();
   }
 }
