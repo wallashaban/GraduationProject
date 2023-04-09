@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48">
+  <defs>
+    <filter id="Ellipse_5" x="0" y="0" width="48" height="48" filterUnits="userSpaceOnUse">
+      <feOffset dx="3" dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#fff" flood-opacity="0.667"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="Ellipse_5-2" x="0" y="0" width="48" height="48" filterUnits="userSpaceOnUse">
+      <feOffset dx="3" dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur-2"/>
+      <feFlood flood-color="#fff" flood-opacity="0.667" result="color"/>
+      <feComposite operator="out" in="SourceGraphic" in2="blur-2"/>
+      <feComposite operator="in" in="color"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Component_9_23" data-name="Component 9 – 23" transform="translate(1 1)">
+    <g id="Group_13" data-name="Group 13" transform="translate(-40 -328)">
+      <circle id="Ellipse_4" data-name="Ellipse 4" cx="20" cy="20" r="20" transform="translate(40 328)" fill="#fefcf3"/>
+      <g data-type="innerShadowGroup">
+        <g transform="matrix(1, 0, 0, 1, 39, 327)" filter="url(#Ellipse_5)">
+          <circle id="Ellipse_5-3" data-name="Ellipse 5" cx="15" cy="15" r="15" transform="translate(6 6)" fill="#fefcf3"/>
+        </g>
+        <g transform="matrix(1, 0, 0, 1, 39, 327)" filter="url(#Ellipse_5-2)">
+          <circle id="Ellipse_5-4" data-name="Ellipse 5" cx="15" cy="15" r="15" transform="translate(6 6)" fill="#fff"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

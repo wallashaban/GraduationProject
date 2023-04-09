@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+  <g id="Group_1052" data-name="Group 1052" transform="translate(-144 -576)">
+    <circle id="Ellipse_57" data-name="Ellipse 57" cx="8" cy="8" r="8" transform="translate(144 576)" fill="rgba(112,82,37,0.85)"/>
+    <g id="_1._Icons_Line_checkmark" data-name="1. Icons / Line /  checkmark" transform="translate(148.846 579.999)">
+      <path id="checkmark" d="M2.228,6.794,6.457.147a.246.246,0,0,1,.451,0,.718.718,0,0,1,0,.708l-4.455,7A.277.277,0,0,1,2.228,8,.277.277,0,0,1,2,7.855l-1.909-3a.718.718,0,0,1,0-.708.246.246,0,0,1,.451,0Z" transform="translate(0 0)" fill="#fff" stroke="#fff" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

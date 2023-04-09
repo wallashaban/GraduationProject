@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35">
+  <g id="Group_1018" data-name="Group 1018" transform="translate(-333 -757)">
+    <g id="Ellipse_162" data-name="Ellipse 162" transform="translate(333 757)" fill="#f1ece6" stroke="#b4a680" stroke-width="0.5">
+      <circle cx="17.5" cy="17.5" r="17.5" stroke="none"/>
+      <circle cx="17.5" cy="17.5" r="17.25" fill="none"/>
+    </g>
+    <g id="Google_plus" data-name="Google plus" transform="translate(341 765)">
+      <rect id="Rectangle_121" data-name="Rectangle 121" width="19" height="19" fill="none"/>
+      <path id="Path_51" data-name="Path 51" d="M18.859,5.186V6.954H17.091V8.722H15.323V6.836H13.555V5.186h1.768V3.418h1.768V5.186Zm-12.848,0h5.658c0,.354.118.589.118.943a5.537,5.537,0,0,1-5.776,5.894A6.011,6.011,0,0,1,6.011,0a5.82,5.82,0,0,1,4.008,1.532l-1.65,1.65A3.142,3.142,0,0,0,6.011,2.24,3.8,3.8,0,0,0,2.24,6.011,3.724,3.724,0,0,0,6.011,9.783,3.211,3.211,0,0,0,9.43,7.19H6.011Z" transform="translate(0 3.536)" fill="#705225" fill-rule="evenodd"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="45" height="20" viewBox="0 0 45 20">
+  <g id="switch" transform="translate(45 20) rotate(180)">
+    <path id="Path_8489" data-name="Path 8489" d="M10,0H35a10,10,0,0,1,0,20H10A10,10,0,0,1,10,0Z" fill="rgba(180,166,128,0.47)"/>
+    <path id="Path_8490" data-name="Path 8490" d="M10,0A10,10,0,1,1,0,10,10,10,0,0,1,10,0Z" transform="translate(25)" fill="rgba(112,82,37,0.37)"/>
+  </g>
+</svg>

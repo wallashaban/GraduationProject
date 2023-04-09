@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="Group_1027" data-name="Group 1027" transform="translate(-322 -412)">
+    <g id="Ellipse_94" data-name="Ellipse 94" transform="translate(322 412)" fill="none" stroke="#d7d2b5" stroke-width="2">
+      <circle cx="10" cy="10" r="10" stroke="none"/>
+      <circle cx="10" cy="10" r="9" fill="none"/>
+    </g>
+    <g id="_1._Icons_Line_checkmark" data-name="1. Icons / Line /  checkmark" transform="translate(326.5 417.999)">
+      <path id="checkmark" d="M3.5,6.794,10.147.147a.5.5,0,0,1,.708.708l-7,7a.5.5,0,0,1-.708,0l-3-3a.5.5,0,0,1,.708-.708Z" transform="translate(0 0)" fill="#fff" stroke="#b4a680" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="82" height="118.041" viewBox="0 0 82 118.041">
+  <g id="Group_749" data-name="Group 749" transform="translate(-48 -568.959)">
+    <path id="Path_8046" data-name="Path 8046" d="M8,0A8,8,0,1,1,0,8,8,8,0,0,1,8,0Z" transform="translate(48 570)" fill="rgba(215,210,181,0.65)"/>
+    <path id="Path_8047" data-name="Path 8047" d="M8,0A8,8,0,1,1,0,8,8,8,0,0,1,8,0Z" transform="translate(48 595)" fill="rgba(215,210,181,0.65)"/>
+    <circle id="Ellipse_66" data-name="Ellipse 66" cx="8" cy="8" r="8" transform="translate(48 670)" fill="#e5e1cf"/>
+    <circle id="Ellipse_68" data-name="Ellipse 68" cx="8" cy="8" r="8" transform="translate(48 645)" fill="#e5e1cf"/>
+    <circle id="Ellipse_67" data-name="Ellipse 67" cx="8" cy="8" r="8" transform="translate(48 620)" fill="rgba(215,210,181,0.65)"/>
+    <text id="_6:12_شهور" data-name="6:12 شهور" transform="translate(71 582)" fill="#705225" font-size="12" font-family="IBMPlexSansArabic-Regular, IBM Plex Sans Arabic"><tspan x="0" y="0">6:12 </tspan><tspan y="0">شهور</tspan></text>
+    <text id="_9:16_شهور" data-name="9:16 شهور" transform="translate(71 607)" fill="#705225" font-size="12" font-family="IBMPlexSansArabic-Regular, IBM Plex Sans Arabic"><tspan x="0" y="0">9:16 </tspan><tspan y="0">شهور</tspan></text>
+    <text id="_13:19_شهور" data-name="13:19 شهور" transform="translate(71 632)" fill="#705225" font-size="12" font-family="IBMPlexSansArabic-Regular, IBM Plex Sans Arabic"><tspan x="0" y="0">13:19 </tspan><tspan y="0">شهور</tspan></text>
+    <text id="_17:23_شهور" data-name="17:23 شهور" transform="translate(71 657)" fill="#705225" font-size="12" font-family="IBMPlexSansArabic-Regular, IBM Plex Sans Arabic"><tspan x="0" y="0">17:23 </tspan><tspan y="0">شهور</tspan></text>
+    <text id="_23:33_شهور" data-name="23:33 شهور" transform="translate(71 682)" fill="#705225" font-size="12" font-family="IBMPlexSansArabic-Regular, IBM Plex Sans Arabic"><tspan x="0" y="0">23:33 </tspan><tspan y="0">شهور</tspan></text>
+    <text id="A" transform="translate(51 568.959)" fill="#705225" font-size="12" font-family="ComicSansMS, Comic Sans MS"><tspan x="0" y="13">A</tspan></text>
+    <text id="B" transform="translate(52 607.959)" fill="#705225" font-size="12" font-family="ComicSansMS, Comic Sans MS"><tspan x="0" y="0">B</tspan></text>
+    <text id="C" transform="translate(52.5 632.959)" fill="rgba(112,82,37,0.85)" font-size="12" font-family="ComicSansMS, Comic Sans MS"><tspan x="0" y="0">C</tspan></text>
+    <text id="D" transform="translate(51.5 657.959)" fill="rgba(112,82,37,0.85)" font-size="12" font-family="ComicSansMS, Comic Sans MS"><tspan x="0" y="0">D</tspan></text>
+    <text id="E" transform="translate(53 683)" fill="rgba(112,82,37,0.85)" font-size="12" font-family="ComicSansMS, Comic Sans MS"><tspan x="0" y="0">E</tspan></text>
+  </g>
+</svg>

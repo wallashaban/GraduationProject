@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35">
+  <g id="Group_1017" data-name="Group 1017" transform="translate(-304 -732)">
+    <g id="Ellipse_161" data-name="Ellipse 161" transform="translate(304 732)" fill="rgba(213,197,178,0.33)" stroke="#b4a680" stroke-width="0.5">
+      <circle cx="17.5" cy="17.5" r="17.5" stroke="none"/>
+      <circle cx="17.5" cy="17.5" r="17.25" fill="none"/>
+    </g>
+    <g id="Facebook" transform="translate(312 740)">
+      <rect id="Rectangle_1458" data-name="Rectangle 1458" width="19" height="19" fill="none"/>
+      <path id="Path_1" data-name="Path 1" d="M86.4,18.882v-8.6h2.937l.42-3.357H86.4v-2.1c0-.944.315-1.678,1.678-1.678h1.783V.1c-.42,0-1.469-.1-2.622-.1a4.049,4.049,0,0,0-4.3,4.406V6.923H80V10.28h2.937v8.6Z" transform="translate(-75.28)" fill="#705225" fill-rule="evenodd"/>
+    </g>
+  </g>
+</svg>
