@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:graduation_project/prescription_module/data_layer/data_source/prescription_remote_data_source.dart';
-import 'package:graduation_project/prescription_module/domain_layer/repository/base_prescription_repository.dart';
+import '../data_source/prescription_remote_data_source.dart';
+import '../../domain_layer/repository/base_prescription_repository.dart';
 
 import '../../../core/error/exception.dart';
 import '../../../core/error/failure.dart';

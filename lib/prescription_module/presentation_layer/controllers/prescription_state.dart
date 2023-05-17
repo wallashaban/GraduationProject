@@ -8,6 +8,9 @@ abstract class PrescriptionState extends Equatable {
 }
 
 class PrescriptionInitial extends PrescriptionState {}
+class PickImageState extends PrescriptionState{}
+class PrescriptionDone extends PrescriptionState{}
+class CanselPres extends PrescriptionState{}
 
 /////////////////////////////////////////////////
 // prescription

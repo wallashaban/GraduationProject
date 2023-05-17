@@ -10,6 +10,9 @@ abstract class MedicalTestsState extends Equatable {
 }
 
 class MedicalTestsInitial extends MedicalTestsState {}
+class PickImageSuccessState extends MedicalTestsState {}
+class Cansel extends MedicalTestsState{}
+class TestDone extends MedicalTestsState {}
 
 ///medical test
 

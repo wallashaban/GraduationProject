@@ -22,7 +22,7 @@ class TeethDevelopmentRemoteDataSource implements BaseTeethDevelopmentRemoteData
         receiveDataWhenStatusError: true,
         headers: {
           'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer ${CashHelper.getData(key: 'token')}',
         });
     dio = Dio(options);
   }
@@ -79,6 +79,7 @@ class TeethDevelopmentRemoteDataSource implements BaseTeethDevelopmentRemoteData
         await dio!.post(AppConstants.storeTeethDev, queryParameters: {
       'apperance_date': parameters.apperenceDate,
       'teeth_name': parameters.teethName,
+      'teeth_id':parameters.id,
     });
     if (response.data['status'] == true) {
       debugPrint('store teeth details  remote data ${response.data}');

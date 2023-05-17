@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:graduation_project/core/use_case/base_use_case.dart';
+import '../../../core/use_case/base_use_case.dart';
 import '../../../core/error/failure.dart';
 import '../entities/teeth.dart';
 import '../repository/base_teeth_repository.dart';

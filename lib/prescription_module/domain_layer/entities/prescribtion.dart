@@ -1,12 +1,11 @@
-import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 
 class Presccription extends Equatable{
  final int id;
- final String note;
+ final String? note;
  final String date;
- final File file;
+ final String file;
  const Presccription({
     required this.id,
     required this.note,

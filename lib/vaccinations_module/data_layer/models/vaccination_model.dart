@@ -1,4 +1,4 @@
-import 'package:graduation_project/vaccinations_module/domain_layer/entities/vaccination.dart';
+import '../../domain_layer/entities/vaccination.dart';
 
 class VaccinationModel extends Vaccination {
   const VaccinationModel({
@@ -8,6 +8,11 @@ class VaccinationModel extends Vaccination {
     required super.prevention,
     required super.status,
     required super.proposedVaccinationDate,
+     required super.important,
+     required super.numberOfSyrings, 
+     required super.about,
+      required super.sideEffects,
+       required super.vaccinationDate,
   });
 
   factory VaccinationModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +23,11 @@ class VaccinationModel extends Vaccination {
       prevention: json['prevention'],
       status: json['status'],
       proposedVaccinationDate: json['proposed_vaccination_date'],
+      about: json['about'],
+      important: json['important'],
+      numberOfSyrings: json['number_syringe'],
+      vaccinationDate: json['vaccination_date'],
+      sideEffects: json['side_effects'],      
     );
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:graduation_project/core/utils/exports.dart';
 
 import '../widgets/block_widget.dart';
@@ -13,15 +15,11 @@ class HealthMedicalRecord extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
               onPressed: () => Navigator.pop(context),
-              icon: Icon(
+              icon: const Icon(
                 Icons.arrow_back,
-                color: AppColors.darkColor,
               )),
           title: CustomText(
             text: AppStrings.healthMedicalRecord,
-            color: AppColors.textColor,
-            size: 20.sp,
-            fontWeight: FontWeight.bold,
           ),
         ),
         body: Padding(
@@ -35,7 +33,12 @@ class HealthMedicalRecord extends StatelessWidget {
                     children: [
                       BlockWidget(
                         isMedicalHealthRecord: true,
-                        onTap: () {},
+                        onTap: () {
+                          AppConstants.navigateTo(
+                            context: context,
+                            routeName: AppRoutes.previousTestScreen,
+                          );
+                        },
                         text: AppStrings.tests,
                         image: AppImages.testsImage,
                       ),
@@ -66,11 +69,21 @@ class HealthMedicalRecord extends StatelessWidget {
                       ),
                       BlockWidget(
                         isMedicalHealthRecord: true,
-                        onTap: () {
-                          AppConstants.navigateTo(
-                            context: context,
-                            routeName: AppRoutes.teethDwvelopmentScreen,
-                          );
+                        onTap: () async {
+                          var cubit =
+                              BlocProvider.of<TeethDevelopmentCubit>(context);
+                          await cubit.getAllteeth();
+                          if (cubit.allTeeth.isEmpty) {
+                            AppConstants.navigateTo(
+                              context: context,
+                              routeName: AppRoutes.addToothScreen,
+                            );
+                          } else {
+                            AppConstants.navigateTo(
+                              context: context,
+                              routeName: AppRoutes.teethDwvelopmentScreen,
+                            );
+                          }
                         },
                         text: AppStrings.teeth,
                         image: AppImages.teethImage,
@@ -85,7 +98,13 @@ class HealthMedicalRecord extends StatelessWidget {
                     children: [
                       BlockWidget(
                         isMedicalHealthRecord: true,
-                        onTap: () {},
+                        onTap: () {
+                          
+                          AppConstants.navigateTo(
+                            context: context,
+                            routeName: AppRoutes.previousPrescriptionScreen,
+                          );
+                        },
                         text: AppStrings.prescribtion,
                         image: AppImages.prescribtionImage,
                       ),

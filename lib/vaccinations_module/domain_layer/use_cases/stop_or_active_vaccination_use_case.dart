@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:graduation_project/core/utils/exports.dart';
-import 'package:graduation_project/vaccinations_module/domain_layer/repository/base_vaccination_repo.dart';
+import '../../../core/utils/exports.dart';
+import '../repository/base_vaccination_repo.dart';
 
 class StopOrActiveVaccinationUseCase
     implements BaseUseCase<Either<Failure, General>, int> {

@@ -6,6 +6,7 @@ class ResetNewPasswordScreen extends StatelessWidget {
   ResetNewPasswordScreen({super.key, required this.code});
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class ResetNewPasswordScreen extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
             child: Padding(
-          padding: const EdgeInsets.all(40),
+          padding:  EdgeInsets.all(30.r),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,9 +23,8 @@ class ResetNewPasswordScreen extends StatelessWidget {
                 Center(
                   child: CustomText(
                     text: AppStrings.resetPasswordTitle,
-                    color: AppColors.textColor,
+                    // color: AppColors.textColor,
                     size: 25.sp,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 SizedBox(
@@ -32,18 +32,16 @@ class ResetNewPasswordScreen extends StatelessWidget {
                 ),
                 CustomText(
                   text: AppStrings.newpassword,
-                  color: AppColors.darkColor,
-                  size: 20.sp,
-                  fontWeight: FontWeight.bold,
+                  // color: AppColors.darkColor,
+                  size: 18.sp,
+                  //fontWeight: FontWeight.bold,
                 ),
-                SizedBox(
-                  height: 5.h,
-                ),
+                
                 CustomText(
                   text: AppStrings.createnewpassword,
-                  color: AppColors.textColor,
+                 // color: AppColors.meduimGreyColor,
                   size: 18.sp,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.normal,
                 ),
                 SizedBox(
                   height: 40.h,
@@ -54,11 +52,14 @@ class ResetNewPasswordScreen extends StatelessWidget {
                 ),
                 BlocBuilder<AuthenticationCubit, AuthenticationState>(
                   builder: (context, state) {
-                                        var cubit = BlocProvider.of<AuthenticationCubit>(context);
+                    var cubit = BlocProvider.of<AuthenticationCubit>(context);
 
                     return CustomTextFormField(
                       controller: passwordController,
                       labelText: AppStrings.newPassword,
+                      suffix: cubit.isPassword
+                          ? PhosphorIcons.eyeClosed
+                          : PhosphorIcons.eyeBold,
                       obscureText: cubit.isPassword,
                       sufixPressed: () {
                         cubit.obscurePassword();
@@ -79,6 +80,9 @@ class ResetNewPasswordScreen extends StatelessWidget {
                       controller: confirmPasswordController,
                       labelText: AppStrings.confirmNewPassword,
                       obscureText: cubit.isPassword,
+                      suffix: cubit.isPassword
+                          ? PhosphorIcons.eyeClosed
+                          : PhosphorIcons.eyeBold,
                       sufixPressed: () {
                         cubit.obscurePassword();
                       },
@@ -94,6 +98,11 @@ class ResetNewPasswordScreen extends StatelessWidget {
                 Center(
                   child: BlocConsumer<AuthenticationCubit, AuthenticationState>(
                     listener: (context, state) {
+                      if (state is UpdatePasswordLoadingState) {
+                        isLoading = true;
+                      } else {
+                        isLoading = false;
+                      }
                       if (state is UpdatePasswordErrorState) {
                         AppConstants.showSnackbar(
                             context: context, content: state.error);
@@ -105,6 +114,7 @@ class ResetNewPasswordScreen extends StatelessWidget {
                     },
                     builder: (context, state) {
                       return CustomButton(
+                        isLoading: isLoading,
                         text: AppStrings.confirm,
                         onPressed: () {
                           debugPrint('code $code');

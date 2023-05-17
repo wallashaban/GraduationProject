@@ -27,7 +27,7 @@ class MedicalRemoteDataSource implements BaseMedicalRemoteDataSource {
         receiveDataWhenStatusError: true,
         headers: {
           'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer ${CashHelper.getData(key: 'token')}',
         });
     dio = Dio(options);
   }
@@ -110,7 +110,8 @@ class MedicalRemoteDataSource implements BaseMedicalRemoteDataSource {
       'chronic_disease': parameters.chronicDisease,
       'genetic_disease': parameters.genticDisease,
       'is_medicine': parameters.isMedicine,
-      'medicine_file': parameters.medicineFile,
+      'medicine_file': parameters.medicineName,
+      'skin_disease':parameters.skinDisease,
     });
     if (response.data['status'] == true) {
       debugPrint('store medical details  remote data ${response.data}');
@@ -120,5 +121,10 @@ class MedicalRemoteDataSource implements BaseMedicalRemoteDataSource {
         errorMessageModel: ErrorMessageModel.fromJson(response.data),
       );
     }
+  }
+  Future logOut()async{
+
+    final Response response = await dio!.post('auth/logout');
+    debugPrint(response.data.toString());
   }
 }

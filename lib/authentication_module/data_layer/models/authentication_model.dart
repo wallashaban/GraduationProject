@@ -1,4 +1,4 @@
-import 'package:graduation_project/core/utils/exports.dart';
+import '../../../core/utils/exports.dart';
 
 class AuthenticationModel extends Authentication {
   const AuthenticationModel({
@@ -8,6 +8,7 @@ class AuthenticationModel extends Authentication {
      super.gender,
      super.birthDate,
     required super.accessToken,
+    required super.isReminderVaccine,
   });
 
   factory AuthenticationModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +19,7 @@ class AuthenticationModel extends Authentication {
       gender: json['data']['user']['gender'],
       birthDate: json['data']['user']['birth_date'],
       accessToken: json['data']['access_token'],
+      isReminderVaccine: json['data']['is_reminder_vaccine']
     );
   }
 }

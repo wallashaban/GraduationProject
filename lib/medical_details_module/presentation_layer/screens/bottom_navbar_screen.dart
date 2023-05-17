@@ -1,3 +1,4 @@
+import 'package:hive_flutter/adapters.dart';
 
 import '../../../core/utils/exports.dart';
 
@@ -11,47 +12,41 @@ class BottomNavBarScreen extends StatelessWidget {
       child: BlocBuilder<MedicalCubit, MedicalState>(
         builder: (context, state) {
           var cubit = BlocProvider.of<MedicalCubit>(context);
+          var box = Hive.box('userData');
+          var user = box.get('user');
           return Scaffold(
             appBar: AppBar(
-              toolbarHeight: 70.h,
-              leading: Row(
-                children: [
-                  SizedBox(width: 10.w,),
-                  SvgPicture.asset(
-                    height: 45.h,
-                    width: 45.w,
-                    AppImages.developImage,
-                  ),
-                ],
+              leading: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: SvgPicture.asset(
+                  /* height: 45.h,
+                  width: 45.w, */
+                  AppImages.babyImage,
+                ),
               ),
+              centerTitle: false,
               title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    color: AppColors.textColor,
-                    fontWeight: FontWeight.bold,
-                    size: 20,
-                    text: 'ركان على سليم',
+                    fontWeight: FontWeight.normal,
+                    size: 16.sp,
+                    text: user.name, // AppStrings.userData.name,
                   ),
                   CustomText(
-                    color: AppColors.textColor,
-                    fontWeight: FontWeight.bold,
-                    size: 20,
-                    text: 'شهرين',
+                    text: user.gender,
+                    size: 14.sp,
+                    fontWeight: FontWeight.normal,
                   ),
                 ],
               ),
             ),
             body: cubit.screens[cubit.currentIndex],
             bottomNavigationBar: BottomNavigationBar(
-              currentIndex: cubit.currentIndex,
+                currentIndex: cubit.currentIndex,
                 onTap: (index) {
                   cubit.changeNavbar(index);
                 },
-                elevation: 30,
-                // fixedColor: AppColors.textColor,
-                backgroundColor: AppColors.appBarColor,
-                selectedItemColor: AppColors.darkColor,
-                unselectedItemColor: AppColors.textColor,
                 items: [
                   BottomNavigationBarItem(
                       icon: const Icon(Icons.home), label: AppStrings.mainPage),

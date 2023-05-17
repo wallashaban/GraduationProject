@@ -24,7 +24,7 @@ class PrescriptionRemoteDataSource implements BasePrescriptionRemotDataSource{
         receiveDataWhenStatusError: true,
         headers: {
           'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer ${CashHelper.getData(key: 'token')}',
         });
     dio = Dio(options);
   }
@@ -79,12 +79,20 @@ class PrescriptionRemoteDataSource implements BasePrescriptionRemotDataSource{
  @override
   Future<GeneralModel> storePrescribtion(
       PresccriptionParameters parameters) async {
+        FormData data = FormData.fromMap({
+            'note': parameters.note,
+      'date': parameters.date,
+       "file":
+          parameters.file==null?null:   await MultipartFile.fromFile(parameters.file!, ),
+    });
     final Response response =
-        await dio!.post(AppConstants.storePrescription, queryParameters: {
+        await dio!.post(AppConstants.storePrescription,
+        data: data /* queryParameters: {
       'note': parameters.note,
       'date': parameters.date,
       'file': parameters.file,
-    });
+    } */
+    );
     if (response.data['status'] == true) {
       debugPrint('store prescription details  remote data ${response.data}');
       return GeneralModel.fromJson(response.data);
@@ -97,17 +105,24 @@ class PrescriptionRemoteDataSource implements BasePrescriptionRemotDataSource{
   @override
   Future<PrescribtionModel> updatePrescription(
       PresccriptionParameters parameters) async {
+          FormData data = FormData.fromMap({
+            'note': parameters.note,
+      'date': parameters.date,
+     if(parameters.file!=null)  "file":
+            await MultipartFile.fromFile(parameters.file!, ),
+    });
     final Response response = await dio!.post(
-        '${AppConstants.updatePrescription}${parameters.id}',
-        queryParameters: {
-          'note': parameters.note,
-          'date': parameters.date,
-          'file': parameters.file,
-        });
+        '${AppConstants.updatePrescription}${parameters.id}',data: data,
+        // queryParameters: {
+        //   'note': parameters.note,
+        //   'date': parameters.date,
+        //   'file': parameters.file,
+        // },
+        );
     if (response.data['status'] == true) {
       debugPrint(
           'update prescription details  remote data ${response.data['data']}');
-      return PrescribtionModel.fromJson(response.data);
+      return PrescribtionModel.fromJson(response.data['data']);
     } else {
       throw ServerException(
         errorMessageModel: ErrorMessageModel.fromJson(response.data),

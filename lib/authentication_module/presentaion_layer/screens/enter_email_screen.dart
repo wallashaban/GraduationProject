@@ -2,11 +2,11 @@
 
 import 'package:graduation_project/core/utils/exports.dart';
 
-
-
 class EnterEmailScreen extends StatelessWidget {
   EnterEmailScreen({super.key});
   var emailController = TextEditingController();
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
@@ -14,7 +14,7 @@ class EnterEmailScreen extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
             child: Padding(
-          padding: const EdgeInsets.all(40),
+          padding: const EdgeInsets.all(30),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,9 +22,8 @@ class EnterEmailScreen extends StatelessWidget {
                 Center(
                   child: CustomText(
                     text: AppStrings.resetPasswordTitle,
-                    color: AppColors.textColor,
-                    size: 25.sp,
-                    fontWeight: FontWeight.bold,
+                    color: AppColors.darkGreyColor,
+                    size: 20.sp,
                   ),
                 ),
                 SizedBox(
@@ -32,23 +31,21 @@ class EnterEmailScreen extends StatelessWidget {
                 ),
                 CustomText(
                   text: AppStrings.forgetpassword,
-                  color: AppColors.darkColor,
+                  color: AppColors.darkGreyColor,
                   size: 20.sp,
-                  fontWeight: FontWeight.bold,
                 ),
                 SizedBox(
                   height: 5.h,
                 ),
                 CustomText(
                   text: AppStrings.dontworry,
-                  color: AppColors.textColor,
-                  size: 18.sp,
-                  fontWeight: FontWeight.bold,
+                  color: AppColors.meduimGreyColor,
+                  size: 16.sp,
                 ),
                 SizedBox(
                   height: 40.h,
                 ),
-                Center(child: SvgPicture.asset('assets/images/Group 1066.svg')),
+                Center(child: SvgPicture.asset(AppImages.forgetPasswordImage)),
                 SizedBox(
                   height: 40.h,
                 ),
@@ -56,14 +53,22 @@ class EnterEmailScreen extends StatelessWidget {
                   obscureText: false,
                   controller: emailController,
                   labelText: AppStrings.enteremail,
-                  validator: (value) {},
+                  validator: (value) {
+                    return AppStrings.confirmText;
+                  },
                 ),
                 SizedBox(
                   height: 40.h,
                 ),
                 Center(
-                  child: BlocListener<AuthenticationCubit, AuthenticationState>(
+                  child: BlocConsumer<AuthenticationCubit, AuthenticationState>(
                     listener: (context, state) async {
+                      if (state is ForgetPasswordLoadingState) {
+                        isLoading = true;
+                      } else {
+                        isLoading = false;
+                      }
+
                       if (state is ForgetPasswordErrorState) {
                         AppConstants.showSnackbar(
                             context: context, content: state.error);
@@ -72,24 +77,22 @@ class EnterEmailScreen extends StatelessWidget {
                         AppConstants.showSnackbar(
                             context: context,
                             content: 'برجاء فحص البريد الالكترونى الخاص بك');
-                        /*   await Future.delayed(const Duration(seconds: 3))
-                            .then((value) =>  */
+
                         AppConstants.navigateTo(
                           context: context,
                           routeName: AppRoutes.checkCodeScreen,
+                          arguments: emailController.text,
                         );
                         // );
                       }
                     },
-                    child: CustomButton(
+                    builder: (context, state) => CustomButton(
                       text: AppStrings.sendcode,
                       onPressed: () {
                         BlocProvider.of<AuthenticationCubit>(context)
                             .forgetPassword(emailController.text.trim());
                       },
-                      color: AppColors.textColor,
-                      size: 20.sp,
-                      fontWeight: FontWeight.bold,
+                      isLoading: isLoading,
                     ),
                   ),
                 ),

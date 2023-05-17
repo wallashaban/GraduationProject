@@ -1,4 +1,4 @@
-import 'package:graduation_project/core/utils/exports.dart';
+import '../../../core/utils/exports.dart';
 
 
 class Reminder extends Equatable {
@@ -8,7 +8,7 @@ class Reminder extends Equatable {
  final String endDate;
  final String apponitment;
  final List<Times> times;
- final List<Days> days;
+ final List? days;
  const Reminder({
     required this.id,
     required this.reminderName,
@@ -33,12 +33,10 @@ class Reminder extends Equatable {
 
 class Times extends Equatable {
   final int id;
-  final String quantity;
   final String time;
-  final String month;
+  final String? month;
   const Times({
     required this.id,
-    required this.quantity,
     required this.time,
     required this.month,
   });
@@ -46,7 +44,6 @@ class Times extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        quantity,
         time,
         month,
       ];

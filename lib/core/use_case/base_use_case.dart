@@ -1,13 +1,20 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
-import 'dart:io';
-
 abstract class BaseUseCase<T, Parameters> {
   Future<T> call(Parameters parameters);
 }
 
 class NoParameters {
   const NoParameters();
+}
+
+class PredictDiseaseParameters {
+  String field;
+  var photo;
+  PredictDiseaseParameters({
+    required this.field,
+    required this.photo,
+  });
 }
 
 class LoginUserParameters {
@@ -24,19 +31,19 @@ class LoginUserParameters {
 class RegisterUserParameters {
   String name;
   String email;
-  String password;
-  String passwordConfirm;
-  String gender;
+  String? password;
+  String? passwordConfirm;
+  String? gender;
   String birthDate;
-  String fcmToken;
+  String? fcmToken;
   RegisterUserParameters({
     required this.name,
     required this.email,
-    required this.password,
-    required this.passwordConfirm,
+    this.password,
+    this.passwordConfirm,
     required this.gender,
     required this.birthDate,
-    required this.fcmToken,
+    this.fcmToken,
   });
 }
 
@@ -48,6 +55,17 @@ class UpdatePasswordParameters {
     required this.code,
     required this.password,
     required this.passwordConfirm,
+  });
+}
+
+class DiseaseParameters {
+  int prediction;
+  String? photo;
+  String disease;
+  DiseaseParameters({
+    required this.prediction,
+    required this.photo,
+    required this.disease,
   });
 }
 
@@ -63,59 +81,59 @@ class LoginWithFacebookOrGoogleParameters {
 }
 
 class StoreMedicalDetailsParameters {
-  int id;
-  String bloodType;
-  String allergy;
-  String chronicDisease;
-  String genticDisease;
-  String skinDisease;
+  int? id;
+  String? bloodType;
+  String? allergy;
+  String? chronicDisease;
+  String? genticDisease;
+  String? skinDisease;
   bool isMedicine;
-  var medicineFile;
+  var medicineName;
   StoreMedicalDetailsParameters({
-    required this.id,
+    this.id,
     required this.bloodType,
     required this.allergy,
     required this.chronicDisease,
     required this.genticDisease,
-    required this.skinDisease,
+    this.skinDisease,
     required this.isMedicine,
-    required this.medicineFile,
+    required this.medicineName,
   });
 }
 
 class MediaclTestParameters {
-  final int id;
+  final int? id;
   final String labName;
   final String type;
   final String labDate;
 
-  final File labFile;
+  final String? labFile;
   const MediaclTestParameters({
-    required this.id,
+    this.id,
     required this.labName,
     required this.type,
     required this.labDate,
-    required this.labFile,
+    this.labFile,
   });
 }
 
 class PresccriptionParameters {
-  int id;
+  int? id;
   String note;
   String date;
-  File file;
+  String? file;
   PresccriptionParameters({
-    required this.id,
+    this.id,
     required this.note,
     required this.date,
-    required this.file,
+    this.file,
   });
 }
 
 class TeethParameters {
-  int id;
-  String teethName;
-  String apperenceDate;
+  int? id;
+  String? teethName;
+  String? apperenceDate;
   TeethParameters({
     required this.id,
     required this.teethName,
@@ -124,13 +142,13 @@ class TeethParameters {
 }
 
 class ReminderParameters {
- final int id;
-  final String medicineName;
-  final String appointment;
-  final String endDate;
-  final List<MedicineTimes> times;
+  final int? id;
+  final String? medicineName;
+  final String? appointment;
+  final String? endDate;
+  final List<dynamic>? times;
   const ReminderParameters({
-    required this.id,
+    this.id,
     required this.medicineName,
     required this.appointment,
     required this.endDate,
@@ -139,14 +157,29 @@ class ReminderParameters {
 }
 
 class MedicineTimes {
-  final String quantity;
-  final String time;
-  final List days;
-  final String month;
+  final String? time;
+  final List? days;
+  final String? month;
   const MedicineTimes({
-    required this.quantity,
     required this.time,
     required this.days,
     required this.month,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'time': time,
+      'days': days,
+      'month': month,
+    };
+  }
+}
+
+class TipsParameters {
+  final int questionId;
+  final int status;
+  TipsParameters({
+    required this.questionId,
+    required this.status,
   });
 }

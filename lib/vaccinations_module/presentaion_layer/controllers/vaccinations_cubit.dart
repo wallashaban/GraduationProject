@@ -1,18 +1,13 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:graduation_project/vaccinations_module/data_layer/models/vaccination_model.dart';
-import 'package:graduation_project/vaccinations_module/domain_layer/entities/vaccination.dart';
+import 'package:graduation_project/core/utils/exports.dart';
+import 'package:graduation_project/vaccinations_module/presentaion_layer/widgets/vaccine_reminder_showmessage.dart';
+import '../../data_layer/models/vaccination_model.dart';
+import '../../domain_layer/entities/vaccination.dart';
 
-import 'package:graduation_project/vaccinations_module/domain_layer/use_cases/attatch_vaccination_use_case.dart';
-import 'package:graduation_project/vaccinations_module/domain_layer/use_cases/get_all_vaccination_use_case.dart';
-import 'package:graduation_project/vaccinations_module/domain_layer/use_cases/get_single_vaccination_use_case.dart';
-import 'package:graduation_project/vaccinations_module/domain_layer/use_cases/stop_or_active_vaccination_use_case.dart';
+import '../../domain_layer/use_cases/attatch_vaccination_use_case.dart';
+import '../../domain_layer/use_cases/get_all_vaccination_use_case.dart';
+import '../../domain_layer/use_cases/get_single_vaccination_use_case.dart';
+import '../../domain_layer/use_cases/stop_or_active_vaccination_use_case.dart';
 
-import '../../../core/error/failure.dart';
-import '../../../core/use_case/base_use_case.dart';
-import '../../../medical_details_module/data_layer/models/general_model.dart';
-import '../../../medical_details_module/domain_layer/entites/general.dart';
 
 part 'vaccinations_state.dart';
 
@@ -45,8 +40,12 @@ class VaccinationsCubit extends Cubit<VaccinationsState> {
     prevention: 'prevention',
     status: 0,
     proposedVaccinationDate: 'proposedVaccinationDate',
+    about: '',
+    important: 0,
+    numberOfSyrings: 4,
+    sideEffects: '',
+    vaccinationDate: '',
   );
-
 
   Future getAllVaccinations() async {
     emit(GetAllVaccinationsLoadingState());
@@ -67,7 +66,6 @@ class VaccinationsCubit extends Cubit<VaccinationsState> {
         emit(GetAllVaccinationsSuccessState());
       },
     );
-
   }
 
   Future getSingleVaccination(int id) async {
@@ -108,6 +106,7 @@ class VaccinationsCubit extends Cubit<VaccinationsState> {
       (r) {
         general = r;
         emit(AttatchVaccinationSuccessState());
+        getAllVaccinations();
       },
     );
   }
@@ -132,8 +131,31 @@ class VaccinationsCubit extends Cubit<VaccinationsState> {
       },
     );
   }
+
+  bool isOn = true;
+  Future changeToggleStatus() async{
+    isOn = !isOn;
+    CashHelper.saveData(key: 'reminder', value: isOn);
+  }
+
+  Future showMessage(context) async {
+    changeToggleStatus().then((value) {
+      if (isOn) {
+      showMessageComponent(
+        context: context,
+        isOn: isOn,
+      );
+      
+      stopOrActiveVaccination(1);}
+
+    else{
+      showMessageComponent(context: context, isOn: isOn);
+      stopOrActiveVaccination(0);
+    }});
+    
+      
+    
+    emit(ShowMessageSuccessState());
+    emit(ChangeDialogSuccessState());
+  }
 }
-
-
-
-

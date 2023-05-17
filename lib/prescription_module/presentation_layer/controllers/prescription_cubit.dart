@@ -1,53 +1,49 @@
-import 'dart:io';
+// ignore_for_file: prefer_typing_uninitialized_variables
 
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:graduation_project/prescription_module/domain_layer/use_cases/delete_prescription_use_case.dart';
-import 'package:graduation_project/prescription_module/domain_layer/use_cases/update_prescription_use_case.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import '../../../core/utils/exports.dart';
 
-import '../../../core/error/failure.dart';
-import '../../../core/use_case/base_use_case.dart';
-import '../../../medical_details_module/domain_layer/entites/general.dart';
 import '../../data_layer/models/prescribtion_model.dart';
 import '../../domain_layer/entities/prescribtion.dart';
-import '../../domain_layer/use_cases/get_all_prescriptionss_use_case.dart';
-import '../../domain_layer/use_cases/get_single_prescription_use_case.dart';
-import '../../domain_layer/use_cases/store_prescription_use_case.dart';
+
 
 part 'prescription_state.dart';
 
 class PrescriptionCubit extends Cubit<PrescriptionState> {
-   ///prescription
+  ///prescription
   final StorePrescriptionUseCase storePrescriptionUseCase;
   final GetAllPrescriptionsUseCase getAllPrescriptionsUseCase;
   final GetSinglePrescriptionUseCase getSinglePrescriptionUseCase;
   final UpdatePrescriptionUseCase updatePrescriptionUseCase;
   final DeletePrescriptionUseCase deletePrescriptionUseCase;
   ////////////////////////////////////////////
-  PrescriptionCubit( this.storePrescriptionUseCase,
+  PrescriptionCubit(
+    this.storePrescriptionUseCase,
     this.getAllPrescriptionsUseCase,
     this.getSinglePrescriptionUseCase,
     this.updatePrescriptionUseCase,
-    this.deletePrescriptionUseCase,) : super(PrescriptionInitial());
+    this.deletePrescriptionUseCase,
+  ) : super(PrescriptionInitial());
 
-     ///prescription
+  ///prescription
   General prescription = const General(
     data: 'data',
     message: 'message',
     status: false,
   );
   List<Presccription> allPrescriptions = [];
-  Presccription singlePrescription = PrescribtionModel(
+  Presccription singlePrescription = const PrescribtionModel(
     id: 1,
     note: 'note',
     date: 'date',
-    file: File('path'),
+    file: '',
   );
-  Presccription prescriptionUpdated = PrescribtionModel(
+  Presccription prescriptionUpdated = const PrescribtionModel(
     id: 1,
     note: 'note',
     date: 'date',
-    file: File('path'),
+    file: '',
   );
   General prescriptionDel = const General(
     data: 'data',
@@ -55,12 +51,33 @@ class PrescriptionCubit extends Cubit<PrescriptionState> {
     status: false,
   );
   ///////////////////////////////
-   Failure serverFailure = const ServerFailure(
+  Failure serverFailure = const ServerFailure(
     message: 'message',
   );
- 
+  void canselPickedFile() {
+    pickedFile = null;
+    filePath = null;
+    emit(CanselPres());
+  }
 
- ///prscription
+  FilePickerResult? result;
+  File? file;
+  String? filePath;
+  var pickedFile;
+  final picker = ImagePicker();
+  Future pickImage() async {
+    debugPrint('befor');
+    pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      file = File(pickedFile.path);
+      filePath = file!.path;
+      debugPrint('picked file ${file!.existsSync()}');
+    }
+    emit(PickImageState());
+    emit(PrescriptionDone());
+  }
+
+  ///prscription
 
   Future storePrescription(PresccriptionParameters parameters) async {
     emit(StorePrescriptionLoadingState());
@@ -69,6 +86,7 @@ class PrescriptionCubit extends Cubit<PrescriptionState> {
     result.fold(
       (l) {
         serverFailure = l;
+        debugPrint('error $l');
         emit(
           StorePrescriptionErrorState(
             error: l.message.toString(),
@@ -78,6 +96,7 @@ class PrescriptionCubit extends Cubit<PrescriptionState> {
       (r) {
         prescription = r;
         emit(StorePrescriptionSuccessState());
+        getAllPrescriiptions();
       },
     );
   }
@@ -91,6 +110,7 @@ class PrescriptionCubit extends Cubit<PrescriptionState> {
     result.fold(
       (l) {
         serverFailure = l;
+        debugPrint('error $l');
         emit(
           GellAllPrescriptionErrorState(
             error: l.message.toString(),
@@ -132,6 +152,7 @@ class PrescriptionCubit extends Cubit<PrescriptionState> {
     result.fold(
       (l) {
         serverFailure = l;
+        debugPrint('error $l');
         emit(
           UpdatePrescriptionErrorState(
             error: l.message.toString(),
@@ -141,6 +162,7 @@ class PrescriptionCubit extends Cubit<PrescriptionState> {
       (r) {
         prescriptionUpdated = r;
         emit(UpdatePrescriptionSuccessState());
+        getAllPrescriiptions();
       },
     );
   }
@@ -162,10 +184,10 @@ class PrescriptionCubit extends Cubit<PrescriptionState> {
       (r) {
         prescriptionDel = r;
         emit(DeletePrescriptionSuccessState());
+        getAllPrescriiptions();
       },
     );
   }
 
   /////////////////////////////////////////
- 
 }

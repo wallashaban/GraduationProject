@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="162" height="162" viewBox="0 0 162 162">
+  <defs>
+    <filter id="Path_11283" x="0" y="4" width="158" height="158" filterUnits="userSpaceOnUse">
+      <feOffset dx="-3" dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-color="#292d2d" flood-opacity="0.078"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_1242" data-name="Group 1242" transform="translate(-89 -211)">
+    <g transform="matrix(1, 0, 0, 1, 89, 211)" filter="url(#Path_11283)">
+      <path id="Path_11283-2" data-name="Path 11283" d="M70,0A70,70,0,1,1,0,70,70,70,0,0,1,70,0Z" transform="translate(12 10)" fill="#6fa6d6" opacity="0.15"/>
+    </g>
+    <path id="camera-alt" d="M22.16,25H2.841a2.7,2.7,0,0,1-2.009-.915A3.315,3.315,0,0,1,0,21.875v-15A3,3,0,0,1,2.841,3.75H5.034a1.665,1.665,0,0,0,1.419-.835l.923-1.523A2.775,2.775,0,0,1,9.739,0h5.523a2.776,2.776,0,0,1,2.364,1.392l.924,1.524a1.663,1.663,0,0,0,1.414.834h2.2A3,3,0,0,1,25,6.875v15A3,3,0,0,1,22.16,25ZM2.841,5a1.8,1.8,0,0,0-1.7,1.875v15a1.8,1.8,0,0,0,1.7,1.875H22.16a1.8,1.8,0,0,0,1.7-1.875v-15A1.8,1.8,0,0,0,22.16,5H19.966A2.776,2.776,0,0,1,17.6,3.609L16.68,2.084a1.666,1.666,0,0,0-1.419-.834H9.739a1.666,1.666,0,0,0-1.418.835L7.4,3.609A2.776,2.776,0,0,1,5.034,5ZM12.5,21.25c-3.759,0-6.818-3.365-6.818-7.5s3.058-7.5,6.818-7.5,6.819,3.364,6.819,7.5S16.26,21.25,12.5,21.25Zm0-13.75A5.993,5.993,0,0,0,6.819,13.75,5.993,5.993,0,0,0,12.5,20a5.994,5.994,0,0,0,5.682-6.251A5.993,5.993,0,0,0,12.5,7.5ZM21.591,10H20.455a1.2,1.2,0,0,1-1.136-1.25V7.5a1.2,1.2,0,0,1,1.136-1.25h1.136A1.2,1.2,0,0,1,22.727,7.5V8.75A1.2,1.2,0,0,1,21.591,10ZM20.455,7.5V8.75h1.136V7.5ZM3.977,2.5H1.7a.6.6,0,0,1-.569-.624A.6.6,0,0,1,1.7,1.25H3.977a.6.6,0,0,1,.568.626A.6.6,0,0,1,3.977,2.5Z" transform="translate(159 245)" fill="#365997"/>
+    <g id="Ellipse_177" data-name="Ellipse 177" transform="translate(91 211)" fill="none" stroke="#365997" stroke-width="1" stroke-dasharray="3">
+      <circle cx="80" cy="80" r="80" stroke="none"/>
+      <circle cx="80" cy="80" r="79.5" fill="none"/>
+    </g>
+    <text id="صورة_المرض" data-name="صورة المرض" transform="translate(209 331)" fill="#365997" font-size="14" font-family="SegoeUI, Segoe UI"><tspan x="-76" y="0">صورة المرض</tspan></text>
+    <text id="إضغط_هنا_لإلتقاط" data-name="إضغط هنا لإلتقاط" transform="translate(223 301)" fill="#365997" font-size="14" font-family="SegoeUI, Segoe UI"><tspan x="-102" y="0">إضغط هنا لإلتقاط</tspan></text>
+  </g>
+</svg>

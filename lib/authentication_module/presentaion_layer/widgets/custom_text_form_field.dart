@@ -1,8 +1,6 @@
 // ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/utils/app_colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String labelText;
@@ -42,43 +40,23 @@ class CustomTextFormField extends StatelessWidget {
         keyboardType: keyBoardType,
         onTap: onTap,
         obscureText: obscureText,
-        style: TextStyle(
-            fontWeight: FontWeight.bold, color: AppColors.textFielfColor),
+        style: const TextStyle(
+           // fontWeight: FontWeight.bold, color: AppColors.textFielfColor,
+            ),//todo if you have nothing to do then delete it😁
         autocorrect: true,
-        cursorColor: AppColors.darkColor,
         validator: validator,
         decoration: InputDecoration(
-          fillColor: AppColors.appBarColor,
-          focusColor: AppColors.textColor,
-          labelStyle: TextStyle(
-              color: AppColors.borderColor,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.sp),
           hintText: hintText,
           labelText: labelText,
-          suffixIconColor: AppColors.borderColor,
           prefixIcon:IconButton(
             onPressed: prefixPressed,
             icon: Icon(prefix),
-            color: AppColors.textColor,
           ),
           suffixIcon: IconButton(
             onPressed: sufixPressed,
             icon: Icon(suffix),
-            color: AppColors.darkColor,
           ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: BorderSide(color: AppColors.darkColor, width: 2),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: BorderSide(color: AppColors.borderColor, width: 2),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: const BorderSide(color: AppColors.errorColor, width: 2),
-          ),
+          
         ),
       ),
     );

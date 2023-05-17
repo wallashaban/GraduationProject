@@ -9,6 +9,8 @@ abstract class VaccinationsState extends Equatable {
 
 class VaccinationsInitial extends VaccinationsState {}
 
+class ShowMessageSuccessState extends VaccinationsState{}
+class ChangeDialogSuccessState extends VaccinationsState{}
 
 
 class AttatchVaccinationSuccessState extends VaccinationsState {}

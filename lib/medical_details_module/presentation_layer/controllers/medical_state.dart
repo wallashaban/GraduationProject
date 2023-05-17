@@ -8,7 +8,8 @@ abstract class MedicalState extends Equatable {
 }
 
 class MedicalInitial extends MedicalState {}
-
+class IsGeneticDiseaseState extends MedicalState{}
+class IsMedicineState extends MedicalState{}
 class ChangeBottomNavbatState extends MedicalState{}
 class ChangeBloodTypeValueState extends MedicalState{}
 

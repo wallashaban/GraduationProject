@@ -1,6 +1,6 @@
 
 import 'package:dartz/dartz.dart';
-import 'package:graduation_project/core/utils/exports.dart';
+import '../../../core/utils/exports.dart';
 
 abstract class BaseMedicalDetailsRepository {
   //medical details

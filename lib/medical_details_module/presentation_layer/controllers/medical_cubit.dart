@@ -1,7 +1,10 @@
-
+// ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'package:graduation_project/core/utils/exports.dart';
+import 'package:graduation_project/settings_notifications_module/presentation_layer/screens/notifications_screen.dart';
 
+import '../../../report_module/presentation_layer/screens/reports_screen.dart';
+import '../../../settings_notifications_module/presentation_layer/screens/settings_screen.dart';
 
 part 'medical_state.dart';
 
@@ -13,10 +16,9 @@ class MedicalCubit extends Cubit<MedicalState> {
   final GetAllChronicDiseasesUseCase getAllChronicDiseasesUseCase;
   final GetAllSkinDiseasesUseCase getAllSkinDiseasesUseCase;
   /////////////////////////////////
-  
+
   ///////////////////////////
- 
-  
+
   MedicalCubit(
     this.storeMedicalDetailsUseCase,
     this.getAllAllergiesUseCase,
@@ -28,7 +30,7 @@ class MedicalCubit extends Cubit<MedicalState> {
 
   List<Widget> screens = [
     const HomeScreen(),
-    const NotificationScreen(),
+    const NotificationsScreen(),
     const ReportsScreen(),
     const SettingsScreen(),
   ];
@@ -38,6 +40,7 @@ class MedicalCubit extends Cubit<MedicalState> {
     emit(ChangeBottomNavbatState());
     emit(Done());
   }
+
   List<String> bloodTypes = [
     'A+',
     'A-',
@@ -46,27 +49,36 @@ class MedicalCubit extends Cubit<MedicalState> {
     'O-',
     'O+',
   ];
+  List<String> chronicDiseaes = [
+    ' ',
+  ];
+  List<String> geneticDiseaes = [' '];
+  List<String> allergies = [
+    ' ',
+  ];
+
   String? bloodType;
   void changeBloodTypeValue(String bloodType) {
     this.bloodType = bloodType;
     emit(ChangeBloodTypeValueState());
     emit(Done());
   }
-  String? geneticDiseaseValue = '';
+
+  String? geneticDiseaseValue;
   void changeGeneticDiseaseValue(String geneticDiseaseValue) {
     this.geneticDiseaseValue = geneticDiseaseValue;
     emit(ChangeGeneticDiseaseValueState());
     emit(Done());
   }
 
-   String? chronicDiseaseValue = '';
+  String? chronicDiseaseValue;
   void changeChronicDiseaseValue(String chronicDiseaseValue) {
     this.chronicDiseaseValue = chronicDiseaseValue;
     emit(ChangeChronicDiseaseValueState());
     emit(Done());
   }
 
-   String? allergyValue = '';
+  String? allergyValue;
   void changeAllergyValue(String allergyValue) {
     this.allergyValue = allergyValue;
     emit(ChangeAllergyValueState());
@@ -83,13 +95,27 @@ class MedicalCubit extends Cubit<MedicalState> {
   List<Disease> geneticDisease = [];
   List<Disease> skinDisease = [];
   //////////////////////////
- 
-  
+
 /////////////////////
   Failure serverFailure = const ServerFailure(
     message: 'message',
   );
   ////////////////////
+  ///
+  String isMedicine = AppStrings.no;
+  existMedicineOrNot(String isMedicine) {
+    this.isMedicine = isMedicine;
+    emit(IsMedicineState());
+    emit(Done());
+  }
+
+  String isGeneticDisease = AppStrings.no;
+  existGeneticDiseaseOrNot(String isGeneticDisease) {
+    this.isGeneticDisease = isGeneticDisease;
+    emit(IsGeneticDiseaseState());
+    emit(Done());
+  }
+
   ///medical details
   Future storeMedicalDetails(StoreMedicalDetailsParameters parameters) async {
     emit(StoreMedicalDetailsLoadingState());
@@ -98,6 +124,7 @@ class MedicalCubit extends Cubit<MedicalState> {
     result.fold(
       (l) {
         serverFailure = l;
+        debugPrint('error store medical test $l');
         emit(
           StoreMedicalDetailsErrorState(
             error: l.message.toString(),
@@ -114,6 +141,8 @@ class MedicalCubit extends Cubit<MedicalState> {
 
   Future getAllAllergy() async {
     emit(GellAllAllergiesLoadingState());
+    /* MedicalRemoteDataSource().logOut();
+    CashHelper.deleteData(key: 'token'); */
     final result = await getAllAllergiesUseCase(const NoParameters());
 
     result.fold(
@@ -128,6 +157,12 @@ class MedicalCubit extends Cubit<MedicalState> {
       },
       (r) {
         allergy = r;
+        allergies.remove(allergies[0]);
+        allergy.forEach((element) {
+          allergies.add(element.allergy);
+        });
+        debugPrint('allergy $allergies');
+
         emit(GellAllAllergiesSuccessState());
       },
     );
@@ -149,6 +184,12 @@ class MedicalCubit extends Cubit<MedicalState> {
       },
       (r) {
         chronicDisease = r;
+        chronicDiseaes.remove(chronicDiseaes[0]);
+        chronicDisease.forEach((element) {
+          chronicDiseaes.add(element.disease);
+        });
+        debugPrint('chronic $chronicDiseaes');
+
         emit(GetAllChronicSuccessState());
       },
     );
@@ -188,11 +229,16 @@ class MedicalCubit extends Cubit<MedicalState> {
           ),
         );
       },
-      (r) {
+      (r) async {
         geneticDisease = r;
+        geneticDiseaes.remove(geneticDiseaes[0]);
+        geneticDisease.forEach((element) {
+          geneticDiseaes.add(element.disease);
+        });
+
+        debugPrint('gentic $geneticDiseaes');
         emit(GetAllGeneticDiseasesSuccessState());
       },
     );
-  } 
-   
+  }
 }

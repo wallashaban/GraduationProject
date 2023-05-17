@@ -1,5 +1,4 @@
-
-import 'package:graduation_project/core/utils/exports.dart';
+import '../../../core/utils/exports.dart';
 
 abstract class BaseAuthenticationRemoteDataSource {
   Future<AuthenticationModel> registerUser(RegisterUserParameters parameters);
@@ -149,8 +148,10 @@ class AuthenticationRemoteDataSource
     });
     if (response.data['status'] == true) {
       debugPrint('update password remote data ${response.data}');
-    }else{
-      throw ServerException(errorMessageModel: ErrorMessageModel.fromJson(response.data),);
+    } else {
+      throw ServerException(
+        errorMessageModel: ErrorMessageModel.fromJson(response.data),
+      );
     }
   }
 }

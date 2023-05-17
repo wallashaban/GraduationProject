@@ -1,4 +1,4 @@
-import 'package:graduation_project/core/utils/exports.dart';
+import '../../../core/utils/exports.dart';
 
 part 'medication_state.dart';
 
@@ -48,13 +48,31 @@ class MedicationReminderCubit extends Cubit<ReminderState> {
     '2',
     '3',
   ];
-  String? quantity;
   String? medicineTime;
-  void changeReminderQuantityValue(String quantity) {
-    this.quantity = quantity;
-    emit(ChangeRemnderQuantityValueState());
+  int index = 0;
+  List<String> allDays = [
+    'السبت',
+    'الاحد',
+    'الاثنين',
+    'الثلاثاء',
+    'الاربعاء',
+    'الخميس',
+    'الجمعه',
+  ];
+  void addNewDose() {
+    index++;
+    debugPrint('index $index');
+    emit(AddNewDoseState());
     emit(ReminderDone());
   }
+
+  void deleteDose() {
+    index--;
+    debugPrint('index $index');
+    emit(DeleteDoseState());
+    emit(ReminderDone());
+  }
+
   void changeReminderTimeValue(String medicineTime) {
     this.medicineTime = medicineTime;
     emit(ChangeRemnderTimeValueState());
@@ -78,6 +96,115 @@ class MedicationReminderCubit extends Cubit<ReminderState> {
       (r) {
         days = r;
         emit(GetAllDaysSuccessState());
+      },
+    );
+  }
+
+  Future storeMedicationReminder(ReminderParameters parameters) async {
+    emit(StoreReminderLoadingState());
+    final result = await storeReminderUseCase(parameters);
+
+    result.fold(
+      (l) {
+        serverFailure = l;
+        debugPrint('error allergy ${l.message.toString()}');
+        emit(
+          StoreReminderErrorState(
+            error: l.message.toString(),
+          ),
+        );
+      },
+      (r) {
+        general = r;
+        debugPrint(general.message);
+        emit(StoreReminderSuccessState());
+        getAllReminders();
+        index = 0;
+      },
+    );
+  }
+
+  Future updateReminder(ReminderParameters parameters) async {
+    emit(UpdateReminderLoadingState());
+    final result = await updateReminderUseCase(parameters);
+
+    result.fold(
+      (l) {
+        serverFailure = l;
+        debugPrint('error allergy ${l.message.toString()}');
+        emit(
+          UpdateReminderErrorState(
+            error: l.message.toString(),
+          ),
+        );
+      },
+      (r) {
+        general = r;
+        emit(UpdateReminderSuccessState());
+      },
+    );
+  }
+
+  Future getAllReminders() async {
+    emit(GetAllRemindersLoadingState());
+    final result = await getAllMedicationReminderUseCase(const NoParameters());
+
+    result.fold(
+      (l) {
+        serverFailure = l;
+        debugPrint('error allergy ${l.message.toString()}');
+        emit(
+          GetAllRemindersErrorState(
+            error: l.message.toString(),
+          ),
+        );
+      },
+      (r) {
+        allReminders = r;
+        emit(GetAllRemindersSuccessState());
+      },
+    );
+  }
+
+  Future getSingleReminder(int id) async {
+    emit(GetSingleReminderLoadingState());
+    final result = await getSingleRminderUseCase(id);
+
+    result.fold(
+      (l) {
+        serverFailure = l;
+        debugPrint('error allergy ${l.message.toString()}');
+        emit(
+          GetSingleReminderErrorState(
+            error: l.message.toString(),
+          ),
+        );
+      },
+      (r) {
+        reminder = r;
+        emit(GetSingleReminderSuccessState());
+      },
+    );
+  }
+
+  Future deleteReminders(int id) async {
+    emit(DeleteReminderLoadingState());
+    final result = await deleteReminderUseCase(id);
+
+    result.fold(
+      (l) {
+        serverFailure = l;
+        debugPrint('error reminder ${l.message.toString()}');
+        emit(
+          DeleteReminderErrorState(
+            error: l.message.toString(),
+          ),
+        );
+      },
+      (r) {
+        general = r;
+        emit(DeleteReminderSuccessState());
+        getAllReminders();
       },
     );
   }

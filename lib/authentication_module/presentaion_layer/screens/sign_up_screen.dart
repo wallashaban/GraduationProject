@@ -1,13 +1,10 @@
 // ignore_for_file: must_be_immutable
 
-
-
-
+import 'package:graduation_project/authentication_module/presentaion_layer/widgets/radio_widget.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 
-
 class SignUpScreen extends StatelessWidget {
-  SignUpScreen({super.key});
+  SignUpScreen({super.key,});
   var formKey = GlobalKey<FormState>();
   var confirmPasswordController = TextEditingController();
   var passwordController = TextEditingController();
@@ -17,6 +14,7 @@ class SignUpScreen extends StatelessWidget {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
+   
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -34,25 +32,25 @@ class SignUpScreen extends StatelessWidget {
                       Center(
                         child: CustomText(
                           text: AppStrings.createAccount,
-                          color: AppColors.textColor,
-                          fontWeight: FontWeight.bold,
-                          size: 30.sp,
+                          //color: AppColors.textColor,
+                          fontWeight: FontWeight.normal,
+                          size: 20.sp,
                         ),
+                      ),
+                      SizedBox(
+                        height: 20.h,
                       ),
                       CustomText(
                         text: AppStrings.welcomeText1,
-                        color: AppColors.darkColor,
+                        // color: AppColors.darkColor,
                         fontWeight: FontWeight.bold,
-                        size: 20.sp,
+                        size: 16.sp,
                       ),
-                      /*  const SizedBox(
-                                height: 10,
-                              ), */
                       CustomText(
                         text: AppStrings.welcomeText2,
-                        color: AppColors.textColor,
-                        fontWeight: FontWeight.bold,
-                        size: 18.sp,
+                        //color: AppColors.textColor,
+                        fontWeight: FontWeight.normal,
+                        size: 14.sp,
                       ),
                       SizedBox(
                         height: 20.h,
@@ -60,8 +58,6 @@ class SignUpScreen extends StatelessWidget {
                       Center(
                         child: SvgPicture.asset(
                           AppImages.signupImage,
-                          /*  height: 209.04,
-                                  width: 100.34, */
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -69,9 +65,9 @@ class SignUpScreen extends StatelessWidget {
                         height: 20.h,
                       ),
                       CustomTextFormField(
-                                              obscureText: false,
+                        obscureText: false,
 
-                        //hintText: 'bla bla',
+                        //  hintText: 'bla bla',
                         controller: nameController,
                         labelText: AppStrings.fullName,
                         validator: (value) {
@@ -84,8 +80,7 @@ class SignUpScreen extends StatelessWidget {
                         height: 10.h,
                       ),
                       CustomTextFormField(
-                                              obscureText: false,
-
+                        obscureText: false,
                         controller: birthdateController,
                         labelText: AppStrings.birthdate,
                         suffix: Icons.date_range_sharp,
@@ -96,31 +91,15 @@ class SignUpScreen extends StatelessWidget {
                         },
                         keyBoardType: TextInputType.none,
                         onTap: () async {
-                          debugPrint(
-                              'birthdate before${birthdateController.text}');
-
-                          await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime.now(),
-                          ).then((value) async {
-                            if (value != null) {
-                              debugPrint('bbirthdate $value');
-                              birthdateController.text =
-                                  '${value.year}-0${value.month}-${value.day}';
-                            }
-                          });
-                          debugPrint(
-                              'bbirthdate con${birthdateController.text}');
+                          birthdateController.text =
+                              await AppConstants.showDate(context);
                         },
                       ),
                       SizedBox(
                         height: 10.h,
                       ),
                       CustomTextFormField(
-                                              obscureText: false,
-
+                        obscureText: false,
                         controller: emailController,
                         labelText: AppStrings.email,
                         validator: (value) {
@@ -139,7 +118,9 @@ class SignUpScreen extends StatelessWidget {
                           return CustomTextFormField(
                             controller: passwordController,
                             labelText: AppStrings.password,
-                            suffix: PhosphorIcons.eyeClosed,
+                            suffix: cubit.isPassword
+                                ? PhosphorIcons.eyeClosed
+                                : PhosphorIcons.eyeBold,
                             obscureText: cubit.isPassword,
                             sufixPressed: () {
                               cubit.obscurePassword();
@@ -162,7 +143,9 @@ class SignUpScreen extends StatelessWidget {
                           return CustomTextFormField(
                             controller: confirmPasswordController,
                             labelText: AppStrings.confirmPassword,
-                            suffix: PhosphorIcons.eyeClosed,
+                            suffix: cubit.isPassword
+                                ? PhosphorIcons.eyeClosed
+                                : PhosphorIcons.eyeBold,
                             obscureText: cubit.isPassword,
                             sufixPressed: () {
                               cubit.obscurePassword();
@@ -184,44 +167,25 @@ class SignUpScreen extends StatelessWidget {
                               BlocProvider.of<AuthenticationCubit>(context);
                           return Row(
                             children: [
-                              Row(
-                                children: [
-                                  Radio(
-                                      activeColor: AppColors.darkColor,
-                                      value: AppStrings.female,
-                                      groupValue: cubit.gender,
-                                      onChanged: (value) {
-                                        cubit.chooseGender(value!);
-                                      }),
-                                  CustomText(
-                                    text: AppStrings.female,
-                                    size: 20.sp,
-                                    color: AppColors.textColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ],
+                              RadioWidget(
+                                text: AppStrings.female,
+                                value: AppStrings.female,
+                                onChanged: (value) {
+                                  cubit.chooseGender(value!);
+                                },
+                                groupValue: cubit.gender,
                               ),
                               SizedBox(
                                 height:
                                     MediaQuery.of(context).size.width * 0.03,
                               ),
-                              Row(
-                                children: [
-                                  Radio(
-                                    activeColor: AppColors.darkColor,
-                                    value: AppStrings.male,
-                                    groupValue: cubit.gender,
-                                    onChanged: (value) {
-                                      cubit.chooseGender(value!);
-                                    },
-                                  ),
-                                  CustomText(
-                                    text: AppStrings.male,
-                                    size: 20.sp,
-                                    color: AppColors.textColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ],
+                              RadioWidget(
+                                text: AppStrings.male,
+                                value: AppStrings.male,
+                                onChanged: (value) {
+                                  cubit.chooseGender(value!);
+                                },
+                                groupValue: cubit.gender,
                               ),
                             ],
                           );
@@ -268,17 +232,10 @@ class SignUpScreen extends StatelessWidget {
                                       fcmToken: AppStrings.token,
                                     ),
                                   );
-                                  CashHelper.saveData(
-                                    key: 'token',
-                                    value: cubit.user.accessToken,
-                                  );
                                 }
                               },
                               isLoading: isLoading,
                               text: AppStrings.createAccount,
-                              color: AppColors.textColor,
-                              size: 20.sp,
-                              fontWeight: FontWeight.w600,
                             );
                           },
                         ),
@@ -288,8 +245,7 @@ class SignUpScreen extends StatelessWidget {
                         children: [
                           CustomText(
                             text: AppStrings.haveAccount,
-                            color: AppColors.textColor,
-                            size: 20.sp,
+                            size: 14.sp,
                             fontWeight: FontWeight.w600,
                           ),
                           CustomTextButton(
@@ -300,8 +256,8 @@ class SignUpScreen extends StatelessWidget {
                                 routeName: AppRoutes.login,
                               );
                             },
-                            color: AppColors.darkColor,
-                            size: 20.sp,
+                            color: AppColors.appBarColor,
+                            size: 14.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ],

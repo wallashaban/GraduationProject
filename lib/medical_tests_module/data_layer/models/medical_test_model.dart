@@ -1,5 +1,5 @@
 
-import 'package:graduation_project/medical_tests_module/domain_layer/entities/medical_test.dart';
+import '../../domain_layer/entities/medical_test.dart';
 
 class MediaclTestModel extends MediaclTest {
   const MediaclTestModel({

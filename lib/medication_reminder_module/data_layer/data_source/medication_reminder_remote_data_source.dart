@@ -22,7 +22,7 @@ class MedicationReminderRemoteDataSource
         receiveDataWhenStatusError: true,
         headers: {
           'Accept': 'application/json',
-          'token': '',
+          'Authorization': 'Bearer ${CashHelper.getData(key: 'token')}',
         });
     dio = Dio(options);
   }
@@ -94,13 +94,21 @@ class MedicationReminderRemoteDataSource
   List a = [];
   @override
   Future<GeneralModel> storeRemnider(ReminderParameters parameters) async {
-    final Response response =
-        await dio!.post(AppConstants.storeReminder, queryParameters: {
-      'medicine_name': parameters.medicineName,
+     FormData data = FormData.fromMap({
+     'medicine_name': parameters.medicineName,
       'appointment': parameters.appointment,
       'end_date': parameters.endDate,
       'mediceTimes': parameters.times,
     });
+    final Response response =
+        await dio!.post(AppConstants.storeReminder, /* queryParameters: {
+      'medicine_name': parameters.medicineName,
+      'appointment': parameters.appointment,
+      'end_date': parameters.endDate,
+      'mediceTimes': parameters.times,
+    }, */
+    data: data
+    );
     if (response.data['status'] == true) {
       debugPrint('store reminder details  remote data ${response.data}');
       return GeneralModel.fromJson(response.data);
@@ -120,10 +128,7 @@ class MedicationReminderRemoteDataSource
           'medicine_name': parameters.medicineName,
           'appointment': parameters.appointment,
           'end_date': parameters.endDate,
-          'mediceTimes': parameters.times.map((e) {
-            'quantity';
-            e.quantity;
-          }),
+          'mediceTimes': parameters.times,
         });
     if (response.data['status'] == true) {
       debugPrint('update reminder details  remote data ${response.data}');

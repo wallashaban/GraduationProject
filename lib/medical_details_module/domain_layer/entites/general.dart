@@ -1,7 +1,7 @@
-import 'package:graduation_project/core/utils/exports.dart';
+import '../../../core/utils/exports.dart';
 
 class General extends Equatable {
-  final String data;
+  final String? data;
   final String message;
   final bool status;
   const General({

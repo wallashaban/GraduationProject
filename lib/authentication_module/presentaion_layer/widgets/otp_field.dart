@@ -12,8 +12,8 @@ class OtpField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 50.h,
-        width: 50.w,
+        height: 45.h,
+        width: 45.w,
         child: TextFormField(
           controller: controller,
           onChanged: (value) {
@@ -24,12 +24,13 @@ class OtpField extends StatelessWidget {
           decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide(color: AppColors.darkColor, width: 2),
+                borderSide: BorderSide(color: AppColors.appBarColor, width: 2),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide(color: AppColors.darkColor, width: 2),
-              )),
+                borderSide: BorderSide(color: AppColors.appBarColor, width: 2),
+              )
+              ),
           style:
               Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 20.sp),
           keyboardType: TextInputType.number,

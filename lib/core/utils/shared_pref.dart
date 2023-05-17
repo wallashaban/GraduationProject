@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CashHelper {
   static SharedPreferences? sharedPreferences;
-  static  init() async {
+  static init() async {
     sharedPreferences = await SharedPreferences.getInstance();
   }
 
@@ -30,9 +30,13 @@ class CashHelper {
     }
   }
 
- static  getData({required String key}) {
-   return  sharedPreferences!.get(
+  static getData({required key}) {
+    return sharedPreferences!.get(
       key,
     );
+  }
+
+  static deleteData({required String key}) {
+    sharedPreferences!.remove(key);
   }
 }

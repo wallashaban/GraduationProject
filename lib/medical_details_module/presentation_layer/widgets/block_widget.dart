@@ -1,18 +1,26 @@
-
-import 'package:graduation_project/core/utils/exports.dart';
-
+import '../../../core/utils/exports.dart';
 
 class BlockWidget extends StatelessWidget {
   final String text;
   final String image;
   final dynamic onTap;
   final bool isMedicalHealthRecord;
+  final double? width;
+  final double? height;
+  final double? imageWidth;
+  final double? imageHeight;
+  final double? textSize;
   const BlockWidget({
     super.key,
     required this.image,
     required this.text,
     required this.onTap,
-    this.isMedicalHealthRecord=false,
+    this.textSize,
+    this.width,
+    this.height,
+    this.imageHeight,
+    this.imageWidth,
+    this.isMedicalHealthRecord = true,
   });
 
   @override
@@ -20,37 +28,42 @@ class BlockWidget extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        height:/* isMedicalHealthRecord?176.h: */ 164.h,
-        width: /* isMedicalHealthRecord?160.w: */ 147.w,
+        height: isMedicalHealthRecord ? 154.h : height,
+        width: isMedicalHealthRecord ? 147.w : width,
         decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(15),
+          color: /* isMedicalHealthRecord ? */
+              AppColors.white, //: AppColors.backColor,
+          borderRadius: BorderRadius.circular(25.r),
           boxShadow: [
             BoxShadow(
-                color: AppColors.darkColor,
-                blurRadius: 5,
+                color: Colors.grey[400]!,
+                blurRadius: isMedicalHealthRecord ? 4 : 10,
                 blurStyle: BlurStyle.outer),
           ],
         ),
         child: Container(
-          height: 154.h,
+          height: 144.h,
           width: 137.w,
-          padding:  EdgeInsets.all(8.r),
-          margin:  EdgeInsets.all(5.r),
+          padding: EdgeInsets.all(8.r),
+          margin: EdgeInsets.all(5.r),
           decoration: BoxDecoration(
-            color: AppColors.appBarColor,
-            borderRadius: BorderRadius.circular(15),
+            color: AppColors.backColor,
+            borderRadius: BorderRadius.circular(15.r),
           ),
           child: Column(
             children: [
               CustomText(
-                color: AppColors.darkColor,
+                color: AppColors.appBarColor,
                 fontWeight: FontWeight.bold,
-                size: 20.sp,
+                size: isMedicalHealthRecord ? 16.sp : textSize,
                 text: text,
               ),
               const Spacer(),
-              SvgPicture.asset(image),
+              SvgPicture.asset(
+                image,
+                width: imageWidth,
+                height: imageHeight,
+              ),
             ],
           ),
         ),

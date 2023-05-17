@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:graduation_project/core/utils/exports.dart';
+import '../../../core/utils/exports.dart';
 
 class StoreReminderUseCase implements BaseUseCase<Either, ReminderParameters> {
   final BaseMedicationReminderRepository baseMedicationReminderRepository;

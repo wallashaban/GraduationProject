@@ -1,9 +1,9 @@
-import 'package:graduation_project/core/utils/exports.dart';
+import '../utils/exports.dart';
 
 class ErrorMessageModel extends Equatable {
  // final String? data;
   final String message;
-  final bool status;
+  final bool? status;
   const ErrorMessageModel({
   //  required this.data,
     required this.message,

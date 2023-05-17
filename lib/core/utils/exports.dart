@@ -95,11 +95,8 @@ export 'package:graduation_project/core/network/error_message_model.dart';
 export 'package:graduation_project/medical_details_module/domain_layer/entites/general.dart';
 export 'package:graduation_project/medical_details_module/domain_layer/entites/disease.dart';
 export 'package:graduation_project/medical_details_module/domain_layer/entites/allergy.dart';
-export 'package:graduation_project/medical_details_module/presentation_layer/screens/reports_screen.dart';
 
 export 'package:graduation_project/medical_details_module/presentation_layer/screens/home_screen.dart';
-export 'package:graduation_project/medical_details_module/presentation_layer/screens/notification_screen.dart';
-export 'package:graduation_project/medical_details_module/presentation_layer/screens/settings_screen.dart';
 export 'package:graduation_project/medical_details_module/data_layer/models/general_model.dart';
 export 'package:graduation_project/medical_details_module/data_layer/models/allergy_model.dart';
 export 'package:graduation_project/medical_details_module/data_layer/models/diease_model.dart';

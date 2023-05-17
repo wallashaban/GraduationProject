@@ -10,6 +10,8 @@ abstract class ReminderState extends Equatable {
 class ReminderInitial extends ReminderState {}
 class ChangeRemnderTimeValueState extends ReminderState {}
 class ChangeRemnderQuantityValueState extends ReminderState {}
+class AddNewDoseState extends ReminderState{}
+class DeleteDoseState extends ReminderState{}
 
 class ReminderDone extends ReminderState {}
 

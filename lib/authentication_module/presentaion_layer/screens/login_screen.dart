@@ -14,10 +14,8 @@ class LoginScreen extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.only(
-            //top: 5.h,
-            left: 30.w,
-            right: 30.w,
+          padding: EdgeInsets.symmetric(
+            horizontal: 12.w
           ),
           child: Center(
             child: SingleChildScrollView(
@@ -29,9 +27,8 @@ class LoginScreen extends StatelessWidget {
                     Center(
                       child: CustomText(
                         text: AppStrings.loginText,
-                        color: AppColors.textColor,
-                        fontWeight: FontWeight.bold,
-                        size: 25.sp,
+                        //fontWeight: FontWeight.bold,
+                        size: 20.sp,
                       ),
                     ),
                     SizedBox(
@@ -40,8 +37,6 @@ class LoginScreen extends StatelessWidget {
                     Center(
                       child: SvgPicture.asset(
                         AppImages.loginImage,
-                        /*  height: 209.04,
-                        width: 217.34, */
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -52,6 +47,7 @@ class LoginScreen extends StatelessWidget {
                       obscureText: false,
                       controller: emailController,
                       labelText: AppStrings.emilTextForm,
+                      
                       validator: (value) {
                         if (value.isEmpty) {
                           return AppStrings.emilTextForm;
@@ -68,7 +64,7 @@ class LoginScreen extends StatelessWidget {
                         return CustomTextFormField(
                           controller: passwordController,
                           labelText: AppStrings.passwordTextForm,
-                          suffix: PhosphorIcons.eyeClosedBold,
+                          suffix: cubit.isPassword? PhosphorIcons.eyeClosedBold : PhosphorIcons.eyeBold,
                           obscureText: cubit.isPassword,
                           sufixPressed: () {
                             cubit.obscurePassword();
@@ -81,23 +77,27 @@ class LoginScreen extends StatelessWidget {
                         );
                       },
                     ),
-                    CustomTextButton(
-                      onPressed: () {
-                        AppConstants.navigateTo(
-                            context: context,
-                            routeName: AppRoutes.enterEmailScreen);
-                      },
-                      text: AppStrings.forgetPassword,
-                      color: AppColors.borderColor,
-                      size: 20.sp,
-                      fontWeight: FontWeight.w600,
+                    
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: CustomTextButton(
+                        onPressed: () {
+                          AppConstants.navigateTo(
+                              context: context,
+                              routeName: AppRoutes.enterEmailScreen);
+                        },
+                        text: AppStrings.forgetPassword,
+                        color: AppColors.borderColor,
+                        size: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                     SizedBox(
                       height: 20.h,
                     ),
                     BlocConsumer<AuthenticationCubit, AuthenticationState>(
                       listener: (context, state) {
-                        if (state is LoginUserErrorState) {
+                        if (state is LoginUserLoadingState) {
                           isLoading = true;
                         } else {
                           isLoading = false;
@@ -108,9 +108,7 @@ class LoginScreen extends StatelessWidget {
                             content: state.error.toString(),
                           );
                         } else if (state is LoginUserSuccessState) {
-                          /* Navigator.pushReplacementNamed(
-                              context, AppRoutes.bottomNavbar);
-                          */ AppConstants.navigateReplacement(
+                           AppConstants.navigateReplacement(
                             context: context,
                             routeName: AppRoutes.bottomNavbar,
                           );
@@ -130,17 +128,11 @@ class LoginScreen extends StatelessWidget {
                                     fcmToken: AppStrings.token,
                                   ),
                                 );
-                                CashHelper.saveData(
-                                  key: 'token',
-                                  value: cubit.user.accessToken,
-                                );
+                                
                               }
                             },
                             isLoading: isLoading,
                             text: AppStrings.loginText,
-                            color: AppColors.textColor,
-                            size: 20.sp,
-                            fontWeight: FontWeight.w600,
                           ),
                         );
                       },
@@ -153,8 +145,8 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         CustomText(
                           text: AppStrings.notHaveAccount,
-                          color: AppColors.textColor,
-                          size: 20.sp,
+                          //color: AppColors.textColor,
+                          size: 14.sp,
                           fontWeight: FontWeight.w600,
                         ),
                         CustomTextButton(
@@ -165,8 +157,8 @@ class LoginScreen extends StatelessWidget {
                               routeName: AppRoutes.signUp,
                             );
                           },
-                          color: AppColors.darkColor,
-                          size: 20.sp,
+                          color: AppColors.appBarColor,
+                          size: 14.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ],

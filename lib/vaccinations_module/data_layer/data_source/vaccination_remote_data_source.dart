@@ -1,4 +1,4 @@
-import 'package:graduation_project/vaccinations_module/data_layer/models/vaccination_model.dart';
+import '../models/vaccination_model.dart';
 
 import '../../../core/utils/exports.dart';
 
@@ -18,7 +18,7 @@ class VaccinationRemoteDataSource implements BaseVaccinationRemoteDataSource{
         receiveDataWhenStatusError: true,
         headers: {
           'Accept': 'application/json',
-          'token': '',
+          'Authorization': 'Bearer ${CashHelper.getData(key: 'token')}',
         });
     dio = Dio(options);
   }

@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 
@@ -8,7 +7,7 @@ class MediaclTest extends Equatable {
  final String type;
  final String labDate;
 
- final File labFile;
+ final String labFile;
  const MediaclTest({
     required this.id,
     required this.labName,

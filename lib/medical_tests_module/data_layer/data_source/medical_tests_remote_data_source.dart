@@ -2,7 +2,7 @@
 import '../../../core/utils/exports.dart';
 import '../models/medical_test_model.dart';
 
-abstract class BaseMedicalTestsRemoteDataSource{
+abstract class BaseMedicalTestsRemoteDataSource {
   /// medical tests
   Future<GeneralModel> storeMedicalTest(MediaclTestParameters file);
   Future<List<MediaclTestModel>> getAllMedicalTest();
@@ -11,8 +11,8 @@ abstract class BaseMedicalTestsRemoteDataSource{
   Future<GeneralModel> deleteMedicalTest(int id);
 }
 
-class MedicalTestsRemoteDataSource implements BaseMedicalTestsRemoteDataSource{
-   Dio? dio;
+class MedicalTestsRemoteDataSource implements BaseMedicalTestsRemoteDataSource {
+  Dio? dio;
   String token =
       'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2JhYnktaGVhbHRoLWNhcmUuc29uaWNhci50ZWNoL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNjgwODIxMzgxLCJuYmYiOjE2ODA4MjEzODEsImp0aSI6ImxJbFNuU1NEQ1lGOERlekQiLCJzdWIiOiIyIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.8FI98FIdeduQZmJEVlk7sW5BfcEB4Kxjq6zK9YhrXlk';
 
@@ -22,12 +22,12 @@ class MedicalTestsRemoteDataSource implements BaseMedicalTestsRemoteDataSource{
         receiveDataWhenStatusError: true,
         headers: {
           'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer ${CashHelper.getData(key: 'token')}',
         });
     dio = Dio(options);
   }
 
-   @override
+  @override
   Future<GeneralModel> deleteMedicalTest(int id) async {
     final Response response = await dio!.delete(
       '${AppConstants.deleteMedicalTrest} $id',
@@ -41,7 +41,8 @@ class MedicalTestsRemoteDataSource implements BaseMedicalTestsRemoteDataSource{
       );
     }
   }
- @override
+
+  @override
   Future<List<MediaclTestModel>> getAllMedicalTest() async {
     final Response response = await dio!.get(
       AppConstants.getallMedicalTrest,
@@ -57,7 +58,8 @@ class MedicalTestsRemoteDataSource implements BaseMedicalTestsRemoteDataSource{
       );
     }
   }
- @override
+
+  @override
   Future<MediaclTestModel> getSingleMedicalTest(int id) async {
     final Response response = await dio!.get(
       '${AppConstants.getSingleMedicalTest}$id',
@@ -71,16 +73,30 @@ class MedicalTestsRemoteDataSource implements BaseMedicalTestsRemoteDataSource{
       );
     }
   }
- @override
+
+
+  @override
   Future<GeneralModel> storeMedicalTest(
       MediaclTestParameters parameters) async {
-    final Response response =
-        await dio!.post(AppConstants.storeMedicalTest, queryParameters: {
+ 
+    FormData data = FormData.fromMap({
       'lab_name': parameters.labName,
       'type': parameters.type,
       'date': parameters.labDate,
-      'file': parameters.labFile,
+       "file":
+         parameters.labFile==null?null:   await MultipartFile.fromFile(parameters.labFile!, ),
     });
+    final Response response =
+        await dio!.post(AppConstants.storeMedicalTest, /* queryParameters: {
+      'lab_name': parameters.labName,
+      'type': parameters.type,
+      'date': parameters.labDate,
+      'file': await MultipartFile.fromFile(parameters.labFile!.path,),
+
+    }, */data: data,
+    
+    );
+    
     if (response.data['status'] == true) {
       debugPrint('store medical test  remote data ${response.data}');
       return GeneralModel.fromJson(response.data);
@@ -91,18 +107,24 @@ class MedicalTestsRemoteDataSource implements BaseMedicalTestsRemoteDataSource{
     }
   }
 
-  
   @override
   Future<GeneralModel> updateMedicalTest(
       MediaclTestParameters parameters) async {
+        FormData data = FormData.fromMap({
+      'lab_name': parameters.labName,
+      'type': parameters.type,
+      'date': parameters.labDate,
+   if  (parameters.labFile!=null ) "file":
+            await MultipartFile.fromFile(parameters.labFile!, ),
+    });
     final Response response = await dio!.post(
-        '${AppConstants.updateMedicalTrest}${parameters.id}',
-        queryParameters: {
+        '${AppConstants.updateMedicalTrest}${parameters.id}',data: data,
+       /*  queryParameters: {
           'lab_name': parameters.labName,
           'type': parameters.type,
           'date': parameters.labDate,
           'file': parameters.labFile,
-        });
+        } */);
     if (response.data['status'] == true) {
       debugPrint('store medical details  remote data ${response.data}');
       return GeneralModel.fromJson(response.data);
@@ -112,7 +134,4 @@ class MedicalTestsRemoteDataSource implements BaseMedicalTestsRemoteDataSource{
       );
     }
   }
-
-
- 
 }

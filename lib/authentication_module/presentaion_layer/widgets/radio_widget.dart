@@ -8,7 +8,7 @@ class RadioWidget extends StatelessWidget {
   final dynamic onChanged;
   final String text;
   final String value;
-  final String groupValue;
+  final String? groupValue;
   const RadioWidget({super.key,required this.text,required this.value,required this.onChanged,required this.groupValue,});
 
   @override
@@ -16,14 +16,14 @@ class RadioWidget extends StatelessWidget {
     return Row(
       children: [
         Radio(
-            activeColor: AppColors.darkColor,
+            activeColor: AppColors.appBarColor,
             value:value,
             groupValue: groupValue,
             onChanged: onChanged),
         CustomText(
           text: text,
-          size: 20.sp,
-          color: AppColors.textColor,
+          size: 14.sp,
+          color: AppColors.appBarColor,
           fontWeight: FontWeight.bold,
         ),
       ],

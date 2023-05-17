@@ -1,5 +1,4 @@
-import 'package:graduation_project/medication_reminder_module/domain_layer/entities/days.dart';
-import 'package:graduation_project/medication_reminder_module/domain_layer/entities/reminder.dart';
+import '../../domain_layer/entities/reminder.dart';
 
 class ReminderModel extends Reminder {
   const ReminderModel({
@@ -19,8 +18,24 @@ class ReminderModel extends Reminder {
       startDate: json['start_date'],
       endDate: json['end_date'],
       apponitment: json['appointment'],
-      times: List<Times>.from(json['times'].map((e)=>e)).toList(),
-      days:List<Days>.from(json['days'].map((e)=>e)).toList(),
+      times: List<Times>.from(json['times'].map((e) => TimesModel.fromJson(e)))
+          .toList(),
+      days: json['days'],
+    );
+  }
+}
+
+class TimesModel extends Times {
+  const TimesModel({
+    required super.id,
+    required super.time,
+    required super.month,
+  });
+  factory TimesModel.fromJson(Map<String, dynamic> json) {
+    return TimesModel(
+      id: json['id'],
+      time: json['time'],
+      month: json['month'],
     );
   }
 }

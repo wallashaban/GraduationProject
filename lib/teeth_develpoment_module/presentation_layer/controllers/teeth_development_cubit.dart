@@ -1,8 +1,6 @@
-
 import '../../../core/utils/exports.dart';
 import '../../data_layer/models/teeth_model.dart';
 import '../../domain_layer/entities/teeth.dart';
-
 
 part 'teeth_development_state.dart';
 
@@ -47,9 +45,20 @@ class TeethDevelopmentCubit extends Cubit<TeethDevelopmentState> {
   );
   ////////////////////
   List<String> teethList = [
-    'A','B','C','D','E',
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
   ];
   String? toothName;
+  int? toothId;
+  void getToothId(int toothId) {
+    this.toothId = toothId;
+    debugPrint('tooth id$toothId');
+    emit(TeethDone());
+  }
+
   void changeBloodTypeValue(String toothName) {
     this.toothName = toothName;
     emit(ChangeToothNameValueState());
@@ -64,6 +73,7 @@ class TeethDevelopmentCubit extends Cubit<TeethDevelopmentState> {
     result.fold(
       (l) {
         serverFailure = l;
+        debugPrint('teeth error $l');
         emit(
           StoreTeethErrorState(
             error: l.message.toString(),
@@ -73,6 +83,7 @@ class TeethDevelopmentCubit extends Cubit<TeethDevelopmentState> {
       (r) {
         teethDev = r;
         emit(StoreTeethSuccessState());
+        getAllteeth();
       },
     );
   }
@@ -158,6 +169,7 @@ class TeethDevelopmentCubit extends Cubit<TeethDevelopmentState> {
       (r) {
         teethDel = r;
         emit(DeleteTeethSuccessState());
+        getAllteeth();
       },
     );
   }

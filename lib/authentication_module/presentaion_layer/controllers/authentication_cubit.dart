@@ -1,6 +1,7 @@
+import 'package:graduation_project/core/caching_data/user_data_cach.dart';
 
-
-import 'package:graduation_project/core/utils/exports.dart';
+import '../../../core/utils/exports.dart';
+import 'package:hive_flutter/adapters.dart';
 
 part 'authentication_state.dart';
 
@@ -22,19 +23,22 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     this.checkCodeUseCase,
   ) : super(AuthenticationInitial());
 
-  Authentication user = const AuthenticationModel(
+  Authentication user =const  AuthenticationModel(
     id: 1,
     name: 'name',
     email: 'email',
     gender: 'gender',
     birthDate: 'birthDate',
     accessToken: 'accessToken',
+    isReminderVaccine: 0
+  
   );
   Failure serverFailure = const ServerFailure(
     message: 'message',
   );
-
-  String gender = AppStrings.male;
+  var open = Hive.openBox('userData');
+  var userData = Hive.box('userData');
+  String? gender;
   chooseGender(String gender) {
     this.gender = gender;
     emit(GenderState());
@@ -62,9 +66,25 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
           ),
         );
       },
-      (r) {
+      (r) async {
         user = r;
+        //hive.put('userData', r);
+        CashHelper.saveData(
+          key: 'token',
+          value: r.accessToken,
+        );
         emit(RegisterUserSuccessState());
+        userData.put(
+            'user',
+            UserDataCach(
+              id: r.id,
+              name: r.name,
+              email: r.email,
+              accessToken: r.accessToken!,
+              birthDate: r.birthDate,
+              gender: r.gender,
+              photo: null, //todo refactor the photo
+            ));
         emit(AuthDone());
       },
     );
@@ -85,10 +105,26 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         );
         // await Future.delayed(Duration(seconds: 2)).then((value) =>         emit(AuthDone()));
       },
-      (r) {
+      (r) async {
         user = r;
+
+        CashHelper.saveData(
+          key: 'token',
+          value: r.accessToken,
+        );
         debugPrint('token func ${r.accessToken}');
         emit(LoginUserSuccessState());
+        userData.put(
+            'user',
+            UserDataCach(
+              id: r.id,
+              name: r.name,
+              email: r.email,
+              accessToken: r.accessToken!,
+              birthDate: r.birthDate,
+              gender: r.gender,
+              photo: null, //todo refactor the photo
+            ));
       },
     );
   }

@@ -1,4 +1,4 @@
-import 'package:graduation_project/core/utils/exports.dart';
+import '../../../core/utils/exports.dart';
 
 class Days extends Equatable {
  final int id;
