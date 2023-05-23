@@ -10,7 +10,6 @@ class MedicalDetailsModel extends MedicalDetails {
     required super.genticDisease,
     required super.chronicDisease,
     required super.isMedicine,
-    required super.medicineFile,
   });
 
   factory MedicalDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -23,7 +22,6 @@ class MedicalDetailsModel extends MedicalDetails {
       genticDisease: json['genetic_disease'],
       chronicDisease: json['chronic_disease'],
       isMedicine: json['Is_medicine'],
-      medicineFile: json['medicine_file'],
     );
   }
 }

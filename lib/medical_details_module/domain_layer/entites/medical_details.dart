@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:graduation_project/core/utils/exports.dart';
 
 class MedicalDetails extends Equatable {
@@ -8,8 +10,7 @@ class MedicalDetails extends Equatable {
  final String? skinDisease;
  final String? genticDisease;
  final String? chronicDisease;
- final bool? isMedicine;
- final String? medicineFile;
+ final String? isMedicine;
  const MedicalDetails({
     required this.id,
     required this.userId,
@@ -19,7 +20,6 @@ class MedicalDetails extends Equatable {
     required this.genticDisease,
     required this.chronicDisease,
     required this.isMedicine,
-    required this.medicineFile,
   });
   
   @override
@@ -28,7 +28,6 @@ class MedicalDetails extends Equatable {
     userId,
     allergy,
     isMedicine,
-    medicineFile,
     skinDisease,
     genticDisease,
     chronicDisease,

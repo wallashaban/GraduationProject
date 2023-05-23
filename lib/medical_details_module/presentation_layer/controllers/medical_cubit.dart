@@ -184,6 +184,7 @@ class MedicalCubit extends Cubit<MedicalState> {
       (r) {
         medicalDetails = r;
         emit(StoreMedicalDetailsSuccessState());
+         var medical = Hive.box('userDataCach').get('medicalDetails');
         Hive.box('userDataCach').put(
             'medicalDetails',
             MedicalDetailsCach(
@@ -194,8 +195,8 @@ class MedicalCubit extends Cubit<MedicalState> {
               genticDisease: r.genticDisease,
               skinDisease: r.skinDisease,
               chronicDisease: r.chronicDisease,
-              isMedicine: r.isMedicine,
-              medicineFile: r.medicineFile,
+              isMedicine: isMedicine??medical.isMedicine,
+              medicineFile: r.isMedicine,
               isGenticDisease: r.genticDisease == null ? false : true,
             ));
         CashHelper.saveData(
@@ -225,6 +226,7 @@ class MedicalCubit extends Cubit<MedicalState> {
         medicalDetailsUpdate = r;
         debugPrint('cubit ${r}');
         emit(UpdateMedicalDetailsSuccessState());
+       var medical = Hive.box('userDataCach').get('medicalDetails');
         Hive.box('userDataCach').put(
             'medicalDetails',
             MedicalDetailsCach(
@@ -235,8 +237,8 @@ class MedicalCubit extends Cubit<MedicalState> {
               genticDisease: r.genticDisease,
               skinDisease: r.skinDisease,
               chronicDisease: r.chronicDisease,
-              isMedicine: r.isMedicine,
-              medicineFile: r.medicineFile,
+              isMedicine: isMedicine??medical.isMedicine,
+              medicineFile: r.isMedicine,
               isGenticDisease: r.genticDisease == null ? false : true,
             ));
       },
