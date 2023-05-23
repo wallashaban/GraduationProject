@@ -36,6 +36,8 @@ class AppRoutes {
                                 static const String reportScreen = '/report';
                                 static const String uploadPhotoOfDiseaseScreen = '/uploadPhoto';
                                 static const String previousDiseasesScreen = '/previousdiseases';
+                                static const String growthScreen = '/growth';
+                                static const String growthHistoryScreen = '/growthHistory';
 
 
 

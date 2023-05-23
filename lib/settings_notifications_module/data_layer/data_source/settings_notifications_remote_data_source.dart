@@ -36,6 +36,8 @@ class SettingsNotificationsRemoteDataSource implements BaseSettingsNotifications
       'password confirmation': parameters.passwordConfirm,
       'gender': parameters.gender,
       'birth_date': parameters.birthDate,
+      'photo':parameters.photo==null?null:   await MultipartFile.fromFile(parameters.photo!, ),
+      'phone_number':parameters.phone,
     });
     final Response response =
         await dio!.post(AppConstants.updateProfile,

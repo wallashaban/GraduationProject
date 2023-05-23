@@ -9,6 +9,8 @@ class AuthenticationModel extends Authentication {
      super.birthDate,
     required super.accessToken,
     required super.isReminderVaccine,
+    super.photo,
+    super.phone,
   });
 
   factory AuthenticationModel.fromJson(Map<String, dynamic> json) {
@@ -19,7 +21,9 @@ class AuthenticationModel extends Authentication {
       gender: json['data']['user']['gender'],
       birthDate: json['data']['user']['birth_date'],
       accessToken: json['data']['access_token'],
-      isReminderVaccine: json['data']['is_reminder_vaccine']
+      isReminderVaccine: json['data']['is_reminder_vaccine'],
+      photo:json['data']['user']['photo'],
+      phone: json['data']['user']['phone_number'],
     );
   }
 }

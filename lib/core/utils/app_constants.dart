@@ -1,6 +1,8 @@
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/medication_reminder_module/presentation_layer/controllers/medication_reminder_cubit.dart';
 
+import '../../prescription_module/presentation_layer/controllers/prescription_cubit.dart';
+
 class AppConstants {
   static const String baseUrl = 'https://baby-health-care.sonicar.tech/api/';
   static const String aiBaseUrl = 'https://testgp-production-df5f.up.railway.app/';
@@ -17,6 +19,8 @@ class AppConstants {
   static const String updatePassword = 'auth/password/reset';
   //medical details
   static const String storeMedicalDetails = 'store-medical-details';
+    static const String updateMedicalDetails = 'medicalDetails';
+
   static const String getAllAllergy = 'all-allergies';
   static const String skinDiseases = 'skin-diseases';
   static const String chronicDiseases = 'chronic-diseases';
@@ -69,19 +73,22 @@ class AppConstants {
   static const String storeAiDisease = 'store-disease';
   static const String deleteAiDisease = 'delete-disease/';
 
-  //
+  // development flow
 
   static const String getAllTips = 'tips-of-user';
   static const String questionsOfTips = 'get-questions-of-tip/';
   static const String subjectsWithQuestions = 'get-questions';
   static const String createTips = 'create-tips';
   static const String updateTips = 'update-tips';
-
+//reports
   static const String latestDevelopment = 'development-follow-info';
   static const String vaccinationReport = 'vaccine-report';
   static const String latestTeeth = 'teeth-report';
   static const String diseaseReport = 'disease-report';
   static const String medicalInfo = 'medical-info';
+  // growth
+  static const String calculateGrowth = 'calc-growth';
+  static const String getAllGrowth = 'growth';
 
   static DropdownMenuItem buildMenuItem(String item) => DropdownMenuItem(
       value: item,

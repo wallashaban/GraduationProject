@@ -9,6 +9,8 @@ class UserUpdateModel extends Authentication {
     super.birthDate,
     required super.isReminderVaccine,
     super.accessToken,
+    super.photo,
+    super.phone,
   });
 
   factory UserUpdateModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +20,8 @@ class UserUpdateModel extends Authentication {
         email: json['data']['email'],
         gender: json['data']['gender'],
         birthDate: json['data']['birth_date'],
-        isReminderVaccine: json['data']['is_reminder_vaccine']);
+        isReminderVaccine: json['data']['is_reminder_vaccine'],
+        photo: json['data']['photo'],
+        phone: json['data']['phone_number']);
   }
 }

@@ -7,8 +7,8 @@ class SettingsWidget extends StatelessWidget {
   IconData icon;
   String text;
   bool isAccount;
-  bool isLogOut ;
-  bool isAddress ;
+  bool isLogOut;
+  bool isAddress;
   /*  required Widget */ String widget;
   String? gender;
   String? image;
@@ -16,20 +16,22 @@ class SettingsWidget extends StatelessWidget {
     Key? key,
     required this.icon,
     required this.text,
-     this.isAccount=false,
-     this.isLogOut=false,
-     this.isAddress=false,
-    /* required */ this.widget ='',//todo remove this default value
+    this.isAccount = false,
+    this.isLogOut = false,
+    this.isAddress = false,
+    /* required */ this.widget = '', //todo remove this default value
     this.gender,
     this.image,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  InkWell(
+    return InkWell(
       onTap: (() {
         isLogOut
-            ? BlocProvider.of<SettingsNotificationsCubit>(context).logOutUser().then((value) {
+            ? BlocProvider.of<SettingsNotificationsCubit>(context)
+                .logOutUser()
+                .then((value) {
                 CashHelper.deleteData(key: 'token');
                 AppConstants.navigateReplacement(
                   context: context,
@@ -53,11 +55,21 @@ class SettingsWidget extends StatelessWidget {
                           25,
                         ),
                       ),
-                      child: SvgPicture.asset(
-                        image!,
-                        height: 100,
-                        width: 100,
-                      ))
+                      child: image!.contains('.svg')
+                          ? SvgPicture.asset(
+                              image!,
+                              height: 100.h,
+                              width: 100.w,
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Image.network(
+                                image!,
+                                height: 100.h,
+                                width: 100.w,
+                                fit: BoxFit.cover,
+                              ),
+                            ))
                   : Icon(
                       icon,
                       color: AppColors.white,
@@ -99,6 +111,5 @@ class SettingsWidget extends StatelessWidget {
         ),
       ),
     );
-
   }
 }

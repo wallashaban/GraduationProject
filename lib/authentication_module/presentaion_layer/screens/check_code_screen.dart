@@ -28,7 +28,7 @@ class CheckCodeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                      child:  CustomText(
+                      child: CustomText(
                     text: AppStrings.resetPasswordTitle,
                     size: 20.sp,
                   )),
@@ -37,9 +37,9 @@ class CheckCodeScreen extends StatelessWidget {
                   ),
                   CustomText(
                     text: AppStrings.verification,
-                   // color: AppColors.darkColor,
+                    // color: AppColors.darkColor,
                     size: 18.sp,
-                   // fontWeight: FontWeight.normal,
+                    // fontWeight: FontWeight.normal,
                   ),
                   CustomText(
                     text: AppStrings.verficationTitle,
@@ -92,7 +92,8 @@ class CheckCodeScreen extends StatelessWidget {
                           if (state is ForgetPasswordSuccessState) {
                             AppConstants.showSnackbar(
                                 context: context,
-                                content: 'برجاء فحص البريد الالكترونى الخاص بك');
+                                content:
+                                    'برجاء فحص البريد الالكترونى الخاص بك');
                           }
                         },
                         child: CustomTextButton(
@@ -113,8 +114,8 @@ class CheckCodeScreen extends StatelessWidget {
                     height: 30.h,
                   ),
                   Center(
-                      child:
-                          BlocConsumer<AuthenticationCubit, AuthenticationState>(
+                      child: BlocConsumer<AuthenticationCubit,
+                          AuthenticationState>(
                     listener: (context, state) {
                       if (state is CheckCodeLoadingState) {
                         isLoading = true;
@@ -135,6 +136,11 @@ class CheckCodeScreen extends StatelessWidget {
                     },
                     builder: (context, state) {
                       var cubit = BlocProvider.of<AuthenticationCubit>(context);
+                      if (state is CheckCodeLoadingState) {
+                        return CustomButton(
+                          isLoading: true,
+                        );
+                      }
                       return CustomButton(
                         text: AppStrings.verificationCode,
                         onPressed: () {
@@ -143,7 +149,6 @@ class CheckCodeScreen extends StatelessWidget {
                           debugPrint('code $code');
                           cubit.checkCode(code);
                         },
-                        isLoading: isLoading,
                         color: AppColors.textColor,
                         size: 18.sp,
                         fontWeight: FontWeight.bold,

@@ -1,13 +1,13 @@
 
 import 'package:dartz/dartz.dart';
 import '../../../core/utils/exports.dart';
+import '../entites/medical_details.dart';
 
 abstract class BaseMedicalDetailsRepository {
   //medical details
-  Future<Either<Failure, General>> storeMedicalDetails(
+  Future<Either<Failure, MedicalDetails>> storeMedicalDetails(
       StoreMedicalDetailsParameters parameters);
-  Future<Either<Failure, List<Allergy>>> getAllAllergies();
-  Future<Either<Failure, List<Disease>>> getAllSkinDieases();
-  Future<Either<Failure, List<Disease>>> getAllChronicDieases();
-  Future<Either<Failure, List<Disease>>> getAllGenticDiease(); 
+  Future<Either<Failure, MedicalDetails>> updateMedicalDetails(
+      StoreMedicalDetailsParameters parameters);    
+  
     }

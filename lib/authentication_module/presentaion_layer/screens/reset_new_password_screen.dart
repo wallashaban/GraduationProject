@@ -6,7 +6,6 @@ class ResetNewPasswordScreen extends StatelessWidget {
   ResetNewPasswordScreen({super.key, required this.code});
   var passwordController = TextEditingController();
   var confirmPasswordController = TextEditingController();
-  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -98,11 +97,7 @@ class ResetNewPasswordScreen extends StatelessWidget {
                 Center(
                   child: BlocConsumer<AuthenticationCubit, AuthenticationState>(
                     listener: (context, state) {
-                      if (state is UpdatePasswordLoadingState) {
-                        isLoading = true;
-                      } else {
-                        isLoading = false;
-                      }
+                     
                       if (state is UpdatePasswordErrorState) {
                         AppConstants.showSnackbar(
                             context: context, content: state.error);
@@ -113,8 +108,12 @@ class ResetNewPasswordScreen extends StatelessWidget {
                       }
                     },
                     builder: (context, state) {
+                        if (state is UpdatePasswordLoadingState) {
+                        return CustomButton(
+                          isLoading: true,
+                        );
+                      }
                       return CustomButton(
-                        isLoading: isLoading,
                         text: AppStrings.confirm,
                         onPressed: () {
                           debugPrint('code $code');

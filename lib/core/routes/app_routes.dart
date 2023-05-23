@@ -6,6 +6,8 @@ import '../../ai_diseases_module/presentation_layer/screens/advices_page_view.da
 import '../../ai_diseases_module/presentation_layer/screens/all_diseases_screen.dart';
 import '../../ai_diseases_module/presentation_layer/screens/home_ai_disease_screen.dart';
 import '../../ai_diseases_module/presentation_layer/screens/uplaod_photo_disease_screen.dart';
+import '../../growth_module/presentation_layer/screens/growth_history_screen.dart';
+import '../../growth_module/presentation_layer/screens/growth_screen.dart';
 import '../../medical_tests_module/presentation_layer/screens/new_test_screen.dart';
 import '../../medical_tests_module/presentation_layer/screens/previous_tests_screen.dart';
 import '../../medication_reminder_module/presentation_layer/Screens/add_reminder_screen.dart';
@@ -108,6 +110,13 @@ Route<dynamic> onGenerate(RouteSettings settings) {
           builder: (_) => const UploadPhotoOfDiseaseScreen());
     case AppRoutes.previousDiseasesScreen:
       return MaterialPageRoute(builder: (_) => const PreviousDiseasesScreen());
+    case AppRoutes.growthScreen:
+      return MaterialPageRoute(
+          builder: (_) => GrowthScreen(
+                growParameters: settings.arguments as GrowParameters,
+              ));
+    case AppRoutes.growthHistoryScreen:
+      return MaterialPageRoute(builder: (_) => const GrowthHistoryScreen());
     default:
       return MaterialPageRoute(builder: (_) => const SplashScreen());
   }

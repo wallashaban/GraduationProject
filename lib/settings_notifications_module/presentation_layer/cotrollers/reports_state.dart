@@ -8,6 +8,11 @@ abstract class SettingsNotificationsState extends Equatable {
   List<Object> get props => [];
 }
 
+
+class PickImageSettingstate extends SettingsNotificationsState{}
+class DeleteImageSettingsState extends SettingsNotificationsState{}
+class SettingsDone extends SettingsNotificationsState{}
+
 class SettingsNotificationsInitial extends SettingsNotificationsState {}
 
 class UpdateUserInfoLoadingState extends SettingsNotificationsState {}

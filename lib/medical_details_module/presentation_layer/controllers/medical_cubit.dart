@@ -3,28 +3,25 @@
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/settings_notifications_module/presentation_layer/screens/notifications_screen.dart';
 
+import '../../../core/caching_data/medical_details_cach.dart';
 import '../../../report_module/presentation_layer/screens/reports_screen.dart';
 import '../../../settings_notifications_module/presentation_layer/screens/settings_screen.dart';
+import '../../domain_layer/entites/medical_details.dart';
+import '../../domain_layer/use_cases/update_details_use_case.dart';
 
 part 'medical_state.dart';
 
 class MedicalCubit extends Cubit<MedicalState> {
   //medical details
   final StoreMedicalDetailsUseCase storeMedicalDetailsUseCase;
-  final GetAllAllergiesUseCase getAllAllergiesUseCase;
-  final GetAllGeneticUseCase getAllGeneticUseCase;
-  final GetAllChronicDiseasesUseCase getAllChronicDiseasesUseCase;
-  final GetAllSkinDiseasesUseCase getAllSkinDiseasesUseCase;
+  final UpdateMedicalDetailsUseCase updateMedicalDetailsUseCase;
   /////////////////////////////////
 
   ///////////////////////////
 
   MedicalCubit(
     this.storeMedicalDetailsUseCase,
-    this.getAllAllergiesUseCase,
-    this.getAllGeneticUseCase,
-    this.getAllChronicDiseasesUseCase,
-    this.getAllSkinDiseasesUseCase,
+    this.updateMedicalDetailsUseCase,
   ) : super(MedicalInitial());
   // mediical details
 
@@ -51,10 +48,69 @@ class MedicalCubit extends Cubit<MedicalState> {
   ];
   List<String> chronicDiseaes = [
     ' ',
+    'لتهاب الجلد التأتبي (الإكزيما)',
+    'الوحمات، الأورام الوعائية',
+    'سرطانات الجلد',
+    'الورم الميلانيني',
+    'أمراض النسيج الضام للجلد',
+    'التهاب الجلد التماسي',
+    'جُلادات الحمل',
+    'احمرار الأطراف',
+    'تساقط الشعر',
+    'التهابات في الجلد',
+    'الاضطرابات الوراثية',
+    'الشامات',
+    'الصدفية',
+    'التشوهات الوعائية',
+    'الثآليل',
+    'الحمامى السميه',
+    'الإكزيما',
+    'الحصف',
+    'الجدري',
+    'الحمى القرمزية',
+    'القوباء الحلقية',
+    'الشرى (الأرتكاريا)',
+    'التهاب السحايا'
   ];
-  List<String> geneticDiseaes = [' '];
+  List<String> geneticDiseaes = [
+    ' ',
+    'متلازمة داون',
+    'تأخر التطور والنمو الذهني',
+    'التوحد',
+    'خلل في التنسج الهيكلي وفشل النمو',
+    'الاضطرابات الاستقلابية',
+    'اضطرابات الميتوكوندريا',
+    'السرطانات الوراثية العائلية',
+    'ضعف السمع الوراثي ',
+    'التليف الكيسي',
+    'أمراض العيون',
+    'مرض هنتنجتون',
+    'الثلاسيميا',
+    'مرض تاي ساكس',
+    'متلازمة نونان',
+    'الخصية المعلقة'
+  ];
   List<String> allergies = [
     ' ',
+    'حساسية البيض',
+    'حساسية الحليب',
+    'حساسية الفول السوداني',
+    'القمح',
+    'الأسماك',
+    'المحار',
+    'الجوز',
+    'الصويا',
+    'حساسية الغبار',
+    'حساسية  حشرية',
+    'الربو الحساسي',
+    'التهاب الأنف الحساسي (حمى القش)',
+    'التهاب الملتحمة الحساسي (حالات حساسية العين)',
+    'حالات حساسية الطعام',
+    'لأرتيكاريا الحادة والمزمنة',
+    'التهاب الجلد التأتبي والتماسي (الإكزيمة)',
+    'الوذمة الوعائية الوراثية (التورم تحت الجلد)',
+    'ضطرابات الخلايا اليوزينية',
+    'التهاب الأمعاء والقولون الناجم عن بروتين الطعام (EPIES)'
   ];
 
   String? bloodType;
@@ -85,15 +141,9 @@ class MedicalCubit extends Cubit<MedicalState> {
     emit(Done());
   }
 
-  General medicalDetails = const GeneralModel(
-    data: '',
-    message: '',
-    status: false,
-  );
-  List<Allergy> allergy = [];
-  List<Disease> chronicDisease = [];
-  List<Disease> geneticDisease = [];
-  List<Disease> skinDisease = [];
+  MedicalDetails? medicalDetails;
+  MedicalDetails? medicalDetailsUpdate;
+
   //////////////////////////
 
 /////////////////////
@@ -102,15 +152,15 @@ class MedicalCubit extends Cubit<MedicalState> {
   );
   ////////////////////
   ///
-  String isMedicine = AppStrings.no;
-  existMedicineOrNot(String isMedicine) {
+  bool? isMedicine;
+  existMedicineOrNot(bool isMedicine) {
     this.isMedicine = isMedicine;
     emit(IsMedicineState());
     emit(Done());
   }
 
-  String isGeneticDisease = AppStrings.no;
-  existGeneticDiseaseOrNot(String isGeneticDisease) {
+  bool? isGeneticDisease;
+  existGeneticDiseaseOrNot(bool isGeneticDisease) {
     this.isGeneticDisease = isGeneticDisease;
     emit(IsGeneticDiseaseState());
     emit(Done());
@@ -134,110 +184,61 @@ class MedicalCubit extends Cubit<MedicalState> {
       (r) {
         medicalDetails = r;
         emit(StoreMedicalDetailsSuccessState());
+        Hive.box('userDataCach').put(
+            'medicalDetails',
+            MedicalDetailsCach(
+              id: r.id,
+              userId: r.userId,
+              bloodType: r.bloodType,
+              allergy: r.allergy,
+              genticDisease: r.genticDisease,
+              skinDisease: r.skinDisease,
+              chronicDisease: r.chronicDisease,
+              isMedicine: r.isMedicine,
+              medicineFile: r.medicineFile,
+              isGenticDisease: r.genticDisease == null ? false : true,
+            ));
+        CashHelper.saveData(
+          key: 'medicalDetailsRecorded',
+          value: true,
+        );
       },
     );
   }
   ////////////////////////////////////////
 
-  Future getAllAllergy() async {
-    emit(GellAllAllergiesLoadingState());
-    /* MedicalRemoteDataSource().logOut();
-    CashHelper.deleteData(key: 'token'); */
-    final result = await getAllAllergiesUseCase(const NoParameters());
+  Future updateMedicalDetails(StoreMedicalDetailsParameters parameters) async {
+    emit(UpdateMedicalDetailsLoadingState());
+    final result = await updateMedicalDetailsUseCase(parameters);
 
     result.fold(
       (l) {
         serverFailure = l;
-        debugPrint('error allergy ${l.message.toString()}');
+        debugPrint('error update medical test $l');
         emit(
-          GellAllAllergiesErrorState(
+          UpdateMedicalDetailsErrorState(
             error: l.message.toString(),
           ),
         );
       },
       (r) {
-        allergy = r;
-        allergies.remove(allergies[0]);
-        allergy.forEach((element) {
-          allergies.add(element.allergy);
-        });
-        debugPrint('allergy $allergies');
-
-        emit(GellAllAllergiesSuccessState());
-      },
-    );
-  }
-
-  ////////////////////////////
-  Future getChronicDiseases() async {
-    emit(GetAllChronicLoadingState());
-    final result = await getAllChronicDiseasesUseCase(const NoParameters());
-
-    result.fold(
-      (l) {
-        serverFailure = l;
-        emit(
-          GetAllChronicErrorState(
-            error: l.message.toString(),
-          ),
-        );
-      },
-      (r) {
-        chronicDisease = r;
-        chronicDiseaes.remove(chronicDiseaes[0]);
-        chronicDisease.forEach((element) {
-          chronicDiseaes.add(element.disease);
-        });
-        debugPrint('chronic $chronicDiseaes');
-
-        emit(GetAllChronicSuccessState());
-      },
-    );
-  }
-
-  ///////////////////////////////////////
-  Future getSkinDiseases() async {
-    emit(GetAllSkinDiseasesLoadingState());
-    final result = await getAllSkinDiseasesUseCase(const NoParameters());
-
-    result.fold(
-      (l) {
-        serverFailure = l;
-        emit(
-          GetAllSkinDiseasesErrorState(
-            error: l.message.toString(),
-          ),
-        );
-      },
-      (r) {
-        skinDisease = r;
-        emit(GetAllSkinDiseasesSuccessState());
-      },
-    );
-  }
-
-  Future getGeneticDiseases() async {
-    emit(GetAllGeneticDiseasesLoadingState());
-    final result = await getAllGeneticUseCase(const NoParameters());
-
-    result.fold(
-      (l) {
-        serverFailure = l;
-        emit(
-          GetAllGeneticDiseasesErrorState(
-            error: l.message.toString(),
-          ),
-        );
-      },
-      (r) async {
-        geneticDisease = r;
-        geneticDiseaes.remove(geneticDiseaes[0]);
-        geneticDisease.forEach((element) {
-          geneticDiseaes.add(element.disease);
-        });
-
-        debugPrint('gentic $geneticDiseaes');
-        emit(GetAllGeneticDiseasesSuccessState());
+        medicalDetailsUpdate = r;
+        debugPrint('cubit ${r}');
+        emit(UpdateMedicalDetailsSuccessState());
+        Hive.box('userDataCach').put(
+            'medicalDetails',
+            MedicalDetailsCach(
+              id: r.id,
+              userId: r.userId,
+              bloodType: r.bloodType,
+              allergy: r.allergy,
+              genticDisease: r.genticDisease,
+              skinDisease: r.skinDisease,
+              chronicDisease: r.chronicDisease,
+              isMedicine: r.isMedicine,
+              medicineFile: r.medicineFile,
+              isGenticDisease: r.genticDisease == null ? false : true,
+            ));
       },
     );
   }

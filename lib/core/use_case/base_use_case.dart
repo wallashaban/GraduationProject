@@ -36,6 +36,8 @@ class RegisterUserParameters {
   String? gender;
   String birthDate;
   String? fcmToken;
+  String? phone;
+  String? photo;
   RegisterUserParameters({
     required this.name,
     required this.email,
@@ -44,6 +46,8 @@ class RegisterUserParameters {
     required this.gender,
     required this.birthDate,
     this.fcmToken,
+    this.phone,
+    this.photo,
   });
 }
 
@@ -87,8 +91,8 @@ class StoreMedicalDetailsParameters {
   String? chronicDisease;
   String? genticDisease;
   String? skinDisease;
-  bool isMedicine;
-  var medicineName;
+  bool? isMedicine;
+  String? medicineName;
   StoreMedicalDetailsParameters({
     this.id,
     required this.bloodType,
@@ -181,5 +185,16 @@ class TipsParameters {
   TipsParameters({
     required this.questionId,
     required this.status,
+  });
+}
+
+class GrowthParameters {
+  double height;
+  double weight;
+  String measureDate;
+  GrowthParameters({
+    required this.height,
+    required this.weight,
+    required this.measureDate,
   });
 }

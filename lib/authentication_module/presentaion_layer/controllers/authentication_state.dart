@@ -7,6 +7,8 @@ abstract class AuthenticationState extends Equatable {
   List<Object> get props => [];
 }
 
+class PickImageAuthState extends AuthenticationState{}
+class DeleteImageState extends AuthenticationState{}
 class GenderState extends AuthenticationState{}
 class AuthDone extends AuthenticationState{}
 

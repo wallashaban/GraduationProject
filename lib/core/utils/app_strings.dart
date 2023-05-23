@@ -8,7 +8,7 @@ class AppStrings {
   static const String no = 'لا';
 
   static const String loginText = 'تسجيل الدخول';
-  static const String emilTextForm = 'برجاء ادخال البريد الالكترونى الخاص بك';
+  static const String emilTextForm = ' البريد الالكترونى  او رقم الهاتف';
   static const String passwordTextForm = 'برجاء ادخال كلمه المرور الخاصه بك';
   static const String remeberMe = 'تذكرنى';
   static const String forgetPassword = 'نسيت كلمه المرور؟';
@@ -19,14 +19,18 @@ class AppStrings {
   static const String notHaveAccount = 'ليس لديك حساب؟';
   static const String welcomeText1 = 'مرحبا,لنقم بانشاء حساب طفلك';
   static const String welcomeText2 = 'اكتب معلومات طفلك من فضلك';
-  static const String fullName = 'الاسم الكامل';
-  static const String email = 'البريد الالكترونى';
-  static const String birthdate = 'تاريخ الميلاد';
-  static const String password = 'كلمه المرور';
+  static const String fullName = 'الرجاء إدخال إسم طفلك';
+  static const String email = 'الرجاء إدخال البريدالإلكترونى';
+  static const String birthdate = 'الرجاء إدخال تاريخ ميلاد طفلك';
+  static const String password = 'الرجاء إدخال كلمة مرور مناسبة لك';
   static const String male = 'ذكر';
+    static const String phone = 'رقم الهاتف';
+    static const String emailSettings = 'البريد الالكترونى';
+    static const String  birth= 'تاريخ مبلاد طفلك';
+    static const String nameSettings = 'اسم طفلك';
   static const String female = 'انثى';
   static const String haveAccount = 'هل لديك حساب بالفعل؟';
-  static const String resetPasswordTitle = 'اعاده تعيين كلمه السر';
+  static const String resetPasswordTitle = 'اعاده تعيين كلمه المرور';
   static const String verification = 'التحقق المطلوب';
   static const String verificationCode = 'التحقق من الكود';
   static const String resend = 'اعاده الارسال';
@@ -39,7 +43,7 @@ class AppStrings {
 
   static const String confirm = 'تأكيد';
   static const String resetpassword = 'إعاده تعيين كلمه المرور';
-  static const String forgetpassword = 'هل نسيت كلمه السر؟';
+  static const String forgetpassword = 'هل نسيت كلمه المرور';
   static const String dontworry = 'لا تقلق نحن نهتم بهذا';
   static const String sendcode = 'ارسل الكود';
   static const String createnewpassword = 'انشاء كلمه مرور جديده خاصه بك';
@@ -49,11 +53,11 @@ class AppStrings {
   static const String startnew = 'ابدأ من جديد';
   static const String congratulation = 'تهاني لك';
   static const String assetName = 'assets/images/Group 1066.svg';
-  static const String enteremail = 'أدخل البريد الالكتروني';
+  static const String enteremail = 'البريد الالكتروني او رقم الهاتف';
   static const String enternewpassword = 'كلمه المرور الجديده';
   static const String enternewpasswordconfirmation =
       'تأكيد كلمه المرور الجديده';
-  static String token = CashHelper.getData(key: 'token');
+  static String? token ;
   static String nameText = 'برجاء ادخال الاسم';
   static String birthdateText = 'برجاء ادخال تاريخ الميلاد';
   static String confirmText = 'برجاء تاكيد كلمه المرور';
@@ -147,7 +151,7 @@ class AppStrings {
   static const String diagnoseDisease = 'تشخيص الامراض';
   static const String next = 'التالى';
   static const String pressHere = 'اضغط هنا لالتقاط';
-    static const String takePhoto = 'صوره المرض';
+  static const String takePhoto = 'صوره المرض';
 
   static const String oldResults = 'نتائج سابقه';
   static const String upload = 'تحميل صوره';
@@ -205,6 +209,26 @@ class AppStrings {
   static const String advice4 = 'يرجى إلتقاط الصور في مكان مشرق أثناء النهار';
   static const String advice5 =
       'إذا كانت الصورة الملتقطة غير واضحة أعد إلتقاطها مرة أخرى';
+  static const String growthRecord = 'تسجيل النمو';
+  static const String video = 'فيديو لشرح طريقه القياس';
+  static const String measureDate = 'تاريخ القياس';
+  static const String weightKg = 'ادخل وزن الطفل بالكيلوجرام';
+  static const String heghtCm = 'ادخل طول الطفل بالسم';
+  static const String growthNote1 =
+      'البيانات التي قمت بإدخالها ليست ضمن المعدل الطبيعي';
+  static const String growthNote2 = 'الطبيعي ,هل تريد المواصلة؟';
+  static const String alarm = 'تذكير';
+  static const String check = 'إفحص مرة أخري';
+  static const String compare = 'قارني مع طفلك';
+  static const String average = 'متوسط طول الطفل و وزنه اليوم';
+  static const String weight = 'الوزن';
+  static const String height = 'الطول';
+  static const String cm = 'سم';
+  static const String kg = 'كجم';
+  static const String saveSuccess = 'تم حفظ البيانات بنجاح';
+  static const String growthHistory = 'تاريخ التسجيل';
+  // static const String no = 'لا';
+  //static const String no = 'لا';
 
   static double width = 163.w;
   static var userData;

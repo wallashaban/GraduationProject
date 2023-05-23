@@ -33,14 +33,18 @@ export 'package:graduation_project/prescription_module/data_layer/repository/pre
 export 'package:graduation_project/prescription_module/domain_layer/repository/base_prescription_repository.dart';
 export 'package:graduation_project/prescription_module/presentation_layer/controllers/prescription_cubit.dart';
 export 'package:graduation_project/teeth_develpoment_module/domain_layer/repository/base_teeth_repository.dart';
+export 'package:graduation_project/ai_diseases_module/presentation_layer/cubit/disease_cubit.dart';
+export 'package:graduation_project/core/caching_data/user_data_cach.dart';
+export 'package:graduation_project/growth_module/presentation_layer/controllers/growth_cubit.dart';
+export 'package:graduation_project/report_module/presentation_layer/controllers/report_cubit.dart';
+export 'package:graduation_project/settings_notifications_module/presentation_layer/cotrollers/settings_notifications_cubit.dart';
+export 'package:graduation_project/vaccinations_module/presentaion_layer/controllers/vaccinations_cubit.dart';
+export 'package:hive_flutter/adapters.dart';
+export 'package:path_provider/path_provider.dart';
 
 export '../../medical_details_module/data_layer/data_source/medical_remote_data_source.dart';
 export '../../medical_details_module/data_layer/repository/medical_repo.dart';
 export '../../medical_details_module/domain_layer/repository/base_medical_repo.dart';
-export '../../medical_details_module/domain_layer/use_cases/get_all_allergies_use_case.dart';
-export '../../medical_details_module/domain_layer/use_cases/get_all_chronic_diseases_use_case.dart';
-export '../../medical_details_module/domain_layer/use_cases/get_all_gentic_diseases_use_case.dart';
-export '../../medical_details_module/domain_layer/use_cases/get_all_skin_diseases_use_case.dart';
 export '../../medical_details_module/domain_layer/use_cases/store_medival_details_use_case.dart';
 export '../../medical_tests_module/domain_layer/use_cases/delete_medical_test_use_case.dart';
 export '../../medical_tests_module/domain_layer/use_cases/get_all_medical_tests_use_case.dart';

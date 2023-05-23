@@ -6,24 +6,24 @@ import '../../../core/utils/app_colors.dart';
 import 'custom_text.dart';
 
 class CustomButton extends StatelessWidget {
-  final String text;
+  final String? text;
   final int maxLines;
   final TextAlign textAlign;
   final Color? color;
   final double? size;
   final FontWeight? fontWeight;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool isLoading;
   double width;
   CustomButton(
       {Key? key,
-      required this.text,
+       this.text,
       this.maxLines = 1,
       this.textAlign = TextAlign.start,
        this.color ,
        this.size,
        this.fontWeight,
-      required this.onPressed,
+       this.onPressed,
       this.isLoading = false,
       this.width = 220,// todo fixed width XX
       })
@@ -40,7 +40,7 @@ class CustomButton extends StatelessWidget {
         child: isLoading
             ? CircularProgressIndicator(color: AppColors.white,)
             : CustomText(
-                text: text,
+                text: text!,
               ),
       ),
     );

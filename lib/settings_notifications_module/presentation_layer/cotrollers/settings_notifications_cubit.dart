@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/settings_notifications_module/data_layer/models/user_update_model.dart';
@@ -7,6 +8,7 @@ import 'package:graduation_project/settings_notifications_module/domain_layer/us
 import 'package:graduation_project/settings_notifications_module/presentation_layer/cotrollers/reports_state.dart';
 import 'package:graduation_project/settings_notifications_module/presentation_layer/screens/notifications_screen.dart';
 import 'package:hive/hive.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../core/caching_data/user_data_cach.dart';
 import '../../domain_layer/entities/notifications.dart';
@@ -41,8 +43,33 @@ class SettingsNotificationsCubit extends Cubit<SettingsNotificationsState> {
     status: false,
   );
   Failure serverFailure = const ServerFailure(message: 'message');
-  var userData = Hive.box('userData');
+  //var open = Hive.openBox('userDataCach');
+  var userData = Hive.box('userDataCach');
   List<Notifications> notifications = [];
+
+  FilePickerResult? result;
+  File? file;
+  String? filePath;
+  // ignore: prefer_typing_uninitialized_variables
+  var pickedFile;
+  final picker = ImagePicker();
+  Future pickImage() async {
+    debugPrint('befor');
+    pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      file = File(pickedFile.path);
+      filePath = file!.path;
+      debugPrint('picked file ${filePath!}');
+    }
+    emit(PickImageSettingstate());
+    emit(SettingsDone());
+  }
+
+  deleteImage() {
+    pickedFile = file = filePath = null;
+    emit(DeleteImageSettingsState());
+  }
+
   Future updateUserInfo(RegisterUserParameters parameters) async {
     emit(
       UpdateUserInfoLoadingState(),
@@ -61,15 +88,19 @@ class SettingsNotificationsCubit extends Cubit<SettingsNotificationsState> {
         profileUpdate = r;
 
         emit(UpdateUserInfoSuccessState());
-         userData.put('user', UserDataCach(
-          id: r.id,
-           name: r.name,
-            email:r. email,
-             accessToken:'',
-             birthDate: r.birthDate,
-             gender: r.gender,
-             photo: null,//todo refactor the photo
-             ));
+        userData.put(
+            'user',
+            UserDataCach(
+              id: r.id,
+              name: r.name,
+              email: r.email,
+              accessToken: '',
+              birthDate: r.birthDate,
+              gender: r.gender,
+              photo: r.photo, //todo refactor the photo
+              phone: r.phone,
+            ));
+        emit(SettingsDone());
       },
     );
   }

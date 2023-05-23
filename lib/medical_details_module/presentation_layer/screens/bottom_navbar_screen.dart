@@ -1,4 +1,3 @@
-import 'package:hive_flutter/adapters.dart';
 
 import '../../../core/utils/exports.dart';
 
@@ -12,7 +11,7 @@ class BottomNavBarScreen extends StatelessWidget {
       child: BlocBuilder<MedicalCubit, MedicalState>(
         builder: (context, state) {
           var cubit = BlocProvider.of<MedicalCubit>(context);
-          var box = Hive.box('userData');
+          var box = Hive.box('userDataCach');
           var user = box.get('user');
           return Scaffold(
             appBar: AppBar(

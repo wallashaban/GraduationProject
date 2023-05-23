@@ -30,7 +30,7 @@ class AuthenticationRemoteDataSource
   Future<AuthenticationModel> loginUser(LoginUserParameters parameters) async {
     final Response response =
         await dio!.post(AppConstants.login, queryParameters: {
-      'email': parameters.email,
+      'email_or_phone': parameters.email,
       'password': parameters.password,
       'fcm_token': parameters.fcmToken,
     });
@@ -47,8 +47,7 @@ class AuthenticationRemoteDataSource
   @override
   Future<AuthenticationModel> registerUser(
       RegisterUserParameters parameters) async {
-    final Response response =
-        await dio!.post(AppConstants.register, queryParameters: {
+    FormData data = FormData.fromMap({
       'name': parameters.name,
       'email': parameters.email,
       'password': parameters.password,
@@ -56,7 +55,17 @@ class AuthenticationRemoteDataSource
       'gender': parameters.gender,
       'birth_date': parameters.birthDate,
       'fcm_token': parameters.fcmToken,
+      'phone_number': parameters.phone,
+      'photo': parameters.photo == null
+          ? null
+          : await MultipartFile.fromFile(
+              parameters.photo!,
+            ),
     });
+    final Response response = await dio!.post(
+      AppConstants.register,
+      data: data,
+    );
     if (response.data['status'] == true) {
       debugPrint('register remote data ${response.data}');
       return AuthenticationModel.fromJson(response.data);
@@ -87,7 +96,7 @@ class AuthenticationRemoteDataSource
   Future<void> forgetPassword(String email) async {
     final Response response =
         await dio!.post(AppConstants.forgetPassword, queryParameters: {
-      'email': email,
+      'email_or_phone': email,
     });
     if (response.data['status'] == true) {
       debugPrint('forgetPassword remote data ${response.data}');

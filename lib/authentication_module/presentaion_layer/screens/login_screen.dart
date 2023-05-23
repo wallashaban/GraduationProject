@@ -1,4 +1,6 @@
 // ignore_for_file: must_be_immutable
+import 'package:graduation_project/authentication_module/presentaion_layer/widgets/cutom_circular.dart';
+
 import '../../../core/utils/exports.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -14,9 +16,7 @@ class LoginScreen extends StatelessWidget {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 12.w
-          ),
+          padding: EdgeInsets.symmetric(horizontal: 12.w),
           child: Center(
             child: SingleChildScrollView(
               child: Form(
@@ -46,8 +46,8 @@ class LoginScreen extends StatelessWidget {
                     CustomTextFormField(
                       obscureText: false,
                       controller: emailController,
+                      keyBoardType: TextInputType.emailAddress,
                       labelText: AppStrings.emilTextForm,
-                      
                       validator: (value) {
                         if (value.isEmpty) {
                           return AppStrings.emilTextForm;
@@ -64,7 +64,9 @@ class LoginScreen extends StatelessWidget {
                         return CustomTextFormField(
                           controller: passwordController,
                           labelText: AppStrings.passwordTextForm,
-                          suffix: cubit.isPassword? PhosphorIcons.eyeClosedBold : PhosphorIcons.eyeBold,
+                          suffix: cubit.isPassword
+                              ? PhosphorIcons.eyeClosedBold
+                              : PhosphorIcons.eyeBold,
                           obscureText: cubit.isPassword,
                           sufixPressed: () {
                             cubit.obscurePassword();
@@ -77,7 +79,6 @@ class LoginScreen extends StatelessWidget {
                         );
                       },
                     ),
-                    
                     Align(
                       alignment: Alignment.topLeft,
                       child: CustomTextButton(
@@ -97,18 +98,18 @@ class LoginScreen extends StatelessWidget {
                     ),
                     BlocConsumer<AuthenticationCubit, AuthenticationState>(
                       listener: (context, state) {
-                        if (state is LoginUserLoadingState) {
+                        /*  if (state is LoginUserLoadingState) {
                           isLoading = true;
                         } else {
                           isLoading = false;
-                        }
+                        } */
                         if (state is LoginUserErrorState) {
                           AppConstants.showSnackbar(
                             context: context,
                             content: state.error.toString(),
                           );
                         } else if (state is LoginUserSuccessState) {
-                           AppConstants.navigateReplacement(
+                          AppConstants.navigateReplacement(
                             context: context,
                             routeName: AppRoutes.bottomNavbar,
                           );
@@ -117,23 +118,24 @@ class LoginScreen extends StatelessWidget {
                       builder: (context, state) {
                         var cubit =
                             BlocProvider.of<AuthenticationCubit>(context);
-                        return Center(
-                          child: CustomButton(
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                cubit.loginUser(
-                                  LoginUserParameters(
-                                    email: emailController.text.trim(),
-                                    password: passwordController.text.trim(),
-                                    fcmToken: AppStrings.token,
-                                  ),
-                                );
-                                
-                              }
-                            },
-                            isLoading: isLoading,
-                            text: AppStrings.loginText,
-                          ),
+                        if (state is LoginUserLoadingState) {
+                          return CustomButton(
+                            isLoading: true,
+                          );
+                        }
+                        return CustomButton(
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              cubit.loginUser(
+                                LoginUserParameters(
+                                  email: emailController.text.trim(),
+                                  password: passwordController.text.trim(),
+                                  fcmToken: AppStrings.token!,
+                                ),
+                              );
+                            }
+                          },
+                          text: AppStrings.loginText,
                         );
                       },
                     ),

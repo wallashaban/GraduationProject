@@ -8,7 +8,7 @@ part of 'user_data_cach.dart';
 
 class UserDataCachAdapter extends TypeAdapter<UserDataCach> {
   @override
-  final int typeId = 0;
+  final int typeId = 10;
 
   @override
   UserDataCach read(BinaryReader reader) {
@@ -24,13 +24,14 @@ class UserDataCachAdapter extends TypeAdapter<UserDataCach> {
       birthDate: fields[4] as String?,
       accessToken: fields[5] as String,
       photo: fields[6] as String?,
+      phone: fields[7] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserDataCach obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class UserDataCachAdapter extends TypeAdapter<UserDataCach> {
       ..writeByte(5)
       ..write(obj.accessToken)
       ..writeByte(6)
-      ..write(obj.photo);
+      ..write(obj.photo)
+      ..writeByte(7)
+      ..write(obj.phone);
   }
 
   @override

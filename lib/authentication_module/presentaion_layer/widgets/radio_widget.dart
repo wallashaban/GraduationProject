@@ -9,15 +9,22 @@ class RadioWidget extends StatelessWidget {
   final String text;
   final String value;
   final String? groupValue;
-  const RadioWidget({super.key,required this.text,required this.value,required this.onChanged,required this.groupValue,});
+  const RadioWidget({
+    super.key,
+    required this.text,
+    required this.value,
+    required this.onChanged,
+    required this.groupValue,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Radio(
+            fillColor: MaterialStatePropertyAll(AppColors.appBarColor),
             activeColor: AppColors.appBarColor,
-            value:value,
+            value: value,
             groupValue: groupValue,
             onChanged: onChanged),
         CustomText(

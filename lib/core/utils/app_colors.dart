@@ -16,6 +16,9 @@ class AppColors {
   static Color greyColor =   Colors.grey[400]!;
     static Color darkGreyColor =   Colors.grey[700]!;
   static Color meduimGreyColor =   Colors.grey[600]!;
+    static Color redColor = const  Color(0xffDC7474);
+  static Color greenColor = const  Color(0xff9BB480);
+
 
 
 }

@@ -1,4 +1,8 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
+import 'package:file_picker/file_picker.dart';
 import 'package:graduation_project/core/caching_data/user_data_cach.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../core/utils/exports.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -23,26 +27,46 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     this.checkCodeUseCase,
   ) : super(AuthenticationInitial());
 
-  Authentication user =const  AuthenticationModel(
-    id: 1,
-    name: 'name',
-    email: 'email',
-    gender: 'gender',
-    birthDate: 'birthDate',
-    accessToken: 'accessToken',
-    isReminderVaccine: 0
-  
-  );
+  Authentication user = const AuthenticationModel(
+      id: 1,
+      name: 'name',
+      email: 'email',
+      gender: 'gender',
+      birthDate: 'birthDate',
+      accessToken: 'accessToken',
+      isReminderVaccine: 0);
   Failure serverFailure = const ServerFailure(
     message: 'message',
   );
-  var open = Hive.openBox('userData');
-  var userData = Hive.box('userData');
+ // var open = Hive.openBox('userDataCach');
+  var userData = Hive.box('userDataCach');
   String? gender;
   chooseGender(String gender) {
     this.gender = gender;
     emit(GenderState());
     emit(AuthDone());
+  }
+
+  FilePickerResult? result;
+  File? file;
+  String? filePath;
+  var pickedFile;
+  final picker = ImagePicker();
+  Future pickImage() async {
+    debugPrint('befor');
+    pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      file = File(pickedFile.path);
+      filePath = file!.path;
+      debugPrint('picked file ${filePath!}');
+    }
+    emit(PickImageAuthState());
+    emit(AuthDone());
+  }
+
+  deleteImage() {
+    pickedFile = file = filePath = null;
+    emit(DeleteImageState());
   }
 
   void getToken() async {
@@ -67,8 +91,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         );
       },
       (r) async {
+        
         user = r;
-        //hive.put('userData', r);
         CashHelper.saveData(
           key: 'token',
           value: r.accessToken,
@@ -83,7 +107,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
               accessToken: r.accessToken!,
               birthDate: r.birthDate,
               gender: r.gender,
-              photo: null, //todo refactor the photo
+              photo: r.photo,
+              phone:r.phone, //todo refactor the photo
             ));
         emit(AuthDone());
       },
@@ -103,7 +128,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
             error: l.message,
           ),
         );
-        // await Future.delayed(Duration(seconds: 2)).then((value) =>         emit(AuthDone()));
       },
       (r) async {
         user = r;
@@ -123,7 +147,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
               accessToken: r.accessToken!,
               birthDate: r.birthDate,
               gender: r.gender,
-              photo: null, //todo refactor the photo
+              photo: r.photo, //todo refactor the photo
+              phone: r.phone,
             ));
       },
     );
@@ -174,6 +199,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     );
   }
 
+  String? messageCode;
   Future forgetPassword(String email) async {
     emit(
       ForgetPasswordLoadingState(),
@@ -190,6 +216,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         );
       },
       (r) {
+      
         emit(ForgetPasswordSuccessState());
       },
     );

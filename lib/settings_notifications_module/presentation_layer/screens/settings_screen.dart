@@ -11,8 +11,8 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var box = Hive.box('userData');
-    var user = box.get('user');
+    Hive.openBox('userDataCach');
+    var user = Hive.box('userDataCach').get('user');
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Padding(

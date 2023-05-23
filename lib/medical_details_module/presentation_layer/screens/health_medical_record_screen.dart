@@ -63,7 +63,13 @@ class HealthMedicalRecord extends StatelessWidget {
                     children: [
                       BlockWidget(
                         isMedicalHealthRecord: true,
-                        onTap: () {},
+                        onTap: () {
+                         
+                          AppConstants.navigateTo(
+                            context: context,
+                            routeName: AppRoutes.growthHistoryScreen,
+                          );
+                        },
                         text: AppStrings.growth,
                         image: AppImages.growthImage,
                       ),
@@ -99,7 +105,6 @@ class HealthMedicalRecord extends StatelessWidget {
                       BlockWidget(
                         isMedicalHealthRecord: true,
                         onTap: () {
-                          
                           AppConstants.navigateTo(
                             context: context,
                             routeName: AppRoutes.previousPrescriptionScreen,

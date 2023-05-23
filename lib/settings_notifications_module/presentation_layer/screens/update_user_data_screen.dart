@@ -3,7 +3,6 @@
 import 'package:graduation_project/authentication_module/presentaion_layer/widgets/radio_widget.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/settings_notifications_module/presentation_layer/cotrollers/settings_notifications_cubit.dart';
-import 'package:hive/hive.dart';
 
 import '../cotrollers/reports_state.dart';
 
@@ -15,16 +14,19 @@ class UpdateUserDataScreen extends StatelessWidget {
   var nameController = TextEditingController();
   var emailController = TextEditingController();
   var birthdateController = TextEditingController();
+  var phoneController = TextEditingController();
+
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    var box = Hive.box('userData');
-    var user = box.get('user');
+    Hive.openBox('userDataCach');
+    //var box = Hive.box('userDataCach');
+    var user = Hive.box('userDataCach').get('user');
 
     nameController.text = user.name;
     emailController.text = user.email;
     birthdateController.text = user.birthDate;
-
+    phoneController.text = user.phone ?? '  ';
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -47,11 +49,65 @@ class UpdateUserDataScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: SvgPicture.asset(
-                      AppImages.signupImage,
-                      fit: BoxFit.cover,
-                    ),
+                  BlocBuilder<SettingsNotificationsCubit,
+                      SettingsNotificationsState>(
+                    builder: (context, state) {
+                      var cubit =
+                          BlocProvider.of<SettingsNotificationsCubit>(context);
+                      return InkWell(
+                        onTap: () {
+                          cubit.pickImage();
+                        },
+                        child: Center(
+                          child: Stack(
+                            alignment: Alignment.bottomRight,
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(100.r),
+                                child: cubit.pickedFile == null &&
+                                        user.photo != null
+                                    ? Image.network(
+                                        user.photo,
+                                        height: 150.h,
+                                        width: 170.w,
+                                        fit: BoxFit.fill,
+                                      )
+                                    : cubit.pickedFile == null
+                                        ? SvgPicture.asset(
+                                            AppImages.signupImage,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Image.file(
+                                            cubit.file!,
+                                            height: 150.h,
+                                            width: 170.w,
+                                            fit: BoxFit.fill,
+                                          ),
+                              ),
+                              Positioned(
+                                bottom: 10,
+                                right: 5,
+                                child: CircleAvatar(
+                                  radius: 18,
+                                  backgroundColor: AppColors.appBarColor,
+                                  child: IconButton(
+                                      onPressed: () {
+                                        cubit.deleteImage();
+                                      },
+                                      icon: Icon(
+                                        cubit.pickedFile != null
+                                            ? Icons.delete
+                                            : Icons.edit,
+                                        color: AppColors.white,
+                                        size: 19,
+                                      )),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   SizedBox(
                     height: 10.h,
@@ -69,10 +125,8 @@ class UpdateUserDataScreen extends StatelessWidget {
                   ),
                   CustomTextFormField(
                     obscureText: false,
-
-                    //  hintText: 'bla bla',
                     controller: nameController,
-                    labelText: AppStrings.fullName,
+                    labelText: AppStrings.nameSettings,
                     validator: (value) {
                       if (value.isEmpty) {
                         return AppStrings.nameText;
@@ -85,7 +139,7 @@ class UpdateUserDataScreen extends StatelessWidget {
                   CustomTextFormField(
                     obscureText: false,
                     controller: birthdateController,
-                    labelText: AppStrings.birthdate,
+                    labelText: AppStrings.birth,
                     suffix: Icons.date_range_sharp,
                     validator: (value) {
                       if (value.isEmpty) {
@@ -104,11 +158,26 @@ class UpdateUserDataScreen extends StatelessWidget {
                   CustomTextFormField(
                     obscureText: false,
                     controller: emailController,
-                    labelText: AppStrings.email,
+                    keyBoardType: TextInputType.emailAddress,
+                    labelText: AppStrings.emailSettings,
                     validator: (value) {
-                      if (value.isEmpty) {
+                      /* if (value.isEmpty) {
                         return AppStrings.emilTextForm;
-                      }
+                      } */
+                    },
+                  ),
+                  SizedBox(
+                    height: 20.h,
+                  ),
+                  CustomTextFormField(
+                    obscureText: false,
+                    keyBoardType: TextInputType.number,
+                    controller: phoneController,
+                    labelText: AppStrings.phone,
+                    validator: (value) {
+                      /* if (value.isEmpty) {
+                        return AppStrings.emilTextForm;
+                      } */
                     },
                   ),
                   SizedBox(
@@ -167,28 +236,50 @@ class UpdateUserDataScreen extends StatelessWidget {
                     builder: (context, state) {
                       var cubit =
                           BlocProvider.of<SettingsNotificationsCubit>(context);
+                      if (state is UpdateUserInfoLoadingState) {
+                        return CustomButton(
+                          isLoading: true,
+                        );
+                      }
                       return CustomButton(
                         onPressed: () {
                           if (formKey.currentState!.validate()) {
-                            cubit.updateUserInfo(
-                              RegisterUserParameters(
-                                name: nameController.text,
-                                email: emailController.text.trim(),
-                                gender: BlocProvider.of<AuthenticationCubit>(
-                                        context)
-                                    .gender,
-                                birthDate: birthdateController.text,
-                              ),
-                            );
+                            cubit.filePath == null
+                                ? cubit.updateUserInfo(
+                                    RegisterUserParameters(
+                                      name: nameController.text,
+                                      email: emailController.text.trim(),
+                                      gender:
+                                          BlocProvider.of<AuthenticationCubit>(
+                                                      context)
+                                                  .gender ??
+                                              user.gender,
+                                      birthDate: birthdateController.text,
+                                      phone: phoneController.text,
+                                    ),
+                                  )
+                                : cubit.updateUserInfo(
+                                    RegisterUserParameters(
+                                      name: nameController.text,
+                                      email: emailController.text.trim(),
+                                      gender:
+                                          BlocProvider.of<AuthenticationCubit>(
+                                                      context)
+                                                  .gender ??
+                                              user.gender,
+                                      birthDate: birthdateController.text,
+                                      photo: cubit.filePath,
+                                      phone: phoneController.text,
+                                    ),
+                                  );
                           }
                         },
-                        isLoading: isLoading,
                         text: AppStrings.edit,
                       );
                     },
                   ),
                   SizedBox(
-                    height: 30.h,
+                    height: 20.h,
                   ),
                   TextButton.icon(
                       onPressed: () {

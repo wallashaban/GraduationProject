@@ -52,6 +52,7 @@ class EnterEmailScreen extends StatelessWidget {
                 CustomTextFormField(
                   obscureText: false,
                   controller: emailController,
+                  keyBoardType: TextInputType.emailAddress,
                   labelText: AppStrings.enteremail,
                   validator: (value) {
                     return AppStrings.confirmText;
@@ -62,39 +63,39 @@ class EnterEmailScreen extends StatelessWidget {
                 ),
                 Center(
                   child: BlocConsumer<AuthenticationCubit, AuthenticationState>(
-                    listener: (context, state) async {
-                      if (state is ForgetPasswordLoadingState) {
-                        isLoading = true;
-                      } else {
-                        isLoading = false;
-                      }
-
-                      if (state is ForgetPasswordErrorState) {
-                        AppConstants.showSnackbar(
-                            context: context, content: state.error);
-                      }
-                      if (state is ForgetPasswordSuccessState) {
-                        AppConstants.showSnackbar(
-                            context: context,
-                            content: 'برجاء فحص البريد الالكترونى الخاص بك');
-
-                        AppConstants.navigateTo(
+                      listener: (context, state) async {
+                    if (state is ForgetPasswordErrorState) {
+                      AppConstants.showSnackbar(
+                          context: context, content: state.error);
+                    }
+                    if (state is ForgetPasswordSuccessState) {
+                      await AppConstants.showSnackbar(
+                          //todo handle snackbar
                           context: context,
-                          routeName: AppRoutes.checkCodeScreen,
-                          arguments: emailController.text,
-                        );
-                        // );
-                      }
-                    },
-                    builder: (context, state) => CustomButton(
+                          content:
+                              'برجاء فحص البريد الالكترونى الخاص بك , فنحن نرسل رمز التحقق');
+
+                      AppConstants.navigateTo(
+                        context: context,
+                        routeName: AppRoutes.checkCodeScreen,
+                        arguments: emailController.text,
+                      );
+                      // );
+                    }
+                  }, builder: (context, state) {
+                    if (state is ForgetPasswordLoadingState) {
+                      return CustomButton(
+                        isLoading: true,
+                      );
+                    }
+                    return CustomButton(
                       text: AppStrings.sendcode,
                       onPressed: () {
                         BlocProvider.of<AuthenticationCubit>(context)
                             .forgetPassword(emailController.text.trim());
                       },
-                      isLoading: isLoading,
-                    ),
-                  ),
+                    );
+                  }),
                 ),
               ],
             ),

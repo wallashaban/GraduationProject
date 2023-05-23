@@ -31,6 +31,17 @@ class StoreMedicalDetailsErrorState extends MedicalState {
   });
 }
 ///////////////////////////////////
+///
+class UpdateMedicalDetailsSuccessState extends MedicalState {}
+class UpdateMedicalDetailsLoadingState extends MedicalState {}
+class UpdateMedicalDetailsErrorState extends MedicalState {
+ final String error;
+ const UpdateMedicalDetailsErrorState({
+    required this.error,
+  });
+}
+
+
 class GellAllAllergiesSuccessState extends MedicalState {}
 class GellAllAllergiesLoadingState extends MedicalState {}
 class GellAllAllergiesErrorState extends MedicalState {

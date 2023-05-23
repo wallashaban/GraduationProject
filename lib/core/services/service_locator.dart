@@ -4,6 +4,11 @@ import 'package:graduation_project/ai_diseases_module/domain_layer/repository/di
 import 'package:graduation_project/ai_diseases_module/domain_layer/use_cases/delete_ai_sisease_use_case.dart';
 import 'package:graduation_project/ai_diseases_module/domain_layer/use_cases/predict_disease_use_case.dart';
 import 'package:graduation_project/ai_diseases_module/domain_layer/use_cases/store_ai_sisease_use_case.dart';
+import 'package:graduation_project/growth_module/data_layer/data_source/growth_remote_data_source.dart';
+import 'package:graduation_project/growth_module/data_layer/repository/growth_repo.dart';
+import 'package:graduation_project/growth_module/domain_layer/repository/growth_base_repo.dart';
+import 'package:graduation_project/growth_module/domain_layer/usecases/calculate_growth_use_case.dart';
+import 'package:graduation_project/growth_module/presentation_layer/controllers/growth_cubit.dart';
 import 'package:graduation_project/settings_notifications_module/data_layer/data_source/settings_notifications_remote_data_source.dart';
 import 'package:graduation_project/settings_notifications_module/domain_layer/use_cases/log_out_use_case.dart';
 import 'package:graduation_project/settings_notifications_module/domain_layer/use_cases/make_review_use_case.dart';
@@ -11,7 +16,8 @@ import 'package:graduation_project/settings_notifications_module/presentation_la
 
 import '../../ai_diseases_module/domain_layer/use_cases/get_ai_sisease_use_case.dart';
 import '../../ai_diseases_module/presentation_layer/cubit/disease_cubit.dart';
-import '../../development_flow_module/domain_layer/use_cases/update_tips_use_case.dart';
+import '../../growth_module/domain_layer/usecases/get_all_growth_use_case.dart';
+import '../../medical_details_module/domain_layer/use_cases/update_details_use_case.dart';
 import '../../report_module/data_layer/data_source/report_remote_data_source.dart';
 import '../../report_module/data_layer/repository/report_repository.dart';
 import '../../report_module/domain_layer/base_repository/base_report_repository.dart';
@@ -172,24 +178,10 @@ class ServiceLocator {
       () => StoreMedicalDetailsUseCase(sl()),
     );
 
-    /// get all allergies details
-    sl.registerLazySingleton(
-      () => GetAllAllergiesUseCase(sl()),
-    );
-
-    /// get all skin diseases use case
-    sl.registerLazySingleton(
-      () => GetAllSkinDiseasesUseCase(sl()),
-    );
-
-    /// medical genetic
-    sl.registerLazySingleton(
-      () => GetAllGeneticUseCase(sl()),
-    );
-
+ 
     /// medical chronic
     sl.registerLazySingleton(
-      () => GetAllChronicDiseasesUseCase(sl()),
+      () => UpdateMedicalDetailsUseCase(sl()),
     );
 //////////////////////////////////
     ///medical tests
@@ -336,9 +328,7 @@ class ServiceLocator {
       () => MedicalCubit(
         sl(),
         sl(),
-        sl(),
-        sl(),
-        sl(),
+        
       ),
     );
 
@@ -476,6 +466,24 @@ class ServiceLocator {
      sl.registerFactory(
       () => DiseaseCubit(sl(),sl(),sl(),sl(),),
     );
+
+    // growth
+     
+     sl.registerLazySingleton<BaseGrowthRemoteDataSource>(
+       () => GrowthRemoteDataSource(),
+     );
+     sl.registerLazySingleton<GrowthBaseRepository>(
+       () => GrowthRepository(sl()),
+     );
+     sl.registerLazySingleton(
+       () => CalculateGrowthUseCase(sl()),
+     );
+     sl.registerLazySingleton(
+       () => GetAllGrowthOfChildUseCase(sl()),
+     );
+     sl.registerFactory(
+      () => GrowthCubit(sl(),sl(),),
+    ); 
         //development flow
     // sl.registerLazySingleton<BaseDevelopmentFlowRemoteDataSource>(
     //   () => DevelopmentFlowRemoteDataSource(),
@@ -494,9 +502,7 @@ class ServiceLocator {
     // sl.registerLazySingleton(
     //   () => SubjectsWithQuestionsUseCase(sl()),
     // );
-    sl.registerLazySingleton(
-      () => UpdateTipsUseCase(sl()),
-    );
+  
   /*   sl.registerLazySingleton(
       () => CreateTipsUseCase(sl()),
     );

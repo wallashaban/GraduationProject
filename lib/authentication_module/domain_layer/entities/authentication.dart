@@ -8,6 +8,8 @@ class Authentication extends Equatable {
   final String? birthDate;
   final String? accessToken;
   final int? isReminderVaccine;
+  final String? photo;
+  final String? phone;
   const Authentication({
     required this.id,
     required this.name,
@@ -16,6 +18,8 @@ class Authentication extends Equatable {
     this.birthDate,
     required this.accessToken,
     required this.isReminderVaccine,
+    this.photo,
+    this.phone,
   });
 
   @override
@@ -24,7 +28,10 @@ class Authentication extends Equatable {
         name,
         email,
         gender,
+        photo,
+        phone,
         birthDate,
         accessToken,
+
       ];
 }

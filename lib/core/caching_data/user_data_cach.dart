@@ -1,6 +1,7 @@
 import 'package:hive_flutter/adapters.dart';
 part 'user_data_cach.g.dart';
-@HiveType(typeId: 0)
+
+@HiveType(typeId: 10)
 class UserDataCach extends HiveObject {
   @HiveField(0)
   final int id;
@@ -16,7 +17,9 @@ class UserDataCach extends HiveObject {
   final String accessToken;
   @HiveField(6)
   final String? photo;
-   UserDataCach({
+  @HiveField(7)
+  final String? phone;
+  UserDataCach({
     required this.id,
     required this.name,
     required this.email,
@@ -24,5 +27,6 @@ class UserDataCach extends HiveObject {
     this.birthDate,
     required this.accessToken,
     this.photo,
+    this.phone,
   });
 }
