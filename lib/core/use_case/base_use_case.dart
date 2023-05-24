@@ -91,8 +91,7 @@ class StoreMedicalDetailsParameters {
   String? chronicDisease;
   String? genticDisease;
   String? skinDisease;
-  bool? isMedicine;
-  String? medicineName;
+  String? isMedicine;
   StoreMedicalDetailsParameters({
     this.id,
     required this.bloodType,
@@ -101,7 +100,6 @@ class StoreMedicalDetailsParameters {
     required this.genticDisease,
     this.skinDisease,
     required this.isMedicine,
-    required this.medicineName,
   });
 }
 

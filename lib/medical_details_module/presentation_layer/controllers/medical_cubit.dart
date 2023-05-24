@@ -196,7 +196,7 @@ class MedicalCubit extends Cubit<MedicalState> {
               skinDisease: r.skinDisease,
               chronicDisease: r.chronicDisease,
               isMedicine: isMedicine??medical.isMedicine,
-              medicineFile: r.isMedicine,
+              medicineFile: (isMedicine==true||medical.isMedicine==true)? r.isMedicine:null,
               isGenticDisease: r.genticDisease == null ? false : true,
             ));
         CashHelper.saveData(

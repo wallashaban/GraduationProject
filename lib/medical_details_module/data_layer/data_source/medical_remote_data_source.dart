@@ -32,7 +32,6 @@ class MedicalRemoteDataSource implements BaseMedicalRemoteDataSource {
       'chronic_disease': parameters.chronicDisease,
       'genetic_disease': parameters.genticDisease,
       'Is_medicine': parameters.isMedicine,
-      'medicine_file': parameters.medicineName,
       'skin_disease': parameters.skinDisease,
     });
     final Response response = await dio!.post(
@@ -58,7 +57,6 @@ class MedicalRemoteDataSource implements BaseMedicalRemoteDataSource {
       'chronic_disease': parameters.chronicDisease,
       'genetic_disease': parameters.genticDisease,
       'Is_medicine': parameters.isMedicine,
-      'medicine_file': parameters.medicineName,
       'skin_disease': parameters.skinDisease,
     });
     final Response response = await dio!.post(

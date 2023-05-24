@@ -2,10 +2,12 @@ import '../../../core/utils/exports.dart';
 
 class SaveMedicalDetailsWidget extends StatelessWidget {
   final bool isRecorded;
- final TextEditingController medicineNameController;
-  const SaveMedicalDetailsWidget({super.key,
-  required this.isRecorded,
-  required this.medicineNameController,});
+  final TextEditingController medicineNameController;
+  const SaveMedicalDetailsWidget({
+    super.key,
+    required this.isRecorded,
+    required this.medicineNameController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +28,9 @@ class SaveMedicalDetailsWidget extends StatelessWidget {
                       ? null
                       : cubit.geneticDiseaseValue ??
                           medicalSetails.genticDisease,
-                  isMedicine: null,
-                  /* cubit.isMedicine ??
-                                          medicalSetails.isMedicine, */
-                  medicineName: medicineNameController.text,
+                  isMedicine: cubit.isMedicine == true
+                      ? medicineNameController.text
+                      : null,
                 ),
               )
             : cubit.storeMedicalDetails(
@@ -38,8 +39,7 @@ class SaveMedicalDetailsWidget extends StatelessWidget {
                   allergy: cubit.allergyValue,
                   chronicDisease: cubit.chronicDiseaseValue,
                   genticDisease: cubit.geneticDiseaseValue,
-                  isMedicine: cubit.isMedicine,
-                  medicineName: medicineNameController.text,
+                  isMedicine: medicineNameController.text,
                 ),
               );
       },
