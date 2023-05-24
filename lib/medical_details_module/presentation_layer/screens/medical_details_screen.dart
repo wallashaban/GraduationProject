@@ -131,8 +131,9 @@ class MedicalDetailsScreen extends StatelessWidget {
                       SizedBox(
                         height: 5.h,
                       ),
-                      if (cubit.isMedicine == true||
-                      (medicalSetails.isMedicine == true&& cubit.isMedicine == null))
+                      if (cubit.isMedicine == true ||
+                          (medicalSetails.isMedicine == true &&
+                              cubit.isMedicine == null))
                         CustomTextFormField(
                           controller: medicineNameController,
                           obscureText: false,
@@ -159,14 +160,14 @@ class MedicalDetailsScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             RadioWidget(
-                                groupValue:
-                                    isRecorded && cubit.isGeneticDisease == null
-                                        ? (medicalSetails.genticDisease == true
-                                            ? AppStrings.yes
-                                            : AppStrings.no)
-                                        : (cubit.isGeneticDisease == true
-                                            ? AppStrings.yes
-                                            : AppStrings.no),
+                                groupValue: (isRecorded &&
+                                        cubit.isGeneticDisease == null)
+                                    ? (medicalSetails.isGenticDisease == true
+                                        ? AppStrings.yes
+                                        : AppStrings.no)
+                                    : (cubit.isGeneticDisease == true
+                                        ? AppStrings.yes
+                                        : AppStrings.no),
                                 onChanged: (value) {
                                   debugPrint(
                                       'geni ${medicalSetails.isGenticDisease}');
@@ -182,8 +183,8 @@ class MedicalDetailsScreen extends StatelessWidget {
                               width: MediaQuery.of(context).size.width * 0.1,
                             ),
                             RadioWidget(
-                                groupValue: isRecorded &&
-                                        cubit.isGeneticDisease != null
+                                groupValue: !(isRecorded &&
+                                        cubit.isGeneticDisease != null)
                                     ? (medicalSetails.isGenticDisease == true
                                         ? AppStrings.yes
                                         : AppStrings.no)
@@ -192,8 +193,6 @@ class MedicalDetailsScreen extends StatelessWidget {
                                         : AppStrings.no),
                                 onChanged: (value) {
                                   if (value == 'لا') {
-                                    debugPrint(
-                                        'gen p ${medicalSetails.isGenticDisease}');
                                     cubit.existGeneticDiseaseOrNot(false);
                                   } else {
                                     cubit.existGeneticDiseaseOrNot(true);
