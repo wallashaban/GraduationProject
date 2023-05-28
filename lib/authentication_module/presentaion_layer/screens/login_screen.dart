@@ -130,7 +130,7 @@ class LoginScreen extends StatelessWidget {
                                 LoginUserParameters(
                                   email: emailController.text.trim(),
                                   password: passwordController.text.trim(),
-                                  fcmToken: AppStrings.token!,
+                                  fcmToken: CashHelper.getData(key: 'fcmToken'),
                                 ),
                               );
                             }

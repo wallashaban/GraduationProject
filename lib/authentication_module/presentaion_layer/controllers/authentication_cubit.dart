@@ -38,7 +38,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Failure serverFailure = const ServerFailure(
     message: 'message',
   );
- // var open = Hive.openBox('userDataCach');
+  // var open = Hive.openBox('userDataCach');
   var userData = Hive.box('userDataCach');
   String? gender;
   chooseGender(String gender) {
@@ -70,10 +70,13 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   }
 
   void getToken() async {
-    await FirebaseMessaging.instance.getToken().then((tok) {
-      AppStrings.token = tok.toString();
-      debugPrint('token ${AppStrings.token}');
-    });
+    if (CashHelper.getData(key: 'fcmToken') == null) {
+      await FirebaseMessaging.instance.getToken().then((tok) {
+        CashHelper.saveData(key: 'fcmToken', value: tok.toString());
+        /* AppStrings.token = tok.toString();
+        debugPrint('token ${AppStrings.token}'); */
+      });
+    }
   }
 
   Future registerUser(RegisterUserParameters parameters) async {
@@ -91,7 +94,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         );
       },
       (r) async {
-        
         user = r;
         CashHelper.saveData(
           key: 'token',
@@ -108,7 +110,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
               birthDate: r.birthDate,
               gender: r.gender,
               photo: r.photo,
-              phone:r.phone, //todo refactor the photo
+              phone: r.phone, //todo refactor the photo
             ));
         emit(AuthDone());
       },
@@ -216,7 +218,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         );
       },
       (r) {
-      
         emit(ForgetPasswordSuccessState());
       },
     );

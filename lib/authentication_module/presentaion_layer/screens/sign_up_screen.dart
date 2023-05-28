@@ -293,7 +293,7 @@ class SignUpScreen extends StatelessWidget {
                                           confirmPasswordController.text.trim(),
                                       gender: cubit.gender,
                                       birthDate: birthdateController.text,
-                                      fcmToken: AppStrings.token,
+                                      fcmToken: CashHelper.getData(key: 'fcmToken'),
                                       photo: cubit.filePath,
                                       phone: phoneController.text,
                                     ),

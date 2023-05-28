@@ -24,10 +24,10 @@ class AppStrings {
   static const String birthdate = 'الرجاء إدخال تاريخ ميلاد طفلك';
   static const String password = 'الرجاء إدخال كلمة مرور مناسبة لك';
   static const String male = 'ذكر';
-    static const String phone = 'رقم الهاتف';
-    static const String emailSettings = 'البريد الالكترونى';
-    static const String  birth= 'تاريخ مبلاد طفلك';
-    static const String nameSettings = 'اسم طفلك';
+  static const String phone = 'رقم الهاتف';
+  static const String emailSettings = 'البريد الالكترونى';
+  static const String birth = 'تاريخ مبلاد طفلك';
+  static const String nameSettings = 'اسم طفلك';
   static const String female = 'انثى';
   static const String haveAccount = 'هل لديك حساب بالفعل؟';
   static const String resetPasswordTitle = 'اعاده تعيين كلمه المرور';
@@ -57,7 +57,7 @@ class AppStrings {
   static const String enternewpassword = 'كلمه المرور الجديده';
   static const String enternewpasswordconfirmation =
       'تأكيد كلمه المرور الجديده';
-  static String? token ;
+  //static String? token;
   static String nameText = 'برجاء ادخال الاسم';
   static String birthdateText = 'برجاء ادخال تاريخ الميلاد';
   static String confirmText = 'برجاء تاكيد كلمه المرور';
@@ -130,7 +130,7 @@ class AppStrings {
   static const String prevRogita = 'روشته سابقه';
   static const String vaccine = 'تطعيم';
   static const String sure = 'هل انت متاكد من عمليه الحذف؟';
-  static const String dateMonth = 'التاريخ';
+  static const String dateMonth = 'أدخل التاريخ';
   static const String noRogita = 'لا توجد روشتات سابقه';
   static const String showRogita = 'عرض الروشته';
   static const String showTest = 'عرض التحليل';

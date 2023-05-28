@@ -23,7 +23,7 @@ class MedicationReminderCubit extends Cubit<ReminderState> {
     message: 'message',
     status: false,
   );
-  List<Days> days = [];
+  List days = [];
   List<Reminder> allReminders = [];
   Reminder reminder = const ReminderModel(
     id: 1,
@@ -49,15 +49,25 @@ class MedicationReminderCubit extends Cubit<ReminderState> {
     '3',
   ];
   String? medicineTime;
-  int index = 0;
+  int index = 1;
+  List timerController = [
+    TextEditingController(),
+  ];
+  addTimer() {
+    final controller = TextEditingController();
+    timerController.add(controller);
+    emit(AddTimerState());
+    emit(ReminderDone());
+  }
+
   List<String> allDays = [
     'السبت',
-    'الاحد',
+    'الأحد',
     'الاثنين',
     'الثلاثاء',
-    'الاربعاء',
+    'الأربعاء',
     'الخميس',
-    'الجمعه',
+    'الجمعة',
   ];
   void addNewDose() {
     index++;
@@ -119,7 +129,11 @@ class MedicationReminderCubit extends Cubit<ReminderState> {
         debugPrint(general.message);
         emit(StoreReminderSuccessState());
         getAllReminders();
-        index = 0;
+        index = 1;
+        timerController = [
+          TextEditingController(),
+        ];
+        medicineTime = null;
       },
     );
   }

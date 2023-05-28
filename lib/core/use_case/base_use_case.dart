@@ -148,7 +148,7 @@ class ReminderParameters {
   final String? medicineName;
   final String? appointment;
   final String? endDate;
-  final List<dynamic>? times;
+  final List<dynamic> times;
   const ReminderParameters({
     this.id,
     required this.medicineName,
@@ -160,7 +160,7 @@ class ReminderParameters {
 
 class MedicineTimes {
   final String? time;
-  final List? days;
+  final List<int>? days;
   final String? month;
   const MedicineTimes({
     required this.time,

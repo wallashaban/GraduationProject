@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           create: (context) => sl<GrowthCubit>()..getAllGrowth(),
         ),
         BlocProvider(
-          create: (context) => sl<MedicationReminderCubit>()..getAllReminders(),
+          create: (context) => sl<MedicationReminderCubit>()..getAllReminders()..getAllDays(),
         ),
         BlocProvider(
           create: (context) => sl<VaccinationsCubit>()..getAllVaccinations(),

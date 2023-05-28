@@ -8,7 +8,7 @@ class Reminder extends Equatable {
  final String endDate;
  final String apponitment;
  final List<Times> times;
- final List? days;
+ final List<Days>? days;
  const Reminder({
     required this.id,
     required this.reminderName,

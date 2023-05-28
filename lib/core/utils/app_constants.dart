@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/medication_reminder_module/presentation_layer/controllers/medication_reminder_cubit.dart';
 
@@ -5,8 +6,9 @@ import '../../prescription_module/presentation_layer/controllers/prescription_cu
 
 class AppConstants {
   static const String baseUrl = 'https://baby-health-care.sonicar.tech/api/';
-  static const String aiBaseUrl = 'https://testgp-production-df5f.up.railway.app/';
-    static const String skin = 'predictApi';
+  static const String aiBaseUrl =
+      'https://testgp-production-df5f.up.railway.app/';
+  static const String skin = 'predictApi';
 
   //auth
   static const String login = 'auth/login';
@@ -19,7 +21,7 @@ class AppConstants {
   static const String updatePassword = 'auth/password/reset';
   //medical details
   static const String storeMedicalDetails = 'store-medical-details';
-    static const String updateMedicalDetails = 'medicalDetails';
+  static const String updateMedicalDetails = 'medicalDetails';
 
   static const String getAllAllergy = 'all-allergies';
   static const String skinDiseases = 'skin-diseases';
@@ -287,7 +289,50 @@ class AppConstants {
                 ),
               ));
 
+  static Future addTime(
+      {required context,
+      required timeController,
+      required dateController,
+      required List<int>? days,
+      required List timerController}) async {
+    List medicineTime = [];
+    var cubit = BlocProvider.of<MedicationReminderCubit>(context);
+    if (cubit.medicineTime == 'شهريا') {
+      debugPrint('days func $days');
+      medicineTime += [
+        MedicineTimes(
+                time: timeController.text,
+                days: days,
+                month: dateController.text)
+            .toMap()
+      ];
+    } else if (cubit.medicineTime == 'اسبوعيا') {
+      medicineTime = [
+        MedicineTimes(
+                time: timeController.text,
+                days: days,
+                month: dateController.text)
+            .toMap()
+      ];
+    } else {
+      for (int i = 0; i < cubit.index; i++) {
+        var times = [
+          MedicineTimes(
+                  time: timerController[i].text,
+                  days: days,
+                  month: dateController.text)
+              .toMap()
+        ];
+        medicineTime += times;
+      }
+    }
+    return medicineTime;
+    // debugPrint('controller ${timerController[0].text}');
+  }
 
+   checkConnectivity() async {
+    return await Connectivity().checkConnectivity();
+  }
 }
 
 dialogElevatedButton({

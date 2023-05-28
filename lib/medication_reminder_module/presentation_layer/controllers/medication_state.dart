@@ -14,7 +14,7 @@ class AddNewDoseState extends ReminderState{}
 class DeleteDoseState extends ReminderState{}
 
 class ReminderDone extends ReminderState {}
-
+class AddTimerState extends ReminderState{}
 
 
 class StoreReminderSuccessState extends ReminderState {}

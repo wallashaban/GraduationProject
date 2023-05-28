@@ -1,7 +1,4 @@
-
-
 import '../../../core/utils/exports.dart';
-
 
 abstract class BaseMedicationReminderRemoteDataSource {
   Future<List<Days>> getAllDays();
@@ -91,24 +88,16 @@ class MedicationReminderRemoteDataSource
     }
   }
 
-  List a = [];
   @override
   Future<GeneralModel> storeRemnider(ReminderParameters parameters) async {
-     FormData data = FormData.fromMap({
-     'medicine_name': parameters.medicineName,
+    FormData data = FormData.fromMap({
+      'medicine_name': parameters.medicineName,
       'appointment': parameters.appointment,
       'end_date': parameters.endDate,
       'mediceTimes': parameters.times,
     });
     final Response response =
-        await dio!.post(AppConstants.storeReminder, /* queryParameters: {
-      'medicine_name': parameters.medicineName,
-      'appointment': parameters.appointment,
-      'end_date': parameters.endDate,
-      'mediceTimes': parameters.times,
-    }, */
-    data: data
-    );
+        await dio!.post(AppConstants.storeReminder, data: data);
     if (response.data['status'] == true) {
       debugPrint('store reminder details  remote data ${response.data}');
       return GeneralModel.fromJson(response.data);

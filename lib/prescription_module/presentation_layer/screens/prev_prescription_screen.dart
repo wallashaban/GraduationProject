@@ -25,65 +25,64 @@ class PreviousPrescriptionsScreen extends StatelessWidget {
           ),
         ),
         body: BlocConsumer<PrescriptionCubit, PrescriptionState>(
-            listener: (context, state) {
-          if (state is GetSinglePrescriptionLoadingState) {
-            isLoading = true;
-          } else {
-            isLoading = false;
-          }
-        }, builder: (context, state) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 3.w),
-              child: Column(
-                children: [
-                  isLoading
-                      ? const CustomCircularProgress()
-                      : cubit.allPrescriptions.isEmpty
-                          ? const NoDataWidget(text: AppStrings.noRogita,image: AppImages.developImage,)
-                          : ListView.builder(
-                              //todo الليست بتفضى فبيطلع اكسبشن حليه بقي🙂
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                if (cubit.allPrescriptions.isEmpty) {
-                                  return const NoDataWidget(
-                                      text: AppStrings.noRogita,image: AppImages.developImage,);
-                                }
-                                return TestsPrescriptionBlock(
-                                  prescriptionModel:
-                                      cubit.allPrescriptions[index],
-                                  isPrescription: true,
-                                );
-                              },
-                              itemCount: cubit.allPrescriptions.length,
-                            ),
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(20.0.r),
-                      child: CustomButton(
-                        text: AppStrings.addNewrRgeta,
-                        onPressed: () {
-                          var pres = PresParameters(
-                            isEdit: false,
-                          );
-                          AppConstants.navigateTo(
-                            arguments: pres,
-                            context: context,
-                            routeName: AppRoutes.newPrescriptionScreen,
-                          );
-                        },
-                        color: AppColors.textColor,
-                        size: 18.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+            listener: (context, state) {},
+            builder: (context, state) {
+              if (state is GellAllPrescriptionSuccessState) {
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15.h, horizontal: 3.w),
+                    child: cubit.allPrescriptions.isEmpty
+                        ? const NoDataWidget(
+                            text: AppStrings.noRogita,
+                            image: AppImages.prescribtionImage,
+                            textButton: AppStrings.addNewrRgeta,
+                            screen: AppRoutes.newPrescriptionScreen,
+                          )
+                        : Column(
+                            children: [
+                              ListView.builder(
+                                //todo الليست بتفضى فبيطلع اكسبشن حليه بقي🙂
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return TestsPrescriptionBlock(
+                                    prescriptionModel:
+                                        cubit.allPrescriptions[index],
+                                    isPrescription: true,
+                                  );
+                                },
+                                itemCount: cubit.allPrescriptions.length,
+                              ),
+                              Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(20.0.r),
+                                  child: CustomButton(
+                                    text: AppStrings.addNewrRgeta,
+                                    onPressed: () {
+                                      var pres = PresParameters(
+                                        isEdit: false,
+                                      );
+                                      AppConstants.navigateTo(
+                                        arguments: pres,
+                                        context: context,
+                                        routeName:
+                                            AppRoutes.newPrescriptionScreen,
+                                      );
+                                    },
+                                    color: AppColors.textColor,
+                                    size: 18.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                   ),
-                ],
-              ),
-            ),
-          );
-        }),
+                );
+              }
+              return const CustomCircularProgress();
+            }),
       ),
     );
   }

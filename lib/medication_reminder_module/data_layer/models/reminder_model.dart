@@ -1,4 +1,4 @@
-import '../../domain_layer/entities/reminder.dart';
+import 'package:graduation_project/core/utils/exports.dart';
 
 class ReminderModel extends Reminder {
   const ReminderModel({
@@ -20,7 +20,8 @@ class ReminderModel extends Reminder {
       apponitment: json['appointment'],
       times: List<Times>.from(json['times'].map((e) => TimesModel.fromJson(e)))
           .toList(),
-      days: json['days'],
+      days:json['days']!=null? List<Days>.from(json['days'].map((e) => DaysModel.fromJson(e)))
+          .toList():null,
     );
   }
 }
