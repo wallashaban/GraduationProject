@@ -5,6 +5,7 @@ class NormalGrowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var cubit = BlocProvider.of<GrowthCubit>(context);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
       decoration: BoxDecoration(
@@ -39,14 +40,14 @@ class NormalGrowWidget extends StatelessWidget {
                     height: 15.h,
                   ),
                   CustomText(
-                    text: '${AppStrings.height}  49.7 : 56.6 ${AppStrings.cm}',
+                    text: '${AppStrings.height}  ${cubit.rangeGrowth!.heightStart} : ${cubit.rangeGrowth!.heightEnd} ${AppStrings.cm}',
                     size: 16.sp,
                   ),
                   SizedBox(
                     height: 5.h,
                   ),
                   CustomText(
-                    text: '${AppStrings.weight}  3.3 : 5.3 ${AppStrings.kg}',
+                    text: '${AppStrings.weight}  ${cubit.rangeGrowth!.weightStart} : ${cubit.rangeGrowth!.weightEnd} ${AppStrings.kg}',
                     size: 16.sp,
                   ),
                   SizedBox(

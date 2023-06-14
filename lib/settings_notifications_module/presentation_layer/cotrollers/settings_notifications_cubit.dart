@@ -1,11 +1,12 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:graduation_project/core/utils/exports.dart';
+import 'package:graduation_project/medication_reminder_module/presentation_layer/controllers/medication_reminder_cubit.dart';
 import 'package:graduation_project/settings_notifications_module/data_layer/models/user_update_model.dart';
 import 'package:graduation_project/settings_notifications_module/domain_layer/use_cases/get_history_notifications_use_case.dart';
 import 'package:graduation_project/settings_notifications_module/domain_layer/use_cases/log_out_use_case.dart';
 import 'package:graduation_project/settings_notifications_module/domain_layer/use_cases/make_review_use_case.dart';
-import 'package:graduation_project/settings_notifications_module/presentation_layer/cotrollers/reports_state.dart';
+import 'package:graduation_project/settings_notifications_module/presentation_layer/cotrollers/settings_notifications_state.dart';
 import 'package:graduation_project/settings_notifications_module/presentation_layer/screens/notifications_screen.dart';
 import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
@@ -15,23 +16,23 @@ import '../../domain_layer/entities/notifications.dart';
 import '../../domain_layer/use_cases/update_user_info_use_case.dart';
 
 class SettingsNotificationsCubit extends Cubit<SettingsNotificationsState> {
-  final UpdateUserInfoUseCase updateUserInfoUseCase;
+  // final UpdateUserInfoUseCase updateUserInfoUseCase;
   final LogOutUseCase logOutUseCase;
   final MakeReviewUseCase makeReviewUseCase;
   final GetHistoryNotificationsUseCase getHistoryNotificationsUseCase;
   SettingsNotificationsCubit(
-    this.updateUserInfoUseCase,
+    //  this.updateUserInfoUseCase,
     this.logOutUseCase,
     this.makeReviewUseCase,
     this.getHistoryNotificationsUseCase,
   ) : super(SettingsNotificationsInitial());
 
-  Authentication profileUpdate = const UserUpdateModel(
+  /* Authentication profileUpdate = const UserUpdateModel(
     email: '',
     id: 1,
     name: '',
     isReminderVaccine: 0,
-  );
+  ); */
   General logOut = const GeneralModel(
     data: 'data',
     message: 'message',
@@ -44,8 +45,8 @@ class SettingsNotificationsCubit extends Cubit<SettingsNotificationsState> {
   );
   Failure serverFailure = const ServerFailure(message: 'message');
   //var open = Hive.openBox('userDataCach');
-  var userData = Hive.box('userDataCach');
-  List<Notifications> notifications = [];
+  // UserDataCach userData = Hive.box('userDataCach').get('user');
+  List<Notifications>? notifications;
 
   FilePickerResult? result;
   File? file;
@@ -70,7 +71,7 @@ class SettingsNotificationsCubit extends Cubit<SettingsNotificationsState> {
     emit(DeleteImageSettingsState());
   }
 
-  Future updateUserInfo(RegisterUserParameters parameters) async {
+  /*  Future updateUserInfo(RegisterUserParameters parameters) async {
     emit(
       UpdateUserInfoLoadingState(),
     );
@@ -88,7 +89,7 @@ class SettingsNotificationsCubit extends Cubit<SettingsNotificationsState> {
         profileUpdate = r;
 
         emit(UpdateUserInfoSuccessState());
-        userData.put(
+        Hive.box('userDataCach').put(
             'user',
             UserDataCach(
               id: r.id,
@@ -100,12 +101,13 @@ class SettingsNotificationsCubit extends Cubit<SettingsNotificationsState> {
               photo: r.photo, //todo refactor the photo
               phone: r.phone,
             ));
+        userData = Hive.box('userDataCach').get('user');
         emit(SettingsDone());
       },
     );
   }
-
-  Future logOutUser() async {
+ */
+  Future logOutUser(context) async {
     /*  emit(
       UpdateUserInfoLoadingState(),
     ); */
@@ -121,7 +123,16 @@ class SettingsNotificationsCubit extends Cubit<SettingsNotificationsState> {
       },
       (r) async {
         logOut = r;
-
+        notifications = null;
+        BlocProvider.of<VaccinationsCubit>(context).allVaccinations = null;
+        BlocProvider.of<MedicationReminderCubit>(context).allReminders = null;
+        BlocProvider.of<ReportCubit>(context).allVaccinationReport = null;
+        BlocProvider.of<ReportCubit>(context).allDiseaseReport = null;
+        BlocProvider.of<ReportCubit>(context).medicalInfo = null;
+        BlocProvider.of<ReportCubit>(context).latestDevelopment = null;
+        BlocProvider.of<ReportCubit>(context).latestTeeth = null;
+        BlocProvider.of<ReportCubit>(context).growth = null;
+        CashHelper.deleteData(key: 'token');
         emit(LogOutSuccessState());
       },
     );

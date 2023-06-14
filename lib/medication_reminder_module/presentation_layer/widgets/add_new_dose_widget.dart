@@ -1,4 +1,3 @@
-import 'package:dotted_border/dotted_border.dart';
 
 import '../../../core/utils/exports.dart';
 import '../controllers/medication_reminder_cubit.dart';

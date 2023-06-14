@@ -1,17 +1,32 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
 
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:graduation_project/core/caching_data/teeth_cach%20.dart';
 import 'package:graduation_project/core/utils/exports.dart';
+import 'package:graduation_project/teeth_develpoment_module/domain_layer/entities/teeth.dart';
 
 import '../../../medical_details_module/presentation_layer/widgets/dropdown_list_widget.dart';
 import '../../../medical_tests_module/presentation_layer/widgets/date_text_form_field.dart';
 
+class ToothParameters {
+  TeethCach? teeth;
+  bool isEdit;
+  ToothParameters({
+    this.teeth,
+    required this.isEdit,
+  });
+}
+
 class AddToothScreen extends StatelessWidget {
-  AddToothScreen({super.key});
+  final ToothParameters toothParameters;
+  AddToothScreen({super.key, required this.toothParameters});
   var dateController = TextEditingController();
-  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<TeethDevelopmentCubit>(context);
+    if (toothParameters.isEdit) {
+      dateController.text = toothParameters.teeth!.appearanceDate;
+    }
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -40,12 +55,7 @@ class AddToothScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(
-                  height: 5.h,
-                ),
-                DateTextFormField(
-                  controller: dateController,
-                ),
+                const DateTextFormField(),
                 SizedBox(
                   height: 20.h,
                 ),
@@ -54,27 +64,26 @@ class AddToothScreen extends StatelessWidget {
                   children: [
                     SvgPicture.asset(
                       AppImages.monthImage,
-                      width: MediaQuery.of(context).size.width * 0.4,
+                      width: 85.w,
+                      height: 126.h,
                     ),
                     SvgPicture.asset(
                       AppImages.allTeethImage,
-                      width: MediaQuery.of(context).size.width * 0.4,
+                      width: 205.w,
+                      height: 241.h,
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 10.h,
+                  height: MediaQuery.of(context).size.height * 0.06,
                 ),
                 BlocConsumer<TeethDevelopmentCubit, TeethDevelopmentState>(
                   listener: (context, state) {
-                    if (state is StoreTeethSuccessState) {
+                    if ((state is StoreTeethSuccessState ||
+                        (state is UpdateTeethSuccessState))) {
                       AppConstants.showSnackbar(
-                          context: context, content: cubit.teethDev.message);
-                      Future.delayed(const Duration(seconds: 2))
-                          .then((value) => AppConstants.navigateTo(
-                                context: context,
-                                routeName: AppRoutes.teethDwvelopmentScreen,
-                              ));
+                          context: context, content: AppStrings.saveSuccess);
+
                       cubit.toothName = null;
                       cubit.toothId = null;
                     }
@@ -84,10 +93,11 @@ class AddToothScreen extends StatelessWidget {
                         content: state.error,
                       );
                     }
-                    if (state is StoreTeethLoadingState) {
-                      isLoading = true;
-                    } else {
-                      isLoading = false;
+                    if (state is UpdateTeethErrorState) {
+                      AppConstants.showSnackbar(
+                        context: context,
+                        content: state.error,
+                      );
                     }
                   },
                   builder: (context, state) {
@@ -98,34 +108,71 @@ class AddToothScreen extends StatelessWidget {
                           items: cubit.teethList
                               .map(AppConstants.buildMenuItem)
                               .toList(),
-                          onChanged: (toothName) {
-                            cubit.changeBloodTypeValue(toothName);
-                            int index = cubit.teethList.indexOf(toothName);
-                            cubit.getToothId(index + 1);
+                          onChanged: (toothName) async {
+                            debugPrint(
+                                'statement ${cubit.medicalTeeth[0].name.split('').first} ${cubit.toothId}');
+                            cubit.changeToothNameValue(toothName);
+                            await getId(
+                              context,
+                              toothName,
+                            );
+                            //  int index = cubit.allTeeth.indexOf(toothName);
                           },
-                          value: cubit.toothName,
+                          value:
+                              toothParameters.isEdit && cubit.toothName == null
+                                  ? toothParameters.teeth!.teeth
+                                  : cubit.toothName,
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.1,
                         ),
-                        Center(
-                          child: CustomButton(
-                            text: AppStrings.saveData,
-                            color: AppColors.textColor,
-                            onPressed: () {
-                              cubit.storeTeethDevelopment(
-                                TeethParameters(
-                                  id: cubit.toothId,
-                                  teethName: cubit.toothName,
-                                  apperenceDate: dateController.text,
-                                ),
-                              );
-                            },
-                            isLoading: isLoading,
-                            size: 20.sp,
-                            fontWeight: FontWeight.bold,
+                        if ((state is StoreTeethLoadingState) ||
+                            (state is UpdateTeethLoadingState))
+                          CustomButton(
+                            isLoading: true,
                           ),
-                        ),
+                        if ((state is! StoreTeethLoadingState) &&
+                            (state is! UpdateTeethLoadingState))
+                          CustomButton(
+                            text: AppStrings.saveData,
+                            onPressed: () async {
+                              if (await AppConstants.checkConnectivity() ==
+                                  ConnectivityResult.none) {
+                                AppConstants.showSnackbar(
+                                  context: context,
+                                  content: AppStrings.noInternet,
+                                );
+                              } else {
+                                if (cubit.medicalTeeth.isEmpty) {
+                                  await cubit.getMedicalTeeth().then(
+                                        (value) async => await getId(
+                                          context,
+                                          cubit.toothName ??
+                                              toothParameters.teeth!.teeth,
+                                        ),
+                                      );
+                                }
+                                if (toothParameters.isEdit) {
+                                  cubit.updateTooth(
+                                    TeethParameters(
+                                      id: toothParameters.teeth!.id,
+                                      toothId: cubit.toothId,
+                                      teethName: cubit.toothName,
+                                      apperenceDate: cubit.date,
+                                    ),
+                                  );
+                                } else {
+                                  cubit.storeTeethDevelopment(
+                                    TeethParameters(
+                                      toothId: cubit.toothId,
+                                      teethName: cubit.toothName,
+                                      apperenceDate: cubit.date,
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                          ),
                       ],
                     );
                   },
@@ -139,5 +186,17 @@ class AddToothScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future getId(context, String toothName) async {
+    BlocProvider.of<TeethDevelopmentCubit>(context)
+        .medicalTeeth
+        .forEach((element) async {
+      debugPrint('tooth  ${element.name.split('').first}');
+      if (element.name.contains(toothName)) {
+        await BlocProvider.of<TeethDevelopmentCubit>(context)
+            .getToothId(element.id);
+      }
+    });
   }
 }

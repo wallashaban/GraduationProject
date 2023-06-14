@@ -1,11 +1,13 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:graduation_project/core/caching_data/test_cach.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/medical_tests_module/presentation_layer/controllers/medical_tests_state.dart';
 
 import '../widgets/date_text_form_field.dart';
 
 class TestsParameters {
-  MediaclTest? medicalTests;
+  TestCach? medicalTests;
   bool isEdit;
   TestsParameters({
     this.medicalTests,
@@ -21,10 +23,8 @@ class NewTestScreen extends StatelessWidget {
   var labNameController = TextEditingController();
   var dateController = TextEditingController();
   var formkey = GlobalKey<FormState>();
-  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    var cubit = BlocProvider.of<MedicalTestsCubit>(context);
     if (testsParameters.medicalTests != null) {
       testTypeController.text = testsParameters.medicalTests!.type;
       labNameController.text = testsParameters.medicalTests!.labName;
@@ -58,19 +58,14 @@ class NewTestScreen extends StatelessWidget {
                   AppConstants.showSnackbar(
                       context: context, content: state.error);
                 }
-                if (state is StoreMedicaltestLoadingState ||
-                    state is UpdateMedicaltestLoadingState) {
-                  isLoading = true;
-                } else {
-                  isLoading = false;
-                }
+
                 if (state is StoreMedicaltestSuccessState) {
                   AppConstants.showSnackbar(
-                      context: context, content: cubit.medicalTest.message);
+                      context: context, content: AppStrings.saveSuccess);
                 }
                 if (state is UpdateMedicaltestSuccessState) {
                   AppConstants.showSnackbar(
-                      context: context, content: cubit.medicalTest.message);
+                      context: context, content: AppStrings.saveSuccess);
                 }
               },
               builder: (context, state) {
@@ -92,9 +87,7 @@ class NewTestScreen extends StatelessWidget {
                       SizedBox(
                         height: 10.h,
                       ),
-                      DateTextFormField(
-                        controller: dateController,
-                      ),
+                      const DateTextFormField(),
                       SizedBox(
                         height: 20.h,
                       ),
@@ -116,26 +109,6 @@ class NewTestScreen extends StatelessWidget {
                       SizedBox(
                         height: 20.h,
                       ),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     SvgPicture.asset(
-                      //       AppImages.pdfImage,
-                      //       width: 60.w,
-                      //       height: 90.h,
-                      //     ),
-                      //     IconButton(
-                      //       onPressed: () {},
-                      //       icon: Icon(
-                      //         Icons.delete,
-                      //         color: AppColors.textColor,
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      // const SizedBox(
-                      //   height: 10,
-                      // ),
                       if (cubit.pickedFile != null)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,8 +123,8 @@ class NewTestScreen extends StatelessWidget {
                                 cubit.canselPickedFile();
                               },
                               icon: Icon(
-                                Icons.delete,
-                                color: AppColors.textColor,
+                                Icons.delete_outline,
+                                color: AppColors.appBarColor,
                               ),
                             ),
                           ],
@@ -172,64 +145,69 @@ class NewTestScreen extends StatelessWidget {
                               },
                               icon: Icon(
                                 Icons.camera_alt_sharp,
-                                color: AppColors.textColor,
+                                color: AppColors.appBarColor,
                               ),
                             ),
-                            /*  IconButton(
-                            onPressed: () {
-                              cubit.pickFiles();
-                            },
-                            icon: Icon(
-                              Icons.attachment_sharp,
-                              color: AppColors.textColor,
-                            ),
-                          ), */
                           ],
                         ),
-                      Center(
-                          child: CustomButton(
-                              isLoading: isLoading,
-                              size: 18.sp,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.textColor,
-                              text: testsParameters.isEdit
-                                  ? AppStrings.edit
-                                  : AppStrings.addNewTest,
-                              onPressed: () {
-                                if (formkey.currentState!.validate()) {
-                                  if (testsParameters.isEdit) {
-                                    if (cubit.pickedFile == null) {
-                                      cubit.updateMedicalTests(
-                                        MediaclTestParameters(
-                                          labName: labNameController.text,
-                                          type: testTypeController.text,
-                                          labDate: dateController.text,
-                                          id: testsParameters.medicalTests!.id,
-                                        ),
-                                      );
-                                    } else {
-                                      cubit.updateMedicalTests(
-                                        MediaclTestParameters(
-                                          labName: labNameController.text,
-                                          type: testTypeController.text,
-                                          labDate: dateController.text,
-                                          labFile: cubit.filePath,
-                                          id: testsParameters.medicalTests!.id,
-                                        ),
-                                      );
-                                    }
-                                  } else {
-                                    cubit.storeMedicalTest(
+                      if ((state is StoreMedicaltestLoadingState) ||
+                          (state is UpdateMedicaltestLoadingState))
+                        CustomButton(
+                          isLoading: true,
+                        ),
+                      if ((state is! StoreMedicaltestLoadingState) &&
+                          (state is! UpdateMedicaltestLoadingState))
+                        CustomButton(
+                            text: testsParameters.isEdit
+                                ? AppStrings.edit
+                                : AppStrings.saveData,
+                            onPressed: () async {
+                              if (await AppConstants.checkConnectivity() ==
+                                  ConnectivityResult.none) {
+                                AppConstants.showSnackbar(
+                                  context: context,
+                                  content: AppStrings.noInternet,
+                                );
+                              } else if (formkey.currentState!.validate()) {
+                                if (testsParameters.isEdit) {
+                                  if (cubit.pickedFile == null) {
+                                    cubit.updateMedicalTests(
                                       MediaclTestParameters(
                                         labName: labNameController.text,
                                         type: testTypeController.text,
-                                        labDate: dateController.text,
+                                        labDate: BlocProvider.of<
+                                                TeethDevelopmentCubit>(context)
+                                            .date,
+                                        id: testsParameters.medicalTests!.id,
+                                      ),
+                                    );
+                                  } else {
+                                    cubit.updateMedicalTests(
+                                      MediaclTestParameters(
+                                        labName: labNameController.text,
+                                        type: testTypeController.text,
+                                        labDate: BlocProvider.of<
+                                                TeethDevelopmentCubit>(context)
+                                            .date,
                                         labFile: cubit.filePath,
+                                        id: testsParameters.medicalTests!.id,
                                       ),
                                     );
                                   }
+                                } else {
+                                  cubit.storeMedicalTest(
+                                    MediaclTestParameters(
+                                      labName: labNameController.text,
+                                      type: testTypeController.text,
+                                      labDate: BlocProvider.of<
+                                              TeethDevelopmentCubit>(context)
+                                          .date,
+                                      labFile: cubit.filePath,
+                                    ),
+                                  );
                                 }
-                              })),
+                              }
+                            }),
                     ],
                   ),
                 );

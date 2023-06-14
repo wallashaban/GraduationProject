@@ -1,6 +1,8 @@
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'package:graduation_project/core/utils/exports.dart';
+import 'package:graduation_project/development_flow_module/presentation_layer/controllers/development_flow_state.dart';
+import 'package:graduation_project/medical_details_module/domain_layer/use_cases/show_details_use_case.dart';
 import 'package:graduation_project/settings_notifications_module/presentation_layer/screens/notifications_screen.dart';
 
 import '../../../core/caching_data/medical_details_cach.dart';
@@ -15,6 +17,7 @@ class MedicalCubit extends Cubit<MedicalState> {
   //medical details
   final StoreMedicalDetailsUseCase storeMedicalDetailsUseCase;
   final UpdateMedicalDetailsUseCase updateMedicalDetailsUseCase;
+  final ShowMedicalDetailsUseCase showMedicalDetailsUseCase;
   /////////////////////////////////
 
   ///////////////////////////
@@ -22,6 +25,7 @@ class MedicalCubit extends Cubit<MedicalState> {
   MedicalCubit(
     this.storeMedicalDetailsUseCase,
     this.updateMedicalDetailsUseCase,
+    this.showMedicalDetailsUseCase,
   ) : super(MedicalInitial());
   // mediical details
 
@@ -81,7 +85,7 @@ class MedicalCubit extends Cubit<MedicalState> {
     'الاضطرابات الاستقلابية',
     'اضطرابات الميتوكوندريا',
     'السرطانات الوراثية العائلية',
-    'ضعف السمع الوراثي ',
+    'ضعف السمع الوراثي',
     'التليف الكيسي',
     'أمراض العيون',
     'مرض هنتنجتون',
@@ -166,7 +170,9 @@ class MedicalCubit extends Cubit<MedicalState> {
     emit(Done());
   }
 
-  ///medical details
+  var medical = Hive.box('userDataCach')
+      .get('medicalDetails${CashHelper.getData(key: 'token')}');
+
   Future storeMedicalDetails(StoreMedicalDetailsParameters parameters) async {
     emit(StoreMedicalDetailsLoadingState());
     final result = await storeMedicalDetailsUseCase(parameters);
@@ -184,9 +190,9 @@ class MedicalCubit extends Cubit<MedicalState> {
       (r) {
         medicalDetails = r;
         emit(StoreMedicalDetailsSuccessState());
-         var medical = Hive.box('userDataCach').get('medicalDetails');
+        medical = Hive.box('userDataCach').get('medicalDetails${r.userId}');
         Hive.box('userDataCach').put(
-            'medicalDetails',
+            'medicalDetails${r.userId}',
             MedicalDetailsCach(
               id: r.id,
               userId: r.userId,
@@ -195,8 +201,12 @@ class MedicalCubit extends Cubit<MedicalState> {
               genticDisease: r.genticDisease,
               skinDisease: r.skinDisease,
               chronicDisease: r.chronicDisease,
-              isMedicine: isMedicine??medical.isMedicine,
-              medicineFile: (isMedicine==true||medical.isMedicine==true)? r.isMedicine:null,
+              isMedicine:
+                  isMedicine ?? medical == null ? null : medical.isMedicine,
+              medicineFile: (isMedicine == true ||
+                      (medical != null && medical.isMedicine == true))
+                  ? r.isMedicine
+                  : null,
               isGenticDisease: r.genticDisease == null ? false : true,
             ));
         CashHelper.saveData(
@@ -206,6 +216,7 @@ class MedicalCubit extends Cubit<MedicalState> {
       },
     );
   }
+
   ////////////////////////////////////////
 
   Future updateMedicalDetails(StoreMedicalDetailsParameters parameters) async {
@@ -215,7 +226,7 @@ class MedicalCubit extends Cubit<MedicalState> {
     result.fold(
       (l) {
         serverFailure = l;
-        debugPrint('error update medical test $l');
+        debugPrint('error update medical test cubit $l');
         emit(
           UpdateMedicalDetailsErrorState(
             error: l.message.toString(),
@@ -224,23 +235,70 @@ class MedicalCubit extends Cubit<MedicalState> {
       },
       (r) {
         medicalDetailsUpdate = r;
-        debugPrint('cubit ${r}');
         emit(UpdateMedicalDetailsSuccessState());
-       var medical = Hive.box('userDataCach').get('medicalDetails');
+        medical = Hive.box('userDataCach').get('medicalDetails${r.userId}');
+        debugPrint('statement cubit ${r.userId}');
         Hive.box('userDataCach').put(
-            'medicalDetails',
+            'medicalDetails${r.userId}',
             MedicalDetailsCach(
               id: r.id,
-              userId: r.userId,
+              userId: userDataCach.id,
               bloodType: r.bloodType,
               allergy: r.allergy,
               genticDisease: r.genticDisease,
               skinDisease: r.skinDisease,
               chronicDisease: r.chronicDisease,
-              isMedicine: isMedicine??medical.isMedicine,
+              isMedicine: medical == null
+                  ? isMedicine
+                  : isMedicine ?? medical.isMedicine,
               medicineFile: r.isMedicine,
               isGenticDisease: r.genticDisease == null ? false : true,
             ));
+        //todo
+        geneticDiseaseValue =
+            chronicDiseaseValue = allergyValue = bloodType = null;
+      },
+    );
+    debugPrint(
+        'data cubit ${Hive.box('userDataCach').get('medicalDetails${userDataCach.id}')}');
+    emit(Done());
+  }
+
+  Future showMedicalDetails() async {
+    emit(ShowMedicalDetailsLoadingState());
+    final result = await showMedicalDetailsUseCase(const NoParameters());
+
+    result.fold(
+      (l) {
+        serverFailure = l;
+        debugPrint('error store medical test $l');
+        emit(
+          ShowMedicalDetailsErrorState(
+            error: l.message.toString(),
+          ),
+        );
+      },
+      (r) {
+        medicalDetails = r;
+        if (medicalDetails != null) {
+          medical = Hive.box('userDataCach').get('medicalDetails${r.userId}');
+          Hive.box('userDataCach').put(
+              'medicalDetails${r.userId}',
+              MedicalDetailsCach(
+                id: r.id,
+                userId: r.userId,
+                bloodType: r.bloodType,
+                allergy: r.allergy,
+                genticDisease: r.genticDisease,
+                skinDisease: r.skinDisease,
+                chronicDisease: r.chronicDisease,
+                isMedicine:
+                    isMedicine ?? medical == null ? false : medical.isMedicine,
+                medicineFile: r.isMedicine ?? ' ',
+                isGenticDisease: r.genticDisease == null ? false : true,
+              ));
+        }
+        emit(ShowMedicalDetailsSuccessState());
       },
     );
   }

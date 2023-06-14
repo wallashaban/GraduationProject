@@ -1,12 +1,12 @@
 import 'package:graduation_project/ai_diseases_module/data_layer/models/disease_model.dart';
-import 'package:graduation_project/ai_diseases_module/domain_layer/entities/disease.dart';
 
+import '../../../core/utils/dio_helper.dart';
 import '../../../core/utils/exports.dart';
 
 abstract class BaseDiseaseRemoteDataSource {
   /// medical tests
-  Future<GeneralModel> storeAiDisease(DiseaseParameters parameters);
-  Future<List<AiDisease>> getAiDisease();
+  Future<AiDiseaseModel> storeAiDisease(DiseaseParameters parameters);
+  Future<List<AiDiseaseModel>> getAiDisease();
   Future<GeneralModel> deleteAiDisease(int id);
   Future<String> predictDisease(PredictDiseaseParameters parameters);
 }
@@ -29,8 +29,9 @@ class DiseaseRemoteDataSource implements BaseDiseaseRemoteDataSource {
 
   @override
   Future<GeneralModel> deleteAiDisease(int id) async {
-    final Response response = await dio!.delete(
-      '${AppConstants.deleteAiDisease} $id',
+    final Response response = await DioHelper.deleteData(
+      url: '${AppConstants.deleteAiDisease} $id',
+      token: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint('delete aidisease remote data ${response.data}');
@@ -44,8 +45,9 @@ class DiseaseRemoteDataSource implements BaseDiseaseRemoteDataSource {
 
   @override
   Future<List<AiDiseaseModel>> getAiDisease() async {
-    final Response response = await dio!.get(
-      AppConstants.getAilDisease,
+    final Response response = await DioHelper.getData(
+      url: AppConstants.getAilDisease,
+      bearerToken: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint('diisease tests  remote data ${response.data}');
@@ -60,7 +62,7 @@ class DiseaseRemoteDataSource implements BaseDiseaseRemoteDataSource {
   }
 
   @override
-  Future<GeneralModel> storeAiDisease(DiseaseParameters parameters) async {
+  Future<AiDiseaseModel> storeAiDisease(DiseaseParameters parameters) async {
     FormData data = FormData.fromMap({
       'prediction': parameters.prediction,
       'disease': parameters.disease,
@@ -70,14 +72,15 @@ class DiseaseRemoteDataSource implements BaseDiseaseRemoteDataSource {
               parameters.photo!,
             ),
     });
-    final Response response = await dio!.post(
-      AppConstants.storeAiDisease,
+    final Response response = await DioHelper.postData(
+      url: AppConstants.storeAiDisease,
       data: data,
+      token: CashHelper.getData(key: 'token'),
     );
 
     if (response.data['status'] == true) {
       debugPrint('store medical test  remote data ${response.data}');
-      return GeneralModel.fromJson(response.data);
+      return AiDiseaseModel.fromJson(response.data['data']);
     } else {
       throw ServerException(
         errorMessageModel: ErrorMessageModel.fromJson(response.data),
@@ -92,9 +95,15 @@ class DiseaseRemoteDataSource implements BaseDiseaseRemoteDataSource {
         parameters.photo,
       ),
     });
-    final Response response = await dio!.post(
-      '${AppConstants.aiBaseUrl}${AppConstants.skin}',
+    String disease = parameters.field == 'lgp'
+        ? AppConstants.lgp
+        : parameters.field == 'skin'
+            ? AppConstants.skin
+            : AppConstants.mpc;
+    final Response response = await DioHelper.postData(
+      url: '${AppConstants.aiBaseUrl}$disease',
       data: data,
+      token: CashHelper.getData(key: 'token'),
     );
 
     //if (response.data['status'] == true) {

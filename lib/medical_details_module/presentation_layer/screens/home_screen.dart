@@ -1,4 +1,3 @@
-
 import '../../../core/utils/exports.dart';
 
 import '../widgets/block_widget.dart';
@@ -11,6 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool isExist = false;
   void message(context) {
     FirebaseMessaging.onMessage.listen((((RemoteMessage message) {
       debugPrint('Message ${message.data.toString()}');
@@ -44,11 +44,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BlockWidget(
-                    onTap: () {
-                      AppConstants.navigateTo(
+                    onTap: () async {
+                      if (CashHelper.getData(
+                              key:
+                                  'diseaseSaved ${CashHelper.getData(key: 'id')}') ==
+                          null) {
+                        await AppConstants.userExistDiseaseOrNot(
+                                isExist, context)
+                            .then((value) {
+                          AppConstants.navigateTo(
+                            context: context,
+                            routeName: AppRoutes.homeAiDiseaseScreen,
+                          );
+                        });
+                      } else {
+                        AppConstants.navigateTo(
+                          context: context,
+                          routeName: AppRoutes.homeAiDiseaseScreen,
+                        );
+                      }
+                      /* AppConstants.navigateTo(
                         context: context,
                         routeName: AppRoutes.homeAiDiseaseScreen,
-                      );
+                      ); */
                     },
                     text: AppStrings.diseases,
                     image: AppImages.diseaseImage,
@@ -62,6 +80,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                     text: AppStrings.vaccination,
                     image: AppImages.vaccinationImage,
+                    imageHeight: 75.h,
+                    imageWidth: 124.w,
                   ),
                 ],
               ),
@@ -84,7 +104,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       AppConstants.navigateTo(
                           context: context,
-                          routeName: AppRoutes.allMedicationReminderScreen);
+                          routeName: CashHelper.getData(key: 'reminder') == null
+                              ? AppRoutes.medicationReminderScreen
+                              : AppRoutes.allMedicationReminderScreen);
                     },
                     text: AppStrings.reminder,
                     image: AppImages.reminderImage,

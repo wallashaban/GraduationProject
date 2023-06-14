@@ -17,7 +17,7 @@ class ReportTextWidget extends StatelessWidget {
           boxShadow: [
             BoxShadow(
                 color: Colors.grey[400]!,
-                blurRadius: 15,
+                blurRadius: 5,
                 blurStyle: BlurStyle.outer),
           ],
         ),

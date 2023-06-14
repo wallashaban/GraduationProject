@@ -7,6 +7,6 @@ import '../entities/vaccination.dart';
 abstract class BaseVaccinationRepository {
   Future<Either<Failure, List<Vaccination>>> getAllVaccination();
   Future<Either<Failure, Vaccination>> getSingleVaccination(int id);
-  Future<Either<Failure, General>> attatchVaccination(List ids);
+  Future<Either<Failure, General>> attatchVaccination(int ids);
   Future<Either<Failure, General>> stopOrActiveVaccination(int status);
 }

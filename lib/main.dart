@@ -1,4 +1,12 @@
+import 'package:graduation_project/core/caching_data/growth_cach.dart';
+import 'package:graduation_project/core/caching_data/pres_cach.dart';
+import 'package:graduation_project/core/caching_data/teeth_cach%20.dart';
+import 'package:graduation_project/core/utils/dio_helper.dart';
+import 'package:graduation_project/development_flow_module/presentation_layer/controllers/development_flow_cubit.dart';
+
+import 'core/caching_data/ai_disease_cach.dart';
 import 'core/caching_data/medical_details_cach.dart';
+import 'core/caching_data/test_cach.dart';
 import 'core/routes/app_routes.dart';
 import 'core/themes/light_theme.dart';
 import 'core/utils/bloc_observer.dart';
@@ -12,12 +20,24 @@ void main() async {
   await Hive.initFlutter('caching_db');
   Hive.registerAdapter(UserDataCachAdapter());
   Hive.registerAdapter(MedicalDetailsCachAdapter());
+  Hive.registerAdapter(TeethCachAdapter());
+  Hive.registerAdapter(TestCachAdapter());
+  Hive.registerAdapter(PresCachAdapter());
+  Hive.registerAdapter(GrowrhCachAdapter());
+  Hive.registerAdapter(AiDiseaseAdapter());
   Hive.openBox('userDataCach');
+  Hive.openBox('teethCach');
+  Hive.openBox('diseaseCach');
+  Hive.openBox('testCach');
+  Hive.openBox('presCach');
+  Hive.openBox('growthCach');
   await Firebase.initializeApp();
   await FirebaseMessaging.instance.getInitialMessage();
   Bloc.observer = MyBlocObserver();
   ServiceLocator().init();
   await CashHelper.init();
+  DioHelper.init();
+  //token = CashHelper.getData(key: 'token');
   runApp(const MyApp());
 }
 
@@ -32,43 +52,51 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => sl<AuthenticationCubit>()..getToken(),
-        ),
-        BlocProvider(
-          create: (context) => sl<GrowthCubit>()..getAllGrowth(),
-        ),
-        BlocProvider(
-          create: (context) => sl<MedicationReminderCubit>()..getAllReminders()..getAllDays(),
-        ),
-        BlocProvider(
-          create: (context) => sl<VaccinationsCubit>()..getAllVaccinations(),
-        ),
-        BlocProvider(
-          create: (context) => sl<PrescriptionCubit>()..getAllPrescriiptions(),
-        ),
-        BlocProvider(
-          create: (context) => sl<MedicalTestsCubit>()..getAllMedicalTests(),
-        ),
-        BlocProvider(
-          create: (context) => sl<ReportCubit>()
-            ..medicalsInfo()
-            ..diseaseReports()
-            ..latesttDevelopment()
-            ..latesttTeeth()
-            ..vaccinationReports(),
-        ),
-        BlocProvider(
-          create: (context) => sl<TeethDevelopmentCubit>()..getAllteeth(),
+          create: (context) => sl<AuthenticationCubit>()..getFcmToken(),
         ),
         BlocProvider(
           create: (context) =>
-              sl<SettingsNotificationsCubit>()..getAllNotifications(),
+              sl<DevelopmentFlowCubit>()..getSubjectsWithQuestions(),
+        ),
+        BlocProvider(create: (context) => sl<GrowthCubit>() //..getAllGrowth()
+            // ..getRangeGrowth(),
+            ),
+        BlocProvider(create: (context) => sl<MedicationReminderCubit>()
+            /* ..getAllReminders()
+            ..getAllDays(), */
+            ),
+        BlocProvider(
+            create: (context) =>
+                sl<VaccinationsCubit>() //..getAllVaccinations(),
+            ),
+        BlocProvider(
+            create: (context) =>
+                sl<PrescriptionCubit>() //..getAllPrescriiptions(),
+            ),
+        BlocProvider(
+            create: (context) =>
+                sl<MedicalTestsCubit>() //..getAllMedicalTests(),
+            ),
+        BlocProvider(create: (context) => sl<ReportCubit>()
+            /*  ..medicalsInfo()
+            ..diseaseReports()
+            ..latesttDevelopment()
+            ..latesttTeeth()
+            ..vaccinationReports()
+            ..getLatestGrowthOfChild(), */
+            ),
+        BlocProvider(
+          create: (context) => sl<TeethDevelopmentCubit>() //..getAllteeth()
+            ..getMedicalTeeth(),
         ),
         BlocProvider(
-          create: (context) => sl<DiseaseCubit>()..getAllAiDiseases(),
-        ),
+            create: (context) =>
+                sl<SettingsNotificationsCubit>() //..getAllNotifications(),
+            ),
         BlocProvider(
-            create: (context) => sl<MedicalCubit>()),
+          create: (context) => sl<DiseaseCubit>()//..getAllAiDiseases(),
+        ),
+        BlocProvider(create: (context) => sl<MedicalCubit>()),
       ],
       child: ScreenUtilInit(
         minTextAdapt: true,

@@ -14,6 +14,17 @@ class MedicalInfoErrorState extends ReportState{
   });
 }
 
+class GetLatestGrowthLoadingSatate extends ReportState {}
+
+class GetLatestGrowthSuccessSatate extends ReportState {}
+
+class GetLatestGrowthErrorSatate extends ReportState {
+ final String error;
+  GetLatestGrowthErrorSatate({
+    required this.error,
+  });
+}
+
 class LatestTeethLoadingState extends ReportState{}
 class LatestTeethSuccessState extends ReportState{}
 class LatestTeethErrorState extends ReportState{

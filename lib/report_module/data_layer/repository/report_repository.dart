@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:graduation_project/core/error/failure.dart';
+import 'package:graduation_project/growth_module/domain_layer/entities/growth.dart';
 import 'package:graduation_project/report_module/data_layer/data_source/report_remote_data_source.dart';
 import 'package:graduation_project/report_module/domain_layer/base_repository/base_report_repository.dart';
 import 'package:graduation_project/report_module/domain_layer/entity/disease_report.dart';
@@ -76,6 +77,20 @@ class ReportRepository extends BaseReportRepository {
   Future<Either<Failure, MedicalInfo>> medicalInfo() async {
     try {
       final result = await baseReportRemoteDataSource.medicalsInfo();
+      return Right(result);
+    } on ServerException catch (failure) {
+      return Left(
+        ServerFailure(
+          message: failure.errorMessageModel.message,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, Growth>> getLatestGrowthOfChild() async {
+    try {
+      final result = await baseReportRemoteDataSource.getLatestGrowthOfChild();
       return Right(result);
     } on ServerException catch (failure) {
       return Left(

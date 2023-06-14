@@ -18,6 +18,9 @@ class AppColors {
   static Color meduimGreyColor =   Colors.grey[600]!;
     static Color redColor = const  Color(0xffDC7474);
   static Color greenColor = const  Color(0xff9BB480);
+  static Color orangeColor = const  Color(0xffFECD8A);
+  static Color babyBlueColor = const  Color(0xff80CFD3);
+  static Color pinkColor = const  Color(0xffF7B0AA);
 
 
 

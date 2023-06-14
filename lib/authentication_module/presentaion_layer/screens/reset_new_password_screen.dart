@@ -1,4 +1,6 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
+import 'package:connectivity_plus/connectivity_plus.dart';
+
 import '../../../core/utils/exports.dart';
 
 class ResetNewPasswordScreen extends StatelessWidget {
@@ -14,7 +16,7 @@ class ResetNewPasswordScreen extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
             child: Padding(
-          padding:  EdgeInsets.all(30.r),
+          padding: EdgeInsets.all(30.r),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,10 +37,9 @@ class ResetNewPasswordScreen extends StatelessWidget {
                   size: 18.sp,
                   //fontWeight: FontWeight.bold,
                 ),
-                
                 CustomText(
                   text: AppStrings.createnewpassword,
-                 // color: AppColors.meduimGreyColor,
+                  // color: AppColors.meduimGreyColor,
                   size: 18.sp,
                   fontWeight: FontWeight.normal,
                 ),
@@ -97,7 +98,6 @@ class ResetNewPasswordScreen extends StatelessWidget {
                 Center(
                   child: BlocConsumer<AuthenticationCubit, AuthenticationState>(
                     listener: (context, state) {
-                     
                       if (state is UpdatePasswordErrorState) {
                         AppConstants.showSnackbar(
                             context: context, content: state.error);
@@ -108,24 +108,32 @@ class ResetNewPasswordScreen extends StatelessWidget {
                       }
                     },
                     builder: (context, state) {
-                        if (state is UpdatePasswordLoadingState) {
+                      if (state is UpdatePasswordLoadingState) {
                         return CustomButton(
                           isLoading: true,
                         );
                       }
                       return CustomButton(
                         text: AppStrings.confirm,
-                        onPressed: () {
+                        onPressed: () async {
                           debugPrint('code $code');
-                          BlocProvider.of<AuthenticationCubit>(context)
-                              .updatePassword(
-                            UpdatePasswordParameters(
-                              code: code.toString(),
-                              password: passwordController.text.trim(),
-                              passwordConfirm:
-                                  confirmPasswordController.text.trim(),
-                            ),
-                          );
+                          if (await AppConstants.checkConnectivity() ==
+                              ConnectivityResult.none) {
+                            AppConstants.showSnackbar(
+                              context: context,
+                              content: AppStrings.noInternet,
+                            );
+                          } else {
+                            BlocProvider.of<AuthenticationCubit>(context)
+                                .updatePassword(
+                              UpdatePasswordParameters(
+                                code: code.toString(),
+                                password: passwordController.text.trim(),
+                                passwordConfirm:
+                                    confirmPasswordController.text.trim(),
+                              ),
+                            );
+                          }
                         },
                         color: AppColors.textColor,
                         size: 20.sp,

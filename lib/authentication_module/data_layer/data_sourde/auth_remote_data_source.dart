@@ -1,4 +1,6 @@
+import '../../../core/utils/dio_helper.dart';
 import '../../../core/utils/exports.dart';
+import '../../../settings_notifications_module/data_layer/models/user_update_model.dart';
 
 abstract class BaseAuthenticationRemoteDataSource {
   Future<AuthenticationModel> registerUser(RegisterUserParameters parameters);
@@ -10,6 +12,8 @@ abstract class BaseAuthenticationRemoteDataSource {
   Future<void> forgetPassword(String email);
   Future<void> checkCode(String code);
   Future<void> updatePassword(UpdatePasswordParameters parameters);
+   Future<UserUpdateModel> updateUserInfo(RegisterUserParameters parameters);
+
 }
 
 class AuthenticationRemoteDataSource
@@ -163,4 +167,32 @@ class AuthenticationRemoteDataSource
       );
     }
   }
+
+  @override
+  Future<UserUpdateModel> updateUserInfo(RegisterUserParameters parameters)async {
+        FormData data = FormData.fromMap({
+                 'name': parameters.name,
+      'email': parameters.email,
+      'password': parameters.password,
+      'password confirmation': parameters.passwordConfirm,
+      'gender': parameters.gender,
+      'birth_date': parameters.birthDate,
+      'photo':parameters.photo==null?null:   await MultipartFile.fromFile(parameters.photo!, ),
+      'phone_number':parameters.phone,
+    });
+    final Response response =
+        await DioHelper.postData(url: AppConstants.updateProfile,
+        data: data ,
+        token: CashHelper.getData(key: 'token'),
+    );
+    if (response.data['status'] == true) {
+      debugPrint('update info  remote data ${response.data}');
+      return UserUpdateModel.fromJson(response.data);
+    } else {
+      throw ServerException(
+        errorMessageModel: ErrorMessageModel.fromJson(response.data),
+      );
+    }
+  }
+  
 }

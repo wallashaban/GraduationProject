@@ -9,5 +9,7 @@ abstract class BaseAuthenticationRepository {
   Future<Either<Failure,void>> forgetPassword(String email);
   Future<Either<Failure,void>> checkCode(String code);
   Future<Either<Failure,void>> updatePassword(UpdatePasswordParameters parameters);
+  Future<Either<Failure, Authentication>> updateUserInfo(
+      RegisterUserParameters parameters);
 }
 

@@ -14,9 +14,8 @@ import 'package:graduation_project/report_module/domain_layer/use_case/medical_i
 import 'package:graduation_project/report_module/domain_layer/use_case/vaccination_report_usecase.dart';
 import 'package:graduation_project/report_module/presentation_layer/controllers/report_state.dart';
 import '../../../core/error/failure.dart';
-import '../../data_layer/model/latest_development_model.dart';
-import '../../data_layer/model/latest_teeth_model.dart';
-import '../../data_layer/model/medical_info_model.dart';
+import '../../../growth_module/domain_layer/entities/growth.dart';
+import '../../domain_layer/use_case/latest_growth_usecase.dart';
 
 class ReportCubit extends Cubit<ReportState> {
   final DiseaseReportUseCase diseaseReportUseCase;
@@ -24,6 +23,7 @@ class ReportCubit extends Cubit<ReportState> {
   final LatestTeethUseCase latestTeethUseCase;
   final MedicalInfoUseCase medicalInfoUseCase;
   final VaccinationReportUseCase vaccinationReportUseCase;
+  final GetLatestGrowthOfChildUseCase getLatestGrowthOfChildUseCase;
 
   Failure serverFailure = const ServerFailure(
     message: 'message',
@@ -34,13 +34,37 @@ class ReportCubit extends Cubit<ReportState> {
     this.latestTeethUseCase,
     this.medicalInfoUseCase,
     this.vaccinationReportUseCase,
+    this.getLatestGrowthOfChildUseCase,
   ) : super(ReportInitialState());
 
-  List<VaccinationReport> allVaccinationReport = [];
-  List<DiseaseReport> allDiseaseReport = [];
+  List<VaccinationReport>? allVaccinationReport;
+  List<DiseaseReport>? allDiseaseReport;
   LatestDevelopment? latestDevelopment;
   LatestTeeth? latestTeeth;
   MedicalInfo? medicalInfo;
+  Growth? growth;
+
+  Future getLatestGrowthOfChild() async {
+    emit(GetLatestGrowthLoadingSatate());
+    final result = await getLatestGrowthOfChildUseCase(const NoParameters());
+    result.fold(
+      (l) {
+        serverFailure = l;
+        debugPrint('error stop ${l.message.toString()}');
+        emit(
+          GetLatestGrowthErrorSatate(
+            error: l.message.toString(),
+          ),
+        );
+      },
+      (r) {
+        growth = r;
+        emit(GetLatestGrowthSuccessSatate());
+      },
+    );
+  }
+
+
   Future vaccinationReports() async {
     emit(VaccinationReportLoadingState());
     final result = await vaccinationReportUseCase(const NoParameters());

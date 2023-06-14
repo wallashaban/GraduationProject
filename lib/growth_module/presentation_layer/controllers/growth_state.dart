@@ -9,6 +9,17 @@ abstract class GrowthState extends Equatable {
 
 class GrowthInitial extends GrowthState {}
 
+class EditGrowthLoadingSatate extends GrowthState {}
+
+class EditGrowthSuccessSatate extends GrowthState {}
+
+class EditGrowthErrorSatate extends GrowthState {
+ final String error;
+ const EditGrowthErrorSatate({
+    required this.error,
+  });
+}
+
 class ClaculateGrowthLoadingSatate extends GrowthState {}
 
 class ClaculateGrowthSuccessSatate extends GrowthState {}
@@ -16,6 +27,17 @@ class ClaculateGrowthSuccessSatate extends GrowthState {}
 class ClaculateGrowthErrorSatate extends GrowthState {
  final String error;
  const ClaculateGrowthErrorSatate({
+    required this.error,
+  });
+}
+
+class GetRangeGrowthLoadingSatate extends GrowthState {}
+
+class GetRangeGrowthSuccessSatate extends GrowthState {}
+
+class GetRangeGrowthErrorSatate extends GrowthState {
+ final String error;
+ const GetRangeGrowthErrorSatate({
     required this.error,
   });
 }
@@ -30,3 +52,4 @@ class GetAllGrowthErrorSatate extends GrowthState {
     required this.error,
   });
 }
+

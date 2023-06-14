@@ -1,10 +1,13 @@
+import 'package:graduation_project/core/utils/dio_helper.dart';
+
 import '../../../core/utils/exports.dart';
 import '../models/prescribtion_model.dart';
 
 abstract class BasePrescriptionRemotDataSource {
-    //prescription
+  //prescription
 
-  Future<GeneralModel> storePrescribtion(PresccriptionParameters parameters);
+  Future<PrescribtionModel> storePrescribtion(
+      PresccriptionParameters parameters);
   Future<List<PrescribtionModel>> getAllPrescriptions();
   Future<PrescribtionModel> getSinglePrescription(int id);
   Future<PrescribtionModel> updatePrescription(
@@ -13,8 +16,8 @@ abstract class BasePrescriptionRemotDataSource {
   Future<GeneralModel> deletePrescriPtion(int id);
 }
 
-class PrescriptionRemoteDataSource implements BasePrescriptionRemotDataSource{
-   Dio? dio;
+class PrescriptionRemoteDataSource implements BasePrescriptionRemotDataSource {
+  Dio? dio;
   String token =
       'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2JhYnktaGVhbHRoLWNhcmUuc29uaWNhci50ZWNoL2FwaS9hdXRoL2xvZ2luIiwiaWF0IjoxNjgwODIxMzgxLCJuYmYiOjE2ODA4MjEzODEsImp0aSI6ImxJbFNuU1NEQ1lGOERlekQiLCJzdWIiOiIyIiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.8FI98FIdeduQZmJEVlk7sW5BfcEB4Kxjq6zK9YhrXlk';
 
@@ -29,11 +32,11 @@ class PrescriptionRemoteDataSource implements BasePrescriptionRemotDataSource{
     dio = Dio(options);
   }
 
-
-   @override
+  @override
   Future<GeneralModel> deletePrescriPtion(int id) async {
-    final Response response = await dio!.delete(
-      '${AppConstants.deletePrescription} $id',
+    final Response response = await DioHelper.deleteData(
+      url: '${AppConstants.deletePrescription} $id',
+      token: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint('delete prescription remote data ${response.data}');
@@ -45,10 +48,11 @@ class PrescriptionRemoteDataSource implements BasePrescriptionRemotDataSource{
     }
   }
 
- @override
+  @override
   Future<List<PrescribtionModel>> getAllPrescriptions() async {
-    final Response response = await dio!.get(
-      AppConstants.getAllPrescriptions,
+    final Response response = await DioHelper.getData(
+      url: AppConstants.getAllPrescriptions,
+      bearerToken: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint('prescription  remote data ${response.data}');
@@ -61,10 +65,12 @@ class PrescriptionRemoteDataSource implements BasePrescriptionRemotDataSource{
       );
     }
   }
-@override
+
+  @override
   Future<PrescribtionModel> getSinglePrescription(int id) async {
-    final Response response = await dio!.get(
-      '${AppConstants.getSinglePrescripton}$id',
+    final Response response = await DioHelper.getData(
+      url: '${AppConstants.getSinglePrescripton}$id',
+      bearerToken: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint(
@@ -76,49 +82,50 @@ class PrescriptionRemoteDataSource implements BasePrescriptionRemotDataSource{
       );
     }
   }
- @override
-  Future<GeneralModel> storePrescribtion(
+
+  @override
+  Future<PrescribtionModel> storePrescribtion(
       PresccriptionParameters parameters) async {
-        FormData data = FormData.fromMap({
-            'note': parameters.note,
-      'date': parameters.date,
-       "file":
-          parameters.file==null?null:   await MultipartFile.fromFile(parameters.file!, ),
-    });
-    final Response response =
-        await dio!.post(AppConstants.storePrescription,
-        data: data /* queryParameters: {
+    FormData data = FormData.fromMap({
       'note': parameters.note,
       'date': parameters.date,
-      'file': parameters.file,
-    } */
+      "file": parameters.file == null
+          ? null
+          : await MultipartFile.fromFile(
+              parameters.file!,
+            ),
+    });
+    final Response response = await DioHelper.postData(
+      url: AppConstants.storePrescription,
+      token: CashHelper.getData(key: 'token'),
+      data: data,
     );
     if (response.data['status'] == true) {
       debugPrint('store prescription details  remote data ${response.data}');
-      return GeneralModel.fromJson(response.data);
+      return PrescribtionModel.fromJson(response.data['data']);
     } else {
       throw ServerException(
         errorMessageModel: ErrorMessageModel.fromJson(response.data),
       );
     }
   }
+
   @override
   Future<PrescribtionModel> updatePrescription(
       PresccriptionParameters parameters) async {
-          FormData data = FormData.fromMap({
-            'note': parameters.note,
+    FormData data = FormData.fromMap({
+      'note': parameters.note,
       'date': parameters.date,
-     if(parameters.file!=null)  "file":
-            await MultipartFile.fromFile(parameters.file!, ),
+      if (parameters.file != null)
+        "file": await MultipartFile.fromFile(
+          parameters.file!,
+        ),
     });
-    final Response response = await dio!.post(
-        '${AppConstants.updatePrescription}${parameters.id}',data: data,
-        // queryParameters: {
-        //   'note': parameters.note,
-        //   'date': parameters.date,
-        //   'file': parameters.file,
-        // },
-        );
+    final Response response = await DioHelper.postData(
+      url: '${AppConstants.updatePrescription}${parameters.id}',
+      data: data,
+      token: CashHelper.getData(key: 'token'),
+    );
     if (response.data['status'] == true) {
       debugPrint(
           'update prescription details  remote data ${response.data['data']}');
@@ -129,6 +136,4 @@ class PrescriptionRemoteDataSource implements BasePrescriptionRemotDataSource{
       );
     }
   }
-
- 
 }

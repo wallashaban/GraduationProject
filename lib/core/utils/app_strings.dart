@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'shared_pref.dart';
 
 class AppStrings {
   static const String yes = 'نعم';
   static const String no = 'لا';
+  static const String year = 'سنه';
 
   static const String loginText = 'تسجيل الدخول';
   static const String emilTextForm = ' البريد الالكترونى  او رقم الهاتف';
@@ -13,7 +13,7 @@ class AppStrings {
   static const String remeberMe = 'تذكرنى';
   static const String forgetPassword = 'نسيت كلمه المرور؟';
   static const String setPassword = 'ضبط كلمه المرور';
-
+  static const String noInternet = 'لا يوجد واى فاى';
   static const String use = 'او باستخدام';
   static const String createAccount = 'انشاء حساب';
   static const String notHaveAccount = 'ليس لديك حساب؟';
@@ -57,7 +57,6 @@ class AppStrings {
   static const String enternewpassword = 'كلمه المرور الجديده';
   static const String enternewpasswordconfirmation =
       'تأكيد كلمه المرور الجديده';
-  //static String? token;
   static String nameText = 'برجاء ادخال الاسم';
   static String birthdateText = 'برجاء ادخال تاريخ الميلاد';
   static String confirmText = 'برجاء تاكيد كلمه المرور';
@@ -90,13 +89,17 @@ class AppStrings {
   static String toothName = 'اسم السن';
   static String date = 'تاريخ الظهور';
   static String age = 'المرحله العمريه';
+  static String childAge = 'العمر';
+
   static String month = 'اشهر';
   static String addNewRecord = 'اضافه تسجبل جديد';
   static const String tips = 'نصائح';
   static const String medicationReminder = 'منبه الدواء';
 
   static const String reminderDetails =
-      '''اضف ادويتك ... و نحن نقوم بتذكيرك قم باضافه الادويه التى تستعملها الى تنبيهاتك الطبيه لنتمكن من تذكيرك بها فى اوقاتها ''';
+      '''اضف ادويتك ... و نحن نقوم بتذكيرك  ''';
+  static const String reminderDetails2 =
+      'قم بإضافة الأدوية التي تستعملها إلي تنبيهاتك الطبية';
   static const String addReminder = 'اضافه منبه';
   static const String addNewReminder = 'اضافه منبه جديد';
   static const String time = 'الوقت';
@@ -136,7 +139,10 @@ class AppStrings {
   static const String showTest = 'عرض التحليل';
   static const String noTests = 'لا توجد تحاليل سابقه';
   static const String noRecords = 'لا توجد تسجيلات سابقه';
+  static const String noReports = 'لا توجد تقارير بعد';
+
   static const String acount = 'حسابى';
+  static const String addNewBaby = 'أضف طفل جديد';
   static const String stars = 'اعطى صحه طفلى خمسه نجوم';
   static const String toldFriends = 'اخبر أصدقائك عن صحه طفلى';
   static const String aboutApp = 'عن التطبيق';
@@ -164,7 +170,7 @@ class AppStrings {
   static const String cantDiagnose =
       'للاسف لا يمكننى تشخيص هذا المرض فى الوقت الراهن';
   static const String addNewDiagnose = 'اضافه تشخيص جديد';
-  static const String noResults = 'لا توجد نتائج بعد';
+  static const String noResults = 'لا توجد نتائج بعد !';
   static const String robbotAdvice =
       'ليس من المفترض إستبدال طبيبك و لا أقدم أي ضمانات لدقة نتائجي يرجي التواصل مع طبيبك للحصول علي تشخصيات و نتائج دقيقة';
 
@@ -178,7 +184,7 @@ class AppStrings {
   static const String vaccineTime = 'التطعيمات وتوقيتها';
   static const String sideEffects = 'الاثار الجانبيه';
   static const String proposedVaccineTime = 'التوقيت المقترح للتطعيم';
-  static const String vaccinedate = 'معاد التطعيم';
+  static const String vaccinedate = 'ميعاد التطعيم';
   static const String reminderDate = 'سوف نقوم بتذكيرك بتاريخ: ';
   static const String vaccineNon = 'لم يتم التطعيم';
   static const String vaccinedone = 'تم التطعيم';
@@ -195,6 +201,8 @@ class AppStrings {
   static const String personalInfo = 'معلومات شخصيه';
   static const String developmentInfo = 'معلومات التطور';
   static const String teethInfo = 'معلومات الاسنان';
+  static const String growthInfo = 'معلومات النمو';
+
   static const String vaccineInfo = 'التطعيمات ';
   static const String diseaseInfo = 'الامراض';
   static const String babyDisease = 'الامراض التى اصيب بها طفلك :';
@@ -227,9 +235,19 @@ class AppStrings {
   static const String kg = 'كجم';
   static const String saveSuccess = 'تم حفظ البيانات بنجاح';
   static const String growthHistory = 'تاريخ التسجيل';
+  static const String skip = 'تخطى';
+  static const String onboardingTitle1 =
+      'يجب إدخال بيانات الطفل و ليس بيانات المستخدم';
+  static const String onboardingTitle2 =
+      'عند إنشاء حساب طفلك يمكنك إدخال رقم الهاتف أو إدخال البريد الإلكتروني';
+  static const String onboardingTitle3 =
+      'يمكنك إنشاء حساب علي قلب ماما لكل طفل و إدراتها كلها من خلال الإعدادات';
+  static const String noNotification = 'لا توجد اشعارات';
+  static const String noNoti = 'سنرسل لك الاشعارات عند الضرورة';
   // static const String no = 'لا';
-  //static const String no = 'لا';
 
   static double width = 163.w;
   static var userData;
 }
+
+String token = '';

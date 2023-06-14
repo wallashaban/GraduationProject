@@ -1,8 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:graduation_project/core/utils/exports.dart';
-import 'package:graduation_project/settings_notifications_module/presentation_layer/cotrollers/reports_state.dart';
-import 'package:graduation_project/settings_notifications_module/presentation_layer/cotrollers/settings_notifications_cubit.dart';
+import 'package:graduation_project/settings_notifications_module/presentation_layer/cotrollers/settings_notifications_state.dart';
 
 class ContactUsScreen extends StatelessWidget {
   ContactUsScreen({super.key});
@@ -52,11 +51,6 @@ class ContactUsScreen extends StatelessWidget {
                         AppConstants.showSnackbar(
                             context: context, content: state.error);
                       }
-                      if (state is MakeReviewLoadingState) {
-                        isLoading = true;
-                      } else {
-                        isLoading = false;
-                      }
                       if (state is MakeReviewSuccessState) {
                         AppConstants.showSnackbar(
                           context: context,
@@ -65,15 +59,21 @@ class ContactUsScreen extends StatelessWidget {
                       }
                     },
                     builder: (context, state) {
-                      return CustomButton(
-                          isLoading: isLoading,
-                          text: AppStrings.send,
-                          onPressed: () {
-                            BlocProvider.of<SettingsNotificationsCubit>(context)
-                                .makeReview(
-                              controller.text,
-                            );
-                          });
+                      if (state is MakeReviewLoadingState) {
+                        return CustomButton(
+                          isLoading: true,
+                        );
+                      } else {
+                        return CustomButton(
+                            text: AppStrings.send,
+                            onPressed: () {
+                              BlocProvider.of<SettingsNotificationsCubit>(
+                                      context)
+                                  .makeReview(
+                                controller.text,
+                              );
+                            });
+                      }
                     },
                   )
                 ],
@@ -88,6 +88,7 @@ class ContactUsScreen extends StatelessWidget {
 
 Widget textAreaWidget(controller) => Container(
       decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.r),
           // color: Colors.transparent,
           boxShadow: [
             BoxShadow(
@@ -95,19 +96,21 @@ Widget textAreaWidget(controller) => Container(
                 blurRadius: 5.r,
                 blurStyle: BlurStyle.outer),
           ]),
-      child: TextFormField(
-          cursorColor: AppColors.appBarColor,
-          controller: controller,
-          textInputAction: TextInputAction.done,
-          minLines: 12,
-          maxLines: 12,
-          keyboardType: TextInputType.multiline,
-          validator: (value) {
-            return null;
-          },
-          decoration: InputDecoration(
-            hintText: AppStrings.opinions,
-            filled: true,
-            fillColor: AppColors.white,
-          )),
+      child: ClipRRect(
+        child: TextFormField(
+            cursorColor: AppColors.appBarColor,
+            controller: controller,
+            textInputAction: TextInputAction.done,
+            minLines: 12,
+            maxLines: 12,
+            keyboardType: TextInputType.multiline,
+            validator: (value) {
+              return null;
+            },
+            decoration: InputDecoration(
+              hintText: AppStrings.opinions,
+              filled: true,
+              fillColor: AppColors.white,
+            )),
+      ),
     );

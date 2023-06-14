@@ -1,7 +1,6 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:graduation_project/core/utils/exports.dart';
-import '../controllers/vaccinations_cubit.dart';
 
 class VaccinationReminderScreen extends StatelessWidget {
   const VaccinationReminderScreen({super.key});
@@ -16,8 +15,13 @@ class VaccinationReminderScreen extends StatelessWidget {
           title: const CustomText(
             text: AppStrings.vaccineReminder,
           ),
-          leading: const Icon(
-            Icons.arrow_back,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+            ),
           ),
         ),
         body: BlocBuilder<VaccinationsCubit, VaccinationsState>(

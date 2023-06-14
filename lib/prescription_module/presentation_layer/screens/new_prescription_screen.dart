@@ -1,4 +1,6 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, use_build_context_synchronously
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:graduation_project/core/caching_data/pres_cach.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/prescription_module/domain_layer/entities/prescribtion.dart';
 
@@ -6,7 +8,7 @@ import '../../../medical_tests_module/presentation_layer/widgets/date_text_form_
 import '../widgets/custom_divider.dart';
 
 class PresParameters {
-  Presccription? presccription;
+  PresCach? presccription;
   bool isEdit;
   PresParameters({
     this.presccription,
@@ -25,7 +27,6 @@ class NewPrescriptionScreen extends StatelessWidget {
   var isLoading = false;
   @override
   Widget build(BuildContext context) {
-    var cubit = BlocProvider.of<PrescriptionCubit>(context);
     if (presParameters.presccription != null) {
       noteController.text =
           presParameters.presccription!.note ?? 'لا توجد ملاحظات لعرضها';
@@ -60,19 +61,14 @@ class NewPrescriptionScreen extends StatelessWidget {
                   AppConstants.showSnackbar(
                       context: context, content: state.error);
                 }
-                if (state is StorePrescriptionLoadingState ||
-                    state is UpdatePrescriptionLoadingState) {
-                  isLoading = true;
-                } else {
-                  isLoading = false;
-                }
+               
                 if (state is StorePrescriptionSuccessState) {
                   AppConstants.showSnackbar(
-                      context: context, content: cubit.prescription.message);
+                      context: context, content: AppStrings.saveSuccess);
                 }
                 if (state is UpdatePrescriptionSuccessState) {
                   AppConstants.showSnackbar(
-                      context: context, content: cubit.prescription.message);
+                      context: context, content: AppStrings.saveSuccess);
                 }
               },
               builder: (context, state) {
@@ -94,9 +90,7 @@ class NewPrescriptionScreen extends StatelessWidget {
                       SizedBox(
                         height: 10.h,
                       ),
-                      DateTextFormField(
-                        controller: dateController,
-                      ),
+                      const DateTextFormField(),
                       SizedBox(
                         height: 20.h,
                       ),
@@ -109,27 +103,6 @@ class NewPrescriptionScreen extends StatelessWidget {
                       SizedBox(
                         height: 20.h,
                       ),
-                      /*  Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SvgPicture.asset(
-                            AppImages.pdfImage,
-                            width: 60.w,
-                            height: 90.h,
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.delete,
-                              color: AppColors.textColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-          */
                       if (cubit.pickedFile != null)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -144,8 +117,8 @@ class NewPrescriptionScreen extends StatelessWidget {
                                 cubit.canselPickedFile();
                               },
                               icon: Icon(
-                                Icons.delete,
-                                color: AppColors.textColor,
+                                Icons.delete_outline,
+                                color: AppColors.appBarColor,
                               ),
                             ),
                           ],
@@ -160,56 +133,68 @@ class NewPrescriptionScreen extends StatelessWidget {
                               },
                               icon: Icon(
                                 Icons.camera_alt_sharp,
-                                color: AppColors.textColor,
+                                color: AppColors.appBarColor,
                               ),
                             ),
-                            // IconButton(
-                            //   onPressed: () {
-                            //     cubit.pickImage();
-                            //   },
-                            //   icon: Icon(
-                            //     Icons.attachment_sharp,
-                            //     color: AppColors.textColor,
-                            //   ),
-                            // ),
                           ],
                         ),
-                      Center(
-                          child: CustomButton(
-                              isLoading: isLoading,
-                              size: 18.sp,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.textColor,
-                              text: presParameters.isEdit
-                                  ? AppStrings.edit
-                                  : AppStrings.addNewrRgeta,
-                              onPressed: () {
-                                if (formkey.currentState!.validate()) {
-                                  if (presParameters.isEdit) {
-                                    cubit.pickedFile == null
-                                        ? cubit.updatePrescription(
-                                            PresccriptionParameters(
-                                                note: noteController.text,
-                                                date: dateController.text,
-                                                id: presParameters
-                                                    .presccription!.id))
-                                        : cubit.updatePrescription(
-                                            PresccriptionParameters(
-                                                note: noteController.text,
-                                                date: dateController.text,
-                                                file: cubit.filePath,
-                                                id: presParameters
-                                                    .presccription!.id));
-                                  } else {
-                                    cubit.storePrescription(
-                                        PresccriptionParameters(
-                                      note: noteController.text,
-                                      date: dateController.text,
-                                      file: cubit.filePath,
-                                    ));
-                                  }
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      if ((state is StorePrescriptionLoadingState) ||
+                          (state is UpdatePrescriptionLoadingState))
+                        CustomButton(
+                          isLoading: true,
+                        ),
+                      if ((state is! StorePrescriptionLoadingState)&& 
+                      (state is! UpdatePrescriptionLoadingState))
+                        CustomButton(
+                            text: presParameters.isEdit
+                                ? AppStrings.edit
+                                : AppStrings.saveData,
+                            onPressed: () async {
+                              if (await AppConstants.checkConnectivity() ==
+                                  ConnectivityResult.none) {
+                                AppConstants.showSnackbar(
+                                  context: context,
+                                  content: AppStrings.noInternet,
+                                );
+                              } else if (formkey.currentState!.validate()) {
+                                if (presParameters.isEdit) {
+                                  cubit.pickedFile == null
+                                      ? cubit.updatePrescription(
+                                          PresccriptionParameters(
+                                              note: noteController.text,
+                                              date: BlocProvider.of<
+                                                          TeethDevelopmentCubit>(
+                                                      context)
+                                                  .date,
+                                              id:
+                                                  presParameters
+                                                      .presccription!.id))
+                                      : cubit.updatePrescription(
+                                          PresccriptionParameters(
+                                              note: noteController.text,
+                                              date: BlocProvider.of<
+                                                          TeethDevelopmentCubit>(
+                                                      context)
+                                                  .date,
+                                              file: cubit.filePath,
+                                              id: presParameters
+                                                  .presccription!.id));
+                                } else {
+                                  cubit.storePrescription(
+                                      PresccriptionParameters(
+                                    note: noteController.text,
+                                    date:
+                                        BlocProvider.of<TeethDevelopmentCubit>(
+                                                context)
+                                            .date,
+                                    file: cubit.filePath,
+                                  ));
                                 }
-                              })),
+                              }
+                            }),
                     ],
                   ),
                 );

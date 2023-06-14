@@ -53,7 +53,7 @@ class MedicalTestsRepository implements BaseMedicalTestsRepository {
     }
   }
  @override
-  Future<Either<Failure, General>> storeMedicalTest(MediaclTestParameters parameters)  async {
+  Future<Either<Failure, MediaclTest>> storeMedicalTest(MediaclTestParameters parameters)  async {
     
     try {
       final result = await baseMedicalTestsRemoteDataSource.storeMedicalTest(
@@ -69,7 +69,7 @@ class MedicalTestsRepository implements BaseMedicalTestsRepository {
     }
   }
  @override
-  Future<Either<Failure, General>> updateMedicalTest(MediaclTestParameters parameters)  async {
+  Future<Either<Failure, MediaclTest>> updateMedicalTest(MediaclTestParameters parameters)  async {
     
     try {
       final result = await baseMedicalTestsRemoteDataSource.updateMedicalTest(

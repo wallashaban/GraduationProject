@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:graduation_project/core/utils/app_colors.dart';
 import 'package:graduation_project/core/utils/app_strings.dart';
 import 'package:graduation_project/prescription_module/presentation_layer/widgets/custom_divider.dart';
@@ -39,6 +38,9 @@ class VaccineInfoWidget extends StatelessWidget {
       child: Column(
         children: [
           const ReportTextWidget(text: AppStrings.vaccineInfo),
+          SizedBox(
+            height: 10.h,
+          ),
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -48,7 +50,7 @@ class VaccineInfoWidget extends StatelessWidget {
                 CustomText(
                   text: vaccinationReportModel[index].name,
                   size: 14.sp,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                 ),
                 Row(
                   children: [
@@ -63,10 +65,17 @@ class VaccineInfoWidget extends StatelessWidget {
                       size: 12.sp,
                       color: AppColors.darkGreyColor,
                     ),
-                    const Icon(
-                      Icons.check_box,
-                      color: Colors.green,
+                    SizedBox(
+                      width: 5.w,
                     ),
+                    CircleAvatar(
+                        radius: 9.r,
+                        backgroundColor: AppColors.appBarColor,
+                        child: Icon(
+                          Icons.check_rounded,
+                          color: AppColors.white,
+                          size: 16.r,
+                        )),
                   ],
                 ),
                 if (index != vaccinationReportModel.length - 1)

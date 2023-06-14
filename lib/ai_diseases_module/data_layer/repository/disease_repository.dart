@@ -1,11 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:graduation_project/ai_diseases_module/data_layer/data_source/disease_remote_data_source.dart';
-import 'package:graduation_project/medical_details_module/domain_layer/entites/general.dart';
-import 'package:graduation_project/core/use_case/base_use_case.dart';
-import 'package:graduation_project/core/error/failure.dart';
 import 'package:graduation_project/ai_diseases_module/domain_layer/entities/disease.dart';
 
-import '../../../core/error/exception.dart';
 import '../../../core/utils/exports.dart';
 import '../../domain_layer/repository/disease_base_repository.dart';
 
@@ -29,7 +25,7 @@ class DiseaseRepository implements DiseaseBaseRepository {
   }
 
   @override
-  Future<Either<Failure, List<AiDisease>>> getAllAiDiseases() async {
+  Future<Either<Failure, List<AiDiseasee>>> getAllAiDiseases() async {
     try {
       final result = await baseDiseaseRemoteDataSource.getAiDisease();
       return Right(result);
@@ -43,7 +39,7 @@ class DiseaseRepository implements DiseaseBaseRepository {
   }
 
   @override
-  Future<Either<Failure, General>> storeAiDisease(
+  Future<Either<Failure, AiDiseasee>> storeAiDisease(
       DiseaseParameters parameters) async {
     try {
       final result =

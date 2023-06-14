@@ -13,7 +13,7 @@ class VaccinationRepository implements BaseVaccinationRepository {
   VaccinationRepository(this.baseVaccinationRemoteDataSource);
 
   @override
-  Future<Either<Failure, General>> attatchVaccination(List ids)async {
+  Future<Either<Failure, General>> attatchVaccination(int ids)async {
     try {
       final result = await baseVaccinationRemoteDataSource.attatchVaccination(
       ids,

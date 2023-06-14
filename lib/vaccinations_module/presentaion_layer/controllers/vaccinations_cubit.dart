@@ -8,7 +8,6 @@ import '../../domain_layer/use_cases/get_all_vaccination_use_case.dart';
 import '../../domain_layer/use_cases/get_single_vaccination_use_case.dart';
 import '../../domain_layer/use_cases/stop_or_active_vaccination_use_case.dart';
 
-
 part 'vaccinations_state.dart';
 
 class VaccinationsCubit extends Cubit<VaccinationsState> {
@@ -32,7 +31,7 @@ class VaccinationsCubit extends Cubit<VaccinationsState> {
     message: 'message',
   );
 
-  List<Vaccination> allVaccinations = [];
+  List<Vaccination>? allVaccinations;
   Vaccination vaccination = const VaccinationModel(
     id: 1,
     name: 'name',
@@ -46,11 +45,16 @@ class VaccinationsCubit extends Cubit<VaccinationsState> {
     sideEffects: '',
     vaccinationDate: '',
   );
+  /* getData() {
+    if (allVaccinations == null) {
+      debugPrint('statement');
+      getAllVaccinations();
+    }
+  } */
 
-  Future getAllVaccinations() async {
-    emit(GetAllVaccinationsLoadingState());
+  getAllVaccinations() async {
     final result = await getAllVaccinationUseCase(const NoParameters());
-
+    emit(GetAllVaccinationsLoadingState());
     result.fold(
       (l) {
         serverFailure = l;
@@ -63,6 +67,7 @@ class VaccinationsCubit extends Cubit<VaccinationsState> {
       },
       (r) {
         allVaccinations = r;
+        debugPrint('all vaccines ${allVaccinations!.length}');
         emit(GetAllVaccinationsSuccessState());
       },
     );
@@ -89,7 +94,7 @@ class VaccinationsCubit extends Cubit<VaccinationsState> {
     );
   }
 
-  Future attatchVaccination(List ids) async {
+  Future attatchVaccination(int ids) async {
     emit(AttatchVaccinationLoadingState());
     final result = await attachVaccinationUseCase(ids);
 
@@ -133,7 +138,7 @@ class VaccinationsCubit extends Cubit<VaccinationsState> {
   }
 
   bool isOn = true;
-  Future changeToggleStatus() async{
+  Future changeToggleStatus() async {
     isOn = !isOn;
     CashHelper.saveData(key: 'reminder', value: isOn);
   }
@@ -141,20 +146,18 @@ class VaccinationsCubit extends Cubit<VaccinationsState> {
   Future showMessage(context) async {
     changeToggleStatus().then((value) {
       if (isOn) {
-      showMessageComponent(
-        context: context,
-        isOn: isOn,
-      );
-      
-      stopOrActiveVaccination(1);}
+        showMessageComponent(
+          context: context,
+          isOn: isOn,
+        );
 
-    else{
-      showMessageComponent(context: context, isOn: isOn);
-      stopOrActiveVaccination(0);
-    }});
-    
-      
-    
+        stopOrActiveVaccination(1);
+      } else {
+        showMessageComponent(context: context, isOn: isOn);
+        stopOrActiveVaccination(0);
+      }
+    });
+
     emit(ShowMessageSuccessState());
     emit(ChangeDialogSuccessState());
   }

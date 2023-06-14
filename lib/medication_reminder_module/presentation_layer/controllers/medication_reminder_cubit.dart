@@ -24,7 +24,7 @@ class MedicationReminderCubit extends Cubit<ReminderState> {
     status: false,
   );
   List days = [];
-  List<Reminder> allReminders = [];
+  List<Reminder>? allReminders;
   Reminder reminder = const ReminderModel(
     id: 1,
     reminderName: 'reminderName',
@@ -175,6 +175,8 @@ class MedicationReminderCubit extends Cubit<ReminderState> {
       },
       (r) {
         allReminders = r;
+        debugPrint('all reminders cubit$allReminders');
+        getAllDays();
         emit(GetAllRemindersSuccessState());
       },
     );

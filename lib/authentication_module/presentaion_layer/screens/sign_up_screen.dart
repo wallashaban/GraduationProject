@@ -1,5 +1,6 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:graduation_project/authentication_module/presentaion_layer/widgets/radio_widget.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 
@@ -275,7 +276,7 @@ class SignUpScreen extends StatelessWidget {
                               );
                             }
                             return CustomButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (emailController.text.isEmpty &&
                                     phoneController.text.isEmpty) {
                                   AppConstants.showSnackbar(
@@ -284,20 +285,31 @@ class SignUpScreen extends StatelessWidget {
                                         'برجاء ادخال رقم الهاتف او البريد الالكترونى',
                                   );
                                 } else if (formKey.currentState!.validate()) {
-                                  cubit.registerUser(
-                                    RegisterUserParameters(
-                                      name: nameController.text,
-                                      email: emailController.text.trim(),
-                                      password: passwordController.text.trim(),
-                                      passwordConfirm:
-                                          confirmPasswordController.text.trim(),
-                                      gender: cubit.gender,
-                                      birthDate: birthdateController.text,
-                                      fcmToken: CashHelper.getData(key: 'fcmToken'),
-                                      photo: cubit.filePath,
-                                      phone: phoneController.text,
-                                    ),
-                                  );
+                                  if (await AppConstants.checkConnectivity() ==
+                                      ConnectivityResult.none) {
+                                    AppConstants.showSnackbar(
+                                      context: context,
+                                      content: AppStrings.noInternet,
+                                    );
+                                  } else {
+                                    cubit.registerUser(
+                                      RegisterUserParameters(
+                                        name: nameController.text,
+                                        email: emailController.text.trim(),
+                                        password:
+                                            passwordController.text.trim(),
+                                        passwordConfirm:
+                                            confirmPasswordController.text
+                                                .trim(),
+                                        gender: cubit.gender,
+                                        birthDate: birthdateController.text,
+                                        fcmToken:
+                                            CashHelper.getData(key: 'fcmToken'),
+                                        photo: cubit.filePath,
+                                        phone: phoneController.text,
+                                      ),
+                                    );
+                                  }
                                 }
                               },
                               text: AppStrings.createAccount,

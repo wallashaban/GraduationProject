@@ -8,29 +8,39 @@ import 'package:graduation_project/growth_module/data_layer/data_source/growth_r
 import 'package:graduation_project/growth_module/data_layer/repository/growth_repo.dart';
 import 'package:graduation_project/growth_module/domain_layer/repository/growth_base_repo.dart';
 import 'package:graduation_project/growth_module/domain_layer/usecases/calculate_growth_use_case.dart';
-import 'package:graduation_project/growth_module/presentation_layer/controllers/growth_cubit.dart';
 import 'package:graduation_project/settings_notifications_module/data_layer/data_source/settings_notifications_remote_data_source.dart';
 import 'package:graduation_project/settings_notifications_module/domain_layer/use_cases/log_out_use_case.dart';
 import 'package:graduation_project/settings_notifications_module/domain_layer/use_cases/make_review_use_case.dart';
-import 'package:graduation_project/settings_notifications_module/presentation_layer/cotrollers/settings_notifications_cubit.dart';
 
 import '../../ai_diseases_module/domain_layer/use_cases/get_ai_sisease_use_case.dart';
-import '../../ai_diseases_module/presentation_layer/cubit/disease_cubit.dart';
+import '../../authentication_module/domain_layer/use_cases/update_user_info_use_case.dart';
+import '../../development_flow_module/data_layer/data_source/development_flow_remote_data_source.dart';
+import '../../development_flow_module/data_layer/repository/development_flow_repository.dart';
+import '../../development_flow_module/domain_layer/base_repository/development_flow_repository.dart';
+import '../../development_flow_module/domain_layer/use_case/create_tips_usecase.dart';
+import '../../development_flow_module/domain_layer/use_case/get_all_tips_usecase.dart';
+import '../../development_flow_module/domain_layer/use_case/get_questions_usecase.dart';
+import '../../development_flow_module/domain_layer/use_case/get_subjects_with_question_usecase.dart';
+import '../../development_flow_module/domain_layer/use_case/update_tips_usecase.dart';
+import '../../development_flow_module/presentation_layer/controllers/development_flow_cubit.dart';
+import '../../growth_module/domain_layer/usecases/edit_growth_use_case.dart';
 import '../../growth_module/domain_layer/usecases/get_all_growth_use_case.dart';
+import '../../growth_module/domain_layer/usecases/get_range_growth_of_chld_use_case.dart';
+import '../../medical_details_module/domain_layer/use_cases/show_details_use_case.dart';
 import '../../medical_details_module/domain_layer/use_cases/update_details_use_case.dart';
 import '../../report_module/data_layer/data_source/report_remote_data_source.dart';
 import '../../report_module/data_layer/repository/report_repository.dart';
 import '../../report_module/domain_layer/base_repository/base_report_repository.dart';
 import '../../report_module/domain_layer/use_case/disease_report_usecase.dart';
 import '../../report_module/domain_layer/use_case/latest_development_usecase.dart';
+import '../../report_module/domain_layer/use_case/latest_growth_usecase.dart';
 import '../../report_module/domain_layer/use_case/latest_teeth_usecase.dart';
 import '../../report_module/domain_layer/use_case/medical_info_usecase.dart';
 import '../../report_module/domain_layer/use_case/vaccination_report_usecase.dart';
-import '../../report_module/presentation_layer/controllers/report_cubit.dart';
 import '../../settings_notifications_module/data_layer/repository/settings_notifications_repository.dart';
 import '../../settings_notifications_module/domain_layer/repository/settings_notifications_base_repo.dart';
 import '../../settings_notifications_module/domain_layer/use_cases/get_history_notifications_use_case.dart';
-import '../../settings_notifications_module/domain_layer/use_cases/update_user_info_use_case.dart';
+import '../../teeth_develpoment_module/domain_layer/use_cases/get_medical_teeth_use_case.dart';
 import '../../vaccinations_module/data_layer/data_source/vaccination_remote_data_source.dart';
 import '../../vaccinations_module/data_layer/reposirtory/vaccination_repository.dart';
 import '../../vaccinations_module/domain_layer/repository/base_vaccination_repo.dart';
@@ -38,7 +48,6 @@ import '../../vaccinations_module/domain_layer/use_cases/attatch_vaccination_use
 import '../../vaccinations_module/domain_layer/use_cases/get_all_vaccination_use_case.dart';
 import '../../vaccinations_module/domain_layer/use_cases/get_single_vaccination_use_case.dart';
 import '../../vaccinations_module/domain_layer/use_cases/stop_or_active_vaccination_use_case.dart';
-import '../../vaccinations_module/presentaion_layer/controllers/vaccinations_cubit.dart';
 import '../utils/exports.dart';
 import '../../medication_reminder_module/presentation_layer/controllers/medication_reminder_cubit.dart';
 
@@ -98,6 +107,7 @@ class ServiceLocator {
     /// Authentication cubit
     sl.registerFactory(
       () => AuthenticationCubit(
+        sl(),
         sl(),
         sl(),
         sl(),
@@ -322,10 +332,21 @@ class ServiceLocator {
     sl.registerLazySingleton(
       () => GetHistoryNotificationsUseCase(sl()),
     );
-
+     sl.registerLazySingleton(
+      () => GetMedicalTeethUseCase(sl()),
+    );
+     sl.registerLazySingleton(
+      () => GetRangeGrowthOfChildUseCase(sl()),
+    ); sl.registerLazySingleton(
+      () => EditGrowthUseCase(sl()),
+    );
+sl.registerLazySingleton(
+      () => ShowMedicalDetailsUseCase(sl()),
+    );
     /// medical cubit
     sl.registerFactory(
       () => MedicalCubit(
+        sl(),
         sl(),
         sl(),
         
@@ -346,6 +367,7 @@ class ServiceLocator {
     /// teeth cubit
     sl.registerFactory(
       () => TeethDevelopmentCubit(
+        sl(),
         sl(),
         sl(),
         sl(),
@@ -383,7 +405,7 @@ class ServiceLocator {
         sl(),
         sl(),
         sl(),
-        sl(),
+       // sl(),
       ),
     );
     
@@ -437,8 +459,11 @@ class ServiceLocator {
     sl.registerLazySingleton(
       () => VaccinationReportUseCase(sl()),
     );
+    sl.registerLazySingleton(
+      () => GetLatestGrowthOfChildUseCase(sl()),
+    );
     sl.registerFactory(
-      () => ReportCubit(sl(),sl(),sl(),sl(),sl()),
+      () => ReportCubit(sl(),sl(),sl(),sl(),sl(),sl(),),
     );
 
     //aiDisease
@@ -482,32 +507,35 @@ class ServiceLocator {
        () => GetAllGrowthOfChildUseCase(sl()),
      );
      sl.registerFactory(
-      () => GrowthCubit(sl(),sl(),),
+      () => GrowthCubit(sl(),sl(),sl(),sl(),),
     ); 
         //development flow
-    // sl.registerLazySingleton<BaseDevelopmentFlowRemoteDataSource>(
-    //   () => DevelopmentFlowRemoteDataSource(),
-    // );
+     sl.registerLazySingleton<BaseDevelopmentFlowRemoteDataSource>(
+       () => DevelopmentFlowRemoteDataSource(),
+     );
 
-    // sl.registerLazySingleton<BaseDevelopmentFlowRepository>(
-    //   () => DevelopmentFlowRepository(sl()),
-    // );
+     sl.registerLazySingleton<BaseDevelopmentFlowRepository>(
+       () => DevelopmentFlowRepository(sl()),
+     );
 
-    // sl.registerLazySingleton(
-    //   () => AllTipsUseCase(sl()),
-    // );
-    // sl.registerLazySingleton(
-    //   () => QuestionsOfTipUseCase(sl()),
-    // );
-    // sl.registerLazySingleton(
-    //   () => SubjectsWithQuestionsUseCase(sl()),
-    // );
+     sl.registerLazySingleton(
+       () => AllTipsUseCase(sl()),
+     );
+      sl.registerLazySingleton(
+       () => UpdateTipsUseCase(sl()),
+     );
+     sl.registerLazySingleton(
+       () => QuestionsOfTipUseCase(sl()),
+     );
+     sl.registerLazySingleton(
+       () => SubjectsWithQuestionsUseCase(sl()),
+     );
   
-  /*   sl.registerLazySingleton(
+    sl.registerLazySingleton(
       () => CreateTipsUseCase(sl()),
     );
     sl.registerFactory(
       () => DevelopmentFlowCubit(sl(),sl(),sl(),sl(),sl()),
-    ); */
+    );
   }
 }

@@ -1,10 +1,11 @@
 
+import 'package:graduation_project/core/utils/dio_helper.dart';
+
 import '../../../core/utils/exports.dart';
 import '../models/notifiactions_model.dart';
-import '../models/user_update_model.dart';
 
 abstract class BaseSettingsNotificationsRemotDataSource {
-   Future<UserUpdateModel> updateUserInfo(RegisterUserParameters parameters);
+  // Future<UserUpdateModel> updateUserInfo(RegisterUserParameters parameters);
    Future<GeneralModel> logOut();
         Future<GeneralModel> makeReview(String message);
         Future<List<NotificationsModel>> getHistoryNotifications();
@@ -27,7 +28,7 @@ class SettingsNotificationsRemoteDataSource implements BaseSettingsNotifications
     dio = Dio(options);
   }
   
-  @override
+  /* @override
   Future<UserUpdateModel> updateUserInfo(RegisterUserParameters parameters)async {
         FormData data = FormData.fromMap({
                  'name': parameters.name,
@@ -40,8 +41,9 @@ class SettingsNotificationsRemoteDataSource implements BaseSettingsNotifications
       'phone_number':parameters.phone,
     });
     final Response response =
-        await dio!.post(AppConstants.updateProfile,
+        await DioHelper.postData(url: AppConstants.updateProfile,
         data: data ,
+        token: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint('update info  remote data ${response.data}');
@@ -52,12 +54,12 @@ class SettingsNotificationsRemoteDataSource implements BaseSettingsNotifications
       );
     }
   }
-  
+   */
   @override
   Future<GeneralModel> logOut() async {
         
     final Response response =
-        await dio!.post(AppConstants.logOut,);
+        await DioHelper.postData(url: AppConstants.logOut,token: CashHelper.getData(key: 'token'),);
     if (response.data['status'] == true) {
       debugPrint('logout  remote data ${response.data}');
       return GeneralModel.fromJson(response.data);
@@ -75,7 +77,7 @@ class SettingsNotificationsRemoteDataSource implements BaseSettingsNotifications
       
     });
     final Response response =
-        await dio!.post(AppConstants.review,data: data,);
+        await DioHelper.postData(url: AppConstants.review,data: data,token: CashHelper.getData(key: 'token'),);
     if (response.data['status'] == true) {
       debugPrint('review  remote data ${response.data}');
       return GeneralModel.fromJson(response.data);
@@ -90,7 +92,7 @@ class SettingsNotificationsRemoteDataSource implements BaseSettingsNotifications
   Future<List<NotificationsModel>> getHistoryNotifications() async {
         
     final Response response =
-        await dio!.get(AppConstants.notification,);
+        await DioHelper.getData(url: AppConstants.notification,bearerToken: CashHelper.getData(key: 'token'),);
     if (response.data['status'] == true) {
       debugPrint('notification  remote data ${response.data}');
        return List<NotificationsModel>.from((response.data['data'] as List)

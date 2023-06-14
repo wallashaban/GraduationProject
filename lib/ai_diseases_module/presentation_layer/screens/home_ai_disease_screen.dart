@@ -37,6 +37,7 @@ class HomeAiDiseaseScreen extends StatelessWidget {
                         routeName: CashHelper.getData(key: 'visited') == true
                             ? AppRoutes.uploadPhotoOfDiseaseScreen
                             : AppRoutes.advicesPageViewScreen,
+                            arguments: 'skin'
                       );
                     },
                     width: 150.w,
@@ -57,7 +58,15 @@ class HomeAiDiseaseScreen extends StatelessWidget {
                     isMedicalHealthRecord: false,
                     image: AppImages.babiesImage,
                     text: AppStrings.safra,
-                    onTap: () {},
+                    onTap: () {
+                       AppConstants.navigateTo(
+                        context: context,
+                        routeName: CashHelper.getData(key: 'visited') == true
+                            ? AppRoutes.uploadPhotoOfDiseaseScreen
+                            : AppRoutes.advicesPageViewScreen,
+                            arguments: 'lgp'
+                      );
+                    },
                   )),
               SizedBox(
                 height: 30.h,
@@ -72,7 +81,15 @@ class HomeAiDiseaseScreen extends StatelessWidget {
                     height: 165.h,
                     image: AppImages.eyeImage,
                     text: AppStrings.eye,
-                    onTap: () {},
+                    onTap: () {
+                       AppConstants.navigateTo(
+                        context: context,
+                        routeName: CashHelper.getData(key: 'visited') == true
+                            ? AppRoutes.uploadPhotoOfDiseaseScreen
+                            : AppRoutes.advicesPageViewScreen,
+                            arguments: 'mpc'
+                      );
+                    },
                   )),
             ],
           ),

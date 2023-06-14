@@ -2,13 +2,18 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/medication_reminder_module/presentation_layer/controllers/medication_reminder_cubit.dart';
 
-import '../../prescription_module/presentation_layer/controllers/prescription_cubit.dart';
+import '../caching_data/ai_disease_cach.dart';
+import '../caching_data/growth_cach.dart';
+import '../caching_data/pres_cach.dart';
+import '../caching_data/teeth_cach .dart';
+import '../caching_data/test_cach.dart';
 
 class AppConstants {
   static const String baseUrl = 'https://baby-health-care.sonicar.tech/api/';
-  static const String aiBaseUrl =
-      'https://testgp-production-df5f.up.railway.app/';
-  static const String skin = 'predictApi';
+  static const String aiBaseUrl = 'https://gpapis-production.up.railway.app/';
+  static const String skin = 'predict_skin_Api';
+  static const String lgp = 'predict_LGP_Api';
+  static const String mpc = 'predict_MPC_Api';
 
   //auth
   static const String login = 'auth/login';
@@ -22,6 +27,7 @@ class AppConstants {
   //medical details
   static const String storeMedicalDetails = 'store-medical-details';
   static const String updateMedicalDetails = 'medicalDetails';
+  static const String showMedicalDetails = 'medicalDetails';
 
   static const String getAllAllergy = 'all-allergies';
   static const String skinDiseases = 'skin-diseases';
@@ -49,6 +55,7 @@ class AppConstants {
   static const String deleteTeethDev = 'delete-teeth-dev/';
   static const String getSingleTeeth = 'get-single-teeth/';
   static const String getAllTeethDev = 'all-teeth-dev';
+  static const String getMedicalTeeth = 'medical-teeths';
 
   // medication reminder
 
@@ -88,9 +95,13 @@ class AppConstants {
   static const String latestTeeth = 'teeth-report';
   static const String diseaseReport = 'disease-report';
   static const String medicalInfo = 'medical-info';
+  static const String latestGrowth = 'growth-report';
+
   // growth
   static const String calculateGrowth = 'calc-growth';
   static const String getAllGrowth = 'growth';
+  static const String editGrowth = 'update-growth/';
+  static const String rangeGrowth = 'range-growth';
 
   static DropdownMenuItem buildMenuItem(String item) => DropdownMenuItem(
       value: item,
@@ -116,7 +127,7 @@ class AppConstants {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(DateTime.now().year - 10),
-      lastDate: DateTime.now(),
+      lastDate: DateTime(DateTime.now().year + 10),
     ).then((value) async {
       if (value != null) {
         var month = value.month.toInt() < 10 ? '0${value.month}' : value.month;
@@ -201,6 +212,7 @@ class AppConstants {
     bool isPrescription = false,
     bool isTooth = false,
     bool isReminder = false,
+    bool isDisease = false,
   }) =>
       showDialog(
           context: context,
@@ -241,25 +253,27 @@ class AppConstants {
                                   text: AppStrings.yes,
                                   onPressed: () async {
                                     isPrescription
-                                        ? await BlocProvider.of<PrescriptionCubit>(context)
-                                            .deletePrescription(presId)
-                                            .then((value) =>
-                                                Navigator.pop(context))
+                                        ? await BlocProvider.of<PrescriptionCubit>(context).deletePrescription(presId).then(
+                                            (value) => Navigator.pop(context))
                                         : isTooth
                                             ? await BlocProvider.of<TeethDevelopmentCubit>(context)
                                                 .deleteTooth(id)
                                                 .then((value) =>
                                                     Navigator.pop(context))
                                             : isReminder
-                                                ? await BlocProvider.of<MedicationReminderCubit>(
-                                                        context)
+                                                ? await BlocProvider.of<MedicationReminderCubit>(context)
                                                     .deleteReminders(id)
                                                     .then((value) =>
                                                         Navigator.pop(context))
-                                                : await BlocProvider.of<
-                                                        MedicalTestsCubit>(context)
-                                                    .deleteMedicalTest(id)
-                                                    .then((value) => Navigator.pop(context));
+                                                : isDisease
+                                                    ? await BlocProvider.of<DiseaseCubit>(context)
+                                                        .deleteAiDisease(id)
+                                                        .then((value) =>
+                                                            Navigator.pop(
+                                                                context))
+                                                    : await BlocProvider.of<MedicalTestsCubit>(context)
+                                                        .deleteMedicalTest(id)
+                                                        .then((value) => Navigator.pop(context));
                                   },
                                   color: AppColors.errorColor,
                                   textColor: AppColors.white,
@@ -327,11 +341,231 @@ class AppConstants {
       }
     }
     return medicineTime;
-    // debugPrint('controller ${timerController[0].text}');
   }
 
-   checkConnectivity() async {
+  static checkConnectivity() async {
     return await Connectivity().checkConnectivity();
+  }
+
+  static checkInternet(context) async {
+    if (await checkConnectivity() == ConnectivityResult.none) {
+      showSnackbar(
+        context: context,
+        content: AppStrings.noInternet,
+      );
+    }
+  }
+
+  static Future userExistMedicalOrNot(bool isExist, context) async {
+    if (await checkConnectivity() == ConnectivityResult.none) {
+      showSnackbar(
+        context: context,
+        content: AppStrings.noInternet,
+      );
+    } else {
+      var data = Hive.box('userDataCach').keys;
+      debugPrint('data $data');
+      CashHelper.saveData(
+          key: 'medicalDetailsSaved ${CashHelper.getData(key: 'id')}',
+          value: true);
+      for (var element in data) {
+        if (element.contains(CashHelper.getData(key: 'id').toString())) {
+          isExist = true;
+        }
+      }
+      if (!isExist) {
+        BlocProvider.of<MedicalCubit>(context)
+            .showMedicalDetails()
+            .then((value) => AppConstants.navigateTo(
+                  context: context,
+                  routeName: AppRoutes.medicalDetailsScreen,
+                ));
+      }
+    }
+  }
+
+  static Future userExistTestOrNot(bool isExist, context) async {
+    if (await checkConnectivity() == ConnectivityResult.none) {
+      showSnackbar(
+        context: context,
+        content: AppStrings.noInternet,
+      );
+    } else {
+      var data = Hive.box('testCach').keys;
+      debugPrint('data $data');
+      for (var element in data) {
+        if (element.contains(CashHelper.getData(key: 'id').toString())) {
+          isExist = true;
+        }
+      }
+      var cubit = BlocProvider.of<MedicalTestsCubit>(context);
+      CashHelper.saveData(
+          key: 'testSaved ${CashHelper.getData(key: 'id')}', value: true);
+
+      if (!isExist) {
+        await cubit.getAllMedicalTests().then((value) {
+          for (var element in cubit.allMedicalTests) {
+            Hive.box('testCach').put(
+              'test ${element.id} ${CashHelper.getData(key: 'id')}',
+              TestCach(
+                id: element.id,
+                labName: element.labName,
+                labFile: element.labFile,
+                labDate: element.labDate,
+                type: element.type,
+              ),
+            );
+          }
+        });
+      }
+    }
+  }
+
+  static Future userExistPresOrNot(bool isExist, context) async {
+    if (await checkConnectivity() == ConnectivityResult.none) {
+      showSnackbar(
+        context: context,
+        content: AppStrings.noInternet,
+      );
+    } else {
+      var data = Hive.box('presCach').keys;
+      debugPrint('data $data');
+      for (var element in data) {
+        if (element.contains(CashHelper.getData(key: 'id').toString())) {
+          isExist = true;
+        }
+      }
+      var cubit = BlocProvider.of<PrescriptionCubit>(context);
+      CashHelper.saveData(
+          key: 'presSaved ${CashHelper.getData(key: 'id')}', value: true);
+
+      if (!isExist) {
+        await cubit.getAllPrescriiptions().then((value) {
+          for (var element in cubit.allPrescriptions) {
+            Hive.box('presCach').put(
+              'pres ${element.id} ${CashHelper.getData(key: 'id')}',
+              PresCach(
+                  id: element.id,
+                  note: element.note,
+                  date: element.date,
+                  file: element.file),
+            );
+          }
+        });
+      }
+    }
+  }
+
+  static Future userExistGrowthOrNot(bool isExist, context) async {
+    if (await checkConnectivity() == ConnectivityResult.none) {
+      showSnackbar(
+        context: context,
+        content: AppStrings.noInternet,
+      );
+    } else {
+      var data = Hive.box('growthCach').keys;
+      debugPrint('data $data');
+      for (var element in data) {
+        if (element.contains(CashHelper.getData(key: 'id').toString())) {
+          isExist = true;
+        }
+      }
+      var cubit = BlocProvider.of<GrowthCubit>(context);
+      CashHelper.saveData(
+          key: 'growthSaved ${CashHelper.getData(key: 'id')}', value: true);
+
+      if (!isExist) {
+        await cubit.getAllGrowth().then((value) {
+          for (var element in cubit.allGrowth) {
+            Hive.box('growthCach').put(
+              'growth ${element.id} ${CashHelper.getData(key: 'id')}',
+              GrowrhCach(
+                id: element.id,
+                height: element.height.toString(),
+                heightStatus: element.heightStatus.toString(),
+                weight: element.weight.toString(),
+                measureDate: element.measureDate,
+                weightStatus: element.weightStatus.toString(),
+              ),
+            );
+          }
+        });
+      }
+    }
+  }
+
+  static Future userExistDiseaseOrNot(bool isExist, context) async {
+    if (await checkConnectivity() == ConnectivityResult.none) {
+      showSnackbar(
+        context: context,
+        content: AppStrings.noInternet,
+      );
+    } else {
+      var data = Hive.box('diseaseCach').keys;
+      debugPrint('data $data');
+      for (var element in data) {
+        if (element.contains(CashHelper.getData(key: 'id').toString())) {
+          isExist = true;
+        }
+      }
+      var cubit = BlocProvider.of<DiseaseCubit>(context);
+      CashHelper.saveData(
+          key: 'diseaseSaved ${CashHelper.getData(key: 'id')}', value: true);
+
+      if (!isExist) {
+        await cubit.getAllAiDiseases().then((value) {
+          for (var element in cubit.allDiseases) {
+            Hive.box('diseaseCach').put(
+              'disease ${element.id} ${CashHelper.getData(key: 'id')}',
+              AiDisease(
+                id: element.id,
+                disease: element.disease,
+                createdAt: element.createdAt,
+                photo: element.photo,
+                prediction: element.prediction,
+              ),
+            );
+          }
+        });
+      }
+    }
+  }
+
+  static Future userExistTeethOrNot(bool isExist, context) async {
+    if (await checkConnectivity() == ConnectivityResult.none) {
+      showSnackbar(
+        context: context,
+        content: AppStrings.noInternet,
+      );
+    } else {
+      var data = Hive.box('teethCach').keys;
+      debugPrint('data $data');
+      for (var element in data) {
+        if (element.contains(CashHelper.getData(key: 'id').toString())) {
+          isExist = true;
+        }
+      }
+      var cubit = BlocProvider.of<TeethDevelopmentCubit>(context);
+      CashHelper.saveData(
+          key: 'teethSaved ${CashHelper.getData(key: 'id')}', value: true);
+
+      if (!isExist) {
+        await cubit.getAllteeth().then((value) {
+          for (var element in cubit.allTeeth!) {
+            Hive.box('teethCach').put(
+              'teeth ${element.id} ${CashHelper.getData(key: 'id')}',
+              TeethCach(
+                id: element.id,
+                teeth: element.teethName,
+                appearanceDate: element.apperenceDate,
+                ageInMonth: element.ageInMonths,
+                ageInYears: element.ageInYears,
+              ),
+            );
+          }
+        });
+      }
+    }
   }
 }
 
@@ -354,3 +588,5 @@ dialogElevatedButton({
           size: size,
           color: textColor,
         ));
+String date = '01/01/2023';
+UserDataCach userDataCach = Hive.box('userDataCach').get('user');

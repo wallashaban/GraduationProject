@@ -127,4 +127,22 @@ class AuthenticationRepository implements BaseAuthenticationRepository {
       );
     }
   }
+
+   @override
+  Future<Either<Failure, Authentication>> updateUserInfo(
+      RegisterUserParameters parameters) async {
+    
+    try {
+      final result = await baseAuthenticationRemoteDataSource.updateUserInfo(
+      parameters,
+    );
+      return Right(result);
+    } on ServerException catch (failure) {
+      return Left(
+        ServerFailure(
+          message: failure.errorMessageModel.message,
+        ),
+      );
+    }
+  }
 }

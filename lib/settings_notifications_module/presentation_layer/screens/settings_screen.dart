@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 import '../../../core/utils/exports.dart';
 import '../../../prescription_module/presentation_layer/widgets/custom_divider.dart';
-import '../cotrollers/reports_state.dart';
+import '../cotrollers/settings_notifications_state.dart';
 import '../widgets/settings_widget.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -11,8 +11,9 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Hive.openBox('userDataCach');
-    var user = Hive.box('userDataCach').get('user');
+    var cubitAuth = BlocProvider.of<AuthenticationCubit>(context);
+
+    var cubit = BlocProvider.of<SettingsNotificationsCubit>(context);
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Padding(
@@ -34,15 +35,15 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            BlocBuilder<SettingsNotificationsCubit, SettingsNotificationsState>(
+            BlocBuilder<AuthenticationCubit, AuthenticationState>(
               builder: (context, state) {
                 return SettingsWidget(
                   icon: Icons.abc,
                   isAccount: true,
-                  text: user.name,
+                  text: cubitAuth.userData!.name,
                   widget: AppRoutes.updateUserDateScreen,
-                  image: user.photo ?? AppImages.signupImage,
-                  gender: user.gender,
+                  image: cubitAuth.userData!.photo ?? AppImages.signupImage,
+                  gender: cubitAuth.userData!.gender,
                 );
               },
             ),
@@ -72,6 +73,7 @@ class SettingsScreen extends StatelessWidget {
               text: AppStrings.stars,
               //   widget: const OrdersScreen(),
             ),
+
             //language
             SettingsWidget(
               icon: Icons.language_sharp,
@@ -90,6 +92,12 @@ class SettingsScreen extends StatelessWidget {
               icon: Icons.feedback_sharp,
               text: AppStrings.contactUs,
               widget: AppRoutes.contactUsScreen,
+            ),
+            SettingsWidget(
+              icon: Icons.add_shopping_cart_outlined,
+              text: AppStrings.addNewBaby,
+              isLogOut: true,
+              //   widget: const OrdersScreen(),
             ),
             // about us
             SettingsWidget(

@@ -1,3 +1,4 @@
+import 'package:graduation_project/authentication_module/presentaion_layer/screens/on_boarding_screen.dart';
 import 'package:graduation_project/settings_notifications_module/presentation_layer/screens/contact_us_screen.dart';
 import 'package:graduation_project/settings_notifications_module/presentation_layer/screens/notifications_screen.dart';
 import 'package:graduation_project/vaccinations_module/domain_layer/entities/vaccination.dart';
@@ -6,6 +7,10 @@ import '../../ai_diseases_module/presentation_layer/screens/advices_page_view.da
 import '../../ai_diseases_module/presentation_layer/screens/all_diseases_screen.dart';
 import '../../ai_diseases_module/presentation_layer/screens/home_ai_disease_screen.dart';
 import '../../ai_diseases_module/presentation_layer/screens/uplaod_photo_disease_screen.dart';
+import '../../development_flow_module/presentation_layer/screens/all_tips_screen.dart';
+import '../../development_flow_module/presentation_layer/screens/history_development_flow_screen.dart';
+import '../../development_flow_module/presentation_layer/screens/subject_with_questions_screen.dart';
+import '../../development_flow_module/presentation_layer/widgets/development_flow_widget.dart';
 import '../../growth_module/presentation_layer/screens/growth_history_screen.dart';
 import '../../growth_module/presentation_layer/screens/growth_screen.dart';
 import '../../medical_tests_module/presentation_layer/screens/new_test_screen.dart';
@@ -13,6 +18,7 @@ import '../../medical_tests_module/presentation_layer/screens/previous_tests_scr
 import '../../medication_reminder_module/presentation_layer/Screens/add_reminder_screen.dart';
 import '../../medication_reminder_module/presentation_layer/Screens/all_previous_medication_reminder_screen.dart';
 import '../../medication_reminder_module/presentation_layer/Screens/medication_reminder_screen.dart';
+import '../../medication_reminder_module/presentation_layer/Screens/no_internet_screen.dart';
 import '../../prescription_module/presentation_layer/screens/new_prescription_screen.dart';
 import '../../prescription_module/presentation_layer/screens/prev_prescription_screen.dart';
 import '../../report_module/presentation_layer/screens/reports_screen.dart';
@@ -41,8 +47,7 @@ Route<dynamic> onGenerate(RouteSettings settings) {
           code: settings.arguments.toString(),
         );
       });
-    case AppRoutes.resetScreen:
-      return MaterialPageRoute(builder: (_) => ResetScreen());
+   
     case AppRoutes.splashScreen:
       return MaterialPageRoute(builder: (_) => const SplashScreen());
     case AppRoutes.checkCodeScreen:
@@ -56,9 +61,11 @@ Route<dynamic> onGenerate(RouteSettings settings) {
     case AppRoutes.medicalDetailsScreen:
       return MaterialPageRoute(builder: (_) => MedicalDetailsScreen());
     case AppRoutes.addToothScreen:
-      return MaterialPageRoute(builder: (_) => AddToothScreen());
+      return MaterialPageRoute(builder: (_) => AddToothScreen(
+        toothParameters: settings.arguments as ToothParameters,
+      ));
     case AppRoutes.teethDwvelopmentScreen:
-      return MaterialPageRoute(builder: (_) => TeethDevelopmentScreen());
+      return MaterialPageRoute(builder: (_) => const TeethDevelopmentScreen());
     case AppRoutes.medicationReminderScreen:
       return MaterialPageRoute(
           builder: (_) => const MedicationReminderScreen());
@@ -107,7 +114,7 @@ Route<dynamic> onGenerate(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const ReportsScreen());
     case AppRoutes.uploadPhotoOfDiseaseScreen:
       return MaterialPageRoute(
-          builder: (_) => const UploadPhotoOfDiseaseScreen());
+          builder: (_) =>  UploadPhotoOfDiseaseScreen(field: settings.arguments as String,));
     case AppRoutes.previousDiseasesScreen:
       return MaterialPageRoute(builder: (_) => const PreviousDiseasesScreen());
     case AppRoutes.growthScreen:
@@ -117,6 +124,18 @@ Route<dynamic> onGenerate(RouteSettings settings) {
               ));
     case AppRoutes.growthHistoryScreen:
       return MaterialPageRoute(builder: (_) => const GrowthHistoryScreen());
+    case AppRoutes.developmentFlowScreen:
+      return MaterialPageRoute(builder: (_) =>  DevelopmentFlowWidget());
+      case AppRoutes.allTipsScreen:
+      return MaterialPageRoute(builder: (_) => const AllTipsScreen());
+      case AppRoutes.historyDevelopmentFlowScreen:
+      return MaterialPageRoute(builder: (_) => const HistoryDevelopmentFlowScreen());  
+      case AppRoutes.onboardingScreen:
+      return MaterialPageRoute(builder: (_) => const OnboardingScreen());  
+      case AppRoutes.noInternetScreen:
+      return MaterialPageRoute(builder: (_) => const NoInternetScreen());  
+      case AppRoutes.subjectWithQuestionScreen:
+      return MaterialPageRoute(builder: (_) => const SubjectWithQuestionsScreen());  
     default:
       return MaterialPageRoute(builder: (_) => const SplashScreen());
   }

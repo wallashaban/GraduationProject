@@ -8,7 +8,7 @@ import '../entities/prescribtion.dart';
 abstract class BasePrescriptionRepository{
   //prescription
 
-  Future<Either<Failure, General>> storePrescribtion(
+  Future<Either<Failure, Presccription>> storePrescribtion(
       PresccriptionParameters parameters);
   Future<Either<Failure, List<Presccription>>> getAllPrescriptions();
   Future<Either<Failure, Presccription>> getSinglePrescription(int id);

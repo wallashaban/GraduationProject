@@ -4,6 +4,7 @@ import 'package:graduation_project/report_module/domain_layer/entity/latest_teet
 import 'package:graduation_project/report_module/domain_layer/entity/medical_info.dart';
 
 import '../../../core/error/failure.dart';
+import '../../../growth_module/domain_layer/entities/growth.dart';
 import '../entity/latest_development.dart';
 import '../entity/vaccination_report.dart';
 
@@ -13,6 +14,7 @@ abstract class BaseReportRepository {
   Future<Either<Failure,List<DiseaseReport> >> diseaseReport();
   Future<Either<Failure, MedicalInfo>> medicalInfo();
   Future<Either<Failure, LatestTeeth>> latestTeeth();
+  Future<Either<Failure, Growth>> getLatestGrowthOfChild();
 
 
 }

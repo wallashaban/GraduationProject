@@ -15,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
   dynamic prefixPressed;
   final double width;
   final keyBoardType;
+  final bool enabled;
   CustomTextFormField({
     Key? key,
     required this.controller,
@@ -26,9 +27,10 @@ class CustomTextFormField extends StatelessWidget {
     this.suffix,
     required this.validator,
     this.onTap,
-    this.width=double.infinity,
+    this.width = double.infinity,
     this.prefixPressed,
     this.prefix,
+    this.enabled = true,
   }) : super(key: key);
 
   @override
@@ -40,15 +42,16 @@ class CustomTextFormField extends StatelessWidget {
         keyboardType: keyBoardType,
         onTap: onTap,
         obscureText: obscureText,
+        enabled: enabled,
         style: const TextStyle(
-           // fontWeight: FontWeight.bold, color: AppColors.textFielfColor,
-            ),//todo if you have nothing to do then delete it😁
+            // fontWeight: FontWeight.bold, color: AppColors.textFielfColor,
+            ), //todo if you have nothing to do then delete it😁
         autocorrect: true,
         validator: validator,
         decoration: InputDecoration(
           hintText: hintText,
           labelText: labelText,
-          prefixIcon:IconButton(
+          prefixIcon: IconButton(
             onPressed: prefixPressed,
             icon: Icon(prefix),
           ),
@@ -56,7 +59,6 @@ class CustomTextFormField extends StatelessWidget {
             onPressed: sufixPressed,
             icon: Icon(suffix),
           ),
-          
         ),
       ),
     );

@@ -103,12 +103,7 @@ var lightTheme = ThemeData(
       foregroundColor: MaterialStateProperty.resolveWith((states) {
         return AppColors.white;
       }),
-      backgroundColor: MaterialStateProperty.resolveWith((states) {
-        if (states.contains(MaterialState.pressed)) {
-          return AppColors.appBarColor;
-        }
-        return AppColors.appBarColor;
-      }),
+      backgroundColor:MaterialStateColor.resolveWith((states) => AppColors.appBarColor)
     ),
   ),
 );

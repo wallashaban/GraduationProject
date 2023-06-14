@@ -1,11 +1,12 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:file_picker/file_picker.dart';
-import 'package:graduation_project/core/caching_data/user_data_cach.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../core/utils/exports.dart';
-import 'package:hive_flutter/adapters.dart';
+
+import '../../../settings_notifications_module/data_layer/models/user_update_model.dart';
+import '../../domain_layer/use_cases/update_user_info_use_case.dart';
 
 part 'authentication_state.dart';
 
@@ -17,6 +18,8 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   final ForgetPasswordUseCase forgetPasswordUseCase;
   final UpdatePasswordUseCase updatePasswordUseCase;
   final CheckCodeUseCase checkCodeUseCase;
+  final UpdateUserInfoUseCase updateUserInfoUseCase;
+
   AuthenticationCubit(
     this.loginUserUseCase,
     this.registerUserUseCase,
@@ -25,7 +28,15 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     this.forgetPasswordUseCase,
     this.updatePasswordUseCase,
     this.checkCodeUseCase,
+    this.updateUserInfoUseCase,
   ) : super(AuthenticationInitial());
+  Authentication profileUpdate = const UserUpdateModel(
+    email: '',
+    id: 1,
+    name: '',
+    isReminderVaccine: 0,
+  );
+  UserDataCach? userData = Hive.box('userDataCach').get('user');
 
   Authentication user = const AuthenticationModel(
       id: 1,
@@ -38,8 +49,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   Failure serverFailure = const ServerFailure(
     message: 'message',
   );
-  // var open = Hive.openBox('userDataCach');
-  var userData = Hive.box('userDataCach');
+
   String? gender;
   chooseGender(String gender) {
     this.gender = gender;
@@ -69,7 +79,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     emit(DeleteImageState());
   }
 
-  void getToken() async {
+  void getFcmToken() async {
     if (CashHelper.getData(key: 'fcmToken') == null) {
       await FirebaseMessaging.instance.getToken().then((tok) {
         CashHelper.saveData(key: 'fcmToken', value: tok.toString());
@@ -99,8 +109,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
           key: 'token',
           value: r.accessToken,
         );
+        token = CashHelper.getData(key: 'token');
         emit(RegisterUserSuccessState());
-        userData.put(
+        Hive.box('userDataCach').put(
             'user',
             UserDataCach(
               id: r.id,
@@ -112,6 +123,50 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
               photo: r.photo,
               phone: r.phone, //todo refactor the photo
             ));
+        userData = Hive.box('userDataCach').get('user');
+        userDataCach = Hive.box('userDataCach').get('user');
+        CashHelper.saveData(key: 'id', value: userData!.id);
+
+        emit(AuthDone());
+      },
+    );
+  }
+
+  Future updateUserInfo(RegisterUserParameters parameters) async {
+    emit(
+      UpdateUserInfoLoadingState(),
+    );
+    final result = await updateUserInfoUseCase(parameters);
+    result.fold(
+      (l) {
+        serverFailure = l;
+        emit(
+          UpdateUserInfoErrorState(
+            error: l.message,
+          ),
+        );
+      },
+      (r) async {
+        profileUpdate = r;
+
+        emit(UpdateUserInfoSuccessState());
+        Hive.box('userDataCach').put(
+            'user',
+            UserDataCach(
+              id: r.id,
+              name: r.name,
+              email: r.email,
+              accessToken: '',
+              birthDate: r.birthDate,
+              gender: r.gender,
+              photo: r.photo, //todo refactor the photo
+              phone: r.phone,
+            ));
+        userData = Hive.box('userDataCach').get('user');
+        userDataCach = Hive.box('userDataCach').get('user');
+
+        CashHelper.saveData(key: 'id', value: userData!.id);
+        // debugPrint('id update ${CashHelper.getData(key: 'id')}');
         emit(AuthDone());
       },
     );
@@ -138,9 +193,9 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
           key: 'token',
           value: r.accessToken,
         );
-        debugPrint('token func ${r.accessToken}');
+        token = r.accessToken!;
         emit(LoginUserSuccessState());
-        userData.put(
+        Hive.box('userDataCach').put(
             'user',
             UserDataCach(
               id: r.id,
@@ -149,9 +204,13 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
               accessToken: r.accessToken!,
               birthDate: r.birthDate,
               gender: r.gender,
-              photo: r.photo, //todo refactor the photo
-              phone: r.phone,
+              photo: r.photo,
+              phone: r.phone, //todo refactor the photo
             ));
+        userData = Hive.box('userDataCach').get('user');
+        userDataCach = Hive.box('userDataCach').get('user');
+        CashHelper.saveData(key: 'id', value: userData!.id);
+        emit(AuthDone());
       },
     );
   }

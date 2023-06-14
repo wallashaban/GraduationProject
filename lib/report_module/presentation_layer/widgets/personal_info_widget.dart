@@ -1,7 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/material.dart';
-import 'package:graduation_project/core/utils/app_colors.dart';
-import 'package:graduation_project/core/utils/app_strings.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/prescription_module/presentation_layer/widgets/custom_divider.dart';
 import 'package:graduation_project/report_module/presentation_layer/widgets/report_text_widget.dart';
@@ -37,23 +34,21 @@ class PersonalInfoWidget extends StatelessWidget {
           const ReportTextWidget(
             text: AppStrings.personalInfo,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: CustomText(
-                  text: '${AppStrings.name}: ${medicalInfoModel.userName}',
-                  size: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  maxLines: 1,
-                ),
-              ),
-              CustomText(
-                text: '${AppStrings.age}: ${medicalInfoModel.userAgeMonth}',
-                size: 16.sp,
-                fontWeight: FontWeight.w500,
-              ),
-            ],
+          CustomText(
+            text: '${AppStrings.name}: ${medicalInfoModel.userName}',
+            size: 16.sp,
+            fontWeight: FontWeight.w500,
+            maxLines: 2,
+          ),
+          const CustomDivider(
+            height: 14,
+            thickness: 0.4,
+          ),
+          CustomText(
+            text:
+                '${AppStrings.childAge}: ${medicalInfoModel.userAgeMonth}  ${AppStrings.month} ',
+            size: 16.sp,
+            fontWeight: FontWeight.w500,
           ),
           const CustomDivider(
             height: 14,

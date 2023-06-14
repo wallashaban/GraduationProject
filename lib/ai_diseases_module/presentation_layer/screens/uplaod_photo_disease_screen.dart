@@ -1,14 +1,13 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/prescription_module/presentation_layer/widgets/custom_divider.dart';
 
-import '../cubit/disease_cubit.dart';
 import '../widgets/custom_button_with_icon.dart';
 import '../widgets/take_photo_widget.dart';
 import '../widgets/upload_photo_widget.dart';
 
 class UploadPhotoOfDiseaseScreen extends StatelessWidget {
-  const UploadPhotoOfDiseaseScreen({super.key});
+  final String field;
+  const UploadPhotoOfDiseaseScreen({super.key, required this.field});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +30,26 @@ class UploadPhotoOfDiseaseScreen extends StatelessWidget {
         body: Padding(
           padding: EdgeInsets.all(30.0.r),
           child: BlocConsumer<DiseaseCubit, DiseaseState>(
-            listener: (context, state) {},
+            listener: (context, state) {
+              if (state is StoreDiseaseErrorState) {
+                AppConstants.showSnackbar(
+                  context: context,
+                  content: state.error,
+                );
+              }
+              if (state is PredictDiseaseErrorState) {
+                AppConstants.showSnackbar(
+                  context: context,
+                  content: state.error,
+                );
+              }
+              if (state is StoreDiseaseSuccessState) {
+                AppConstants.showSnackbar(
+                  context: context,
+                  content: AppStrings.saveSuccess,
+                );
+              }
+            },
             builder: (context, state) {
               return Column(
                 children: [
@@ -100,27 +118,56 @@ class UploadPhotoOfDiseaseScreen extends StatelessWidget {
                               CustomText(
                                 text: cubit.disease!,
                               ),
-                              const CustomDivider(),
-                              CustomText(
-                                text: AppStrings.diseaseAdvice,
-                                maxLines: 2,
-                                size: 12.sp,
+                              CustomDivider(
+                                color: AppColors.appBarColor.withOpacity(0.6),
+                              ),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.star_border,
+                                    color: AppColors.appBarColor,
+                                    size: 10.r,
+                                  ),
+                                  SizedBox(
+                                    width: 5.w,
+                                  ),
+                                  Expanded(
+                                    child: CustomText(
+                                      text: cubit.disease == 'غير مصاب'
+                                          ? AppStrings.advice
+                                          : cubit.disease == 'unknown'
+                                              ? '${AppStrings.cantDiagnose} ${AppStrings.advice}'
+                                              : AppStrings.diseaseAdvice,
+                                      maxLines: 4,
+                                      size: 14.sp,
+                                      color: AppColors.black.withOpacity(0.8),
+                                    ),
+                                  ),
+                                ],
                               ),
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.2,
+                                    MediaQuery.of(context).size.height * 0.1,
                               ),
-                              CustomButton(
-                                  text: AppStrings.save,
-                                  onPressed: () {
-                                    cubit.storeAiDisease(
-                                      DiseaseParameters(
-                                        prediction: 1,
-                                        photo: cubit.filePath,
-                                        disease: cubit.disease!,
-                                      ),
-                                    );
-                                  })
+                              if (state is StoreDiseaseLoadingState)
+                                CustomButton(
+                                  isLoading: true,
+                                ),
+                              if (state is! StoreDiseaseLoadingState)
+                                CustomButton(
+                                    text: AppStrings.save,
+                                    onPressed: () {
+                                      cubit.storeAiDisease(
+                                        DiseaseParameters(
+                                          prediction:
+                                              cubit.disease == 'غير مصاب'
+                                                  ? 0
+                                                  : 1,
+                                          photo: cubit.filePath,
+                                          disease: cubit.disease!,
+                                        ),
+                                      );
+                                    })
                             ],
                           ),
                         if (cubit.disease == null)
@@ -152,17 +199,22 @@ class UploadPhotoOfDiseaseScreen extends StatelessWidget {
                                 height:
                                     MediaQuery.of(context).size.height * 0.15,
                               ),
-                              CustomButton(
-                                text: AppStrings.diagnose,
-                                onPressed: () {
-                                  cubit.predictDisease(
-                                    PredictDiseaseParameters(
-                                      field: 'skin',
-                                      photo: cubit.filePath,
-                                    ),
-                                  );
-                                },
-                              ),
+                              if (state is PredictDiseaseLoadingState)
+                                CustomButton(
+                                  isLoading: true,
+                                ),
+                              if (state is! PredictDiseaseLoadingState)
+                                CustomButton(
+                                  text: AppStrings.diagnose,
+                                  onPressed: () {
+                                    cubit.predictDisease(
+                                      PredictDiseaseParameters(
+                                        field: field,
+                                        photo: cubit.filePath,
+                                      ),
+                                    );
+                                  },
+                                ),
                             ],
                           )
                       ],

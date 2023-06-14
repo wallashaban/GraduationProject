@@ -28,6 +28,16 @@ class GellAllTeethErrorState extends TeethDevelopmentState {
     required this.error,
   });
 }
+
+///////////////////////////////////
+class GetMedicalTeethSuccessState extends TeethDevelopmentState {}
+class GetMedicalTeethLoadingState extends TeethDevelopmentState {}
+class GetMedicalTeethErrorState extends TeethDevelopmentState {
+ final String error;
+ const GetMedicalTeethErrorState({
+    required this.error,
+  });
+}
 ////////////////////////////////
 class GetSingleTeethSuccessState extends TeethDevelopmentState {}
 class GetSingleTeethLoadingState extends TeethDevelopmentState {}
@@ -60,3 +70,4 @@ class DeleteTeethErrorState extends TeethDevelopmentState {
 
 class ChangeToothNameValueState extends TeethDevelopmentState{}
 class TeethDone extends TeethDevelopmentState{}
+class ChangeDateTeethState extends TeethDevelopmentState{}

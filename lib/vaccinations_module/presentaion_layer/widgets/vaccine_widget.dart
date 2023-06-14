@@ -1,8 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, unused_local_variable, unrelated_type_equality_checks
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unused_local_variable, unrelated_type_equality_checks, use_build_context_synchronously
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 import '../../domain_layer/entities/vaccination.dart';
-import '../controllers/vaccinations_cubit.dart';
 
 class VaccineWidget extends StatelessWidget {
   final Vaccination model;
@@ -12,11 +12,9 @@ class VaccineWidget extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // bool vaccinatedOrNot=false;
     var cubit = BlocProvider.of<VaccinationsCubit>(context);
     return InkWell(
       onTap: () {
-        debugPrint('statement');
         AppConstants.navigateTo(
           arguments: model,
           context: context,
@@ -40,33 +38,26 @@ class VaccineWidget extends StatelessWidget {
         ),
         child: Column(
           children: [
-            /*  Row(
-              children: [
-                const Icon(
-                  Icons.star,
-                  color: Colors.yellow,
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  /* model.vaccineAge == 0
-                      ? '(${model.vaccineAge}) ${AppStrings.whileBorn}'
-                      : */
-                  '${model.vaccineAge} ${AppStrings.month} ',
-                  style: TextStyle(color: AppColors.textColor),
-                ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  model
-                      .proposedVaccinationDate, //هتتعدل على حسب تاريخ ميلاد الطفل
-                  style: TextStyle(color: AppColors.textColor),
-                ),
-              ],
+            Padding(
+              padding: EdgeInsets.only(right: 10.w),
+              child: Row(
+                children: [
+                  SvgPicture.asset(AppImages.hoknaImage),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  CustomText(
+                      text: '(${model.vaccineAge})  ${AppStrings.month}'),
+                  SizedBox(
+                    width: 15.w,
+                  ),
+                  CustomText(text: model.proposedVaccinationDate),
+                ],
+              ),
             ),
-          */
+            SizedBox(
+              height: 10.h,
+            ),
             Row(
               children: [
                 if (model.important == 1)
@@ -75,28 +66,31 @@ class VaccineWidget extends StatelessWidget {
                     color: Colors.yellow,
                   ),
                 SizedBox(
-                  width: 2.w,
+                  width: 5.w,
                 ),
-                Expanded(
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.5,
                   child: CustomText(
                     text: model.name,
-                    size: 14.sp, //??
-                    fontWeight: FontWeight.normal,
+                    size: 14.sp,
+                    fontWeight: FontWeight.w500,
                     maxLines: 3,
                   ),
                 ),
                 SizedBox(
                   width: 20.w,
                 ),
-                CustomText(
-                  text: 'الحقنه ${model.numberOfSyrings}',
-                  color: AppColors.darkGreyColor,
-                ),
+                if (model.status == 0)
+                  CustomText(
+                    text: 'الحقنه ${model.numberOfSyrings}',
+                    color: AppColors.darkGreyColor,
+                  ),
               ],
             ),
             Padding(
-              padding: EdgeInsets.only(right: 40.r),
+              padding: EdgeInsets.only(right: 30.r),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: CustomText(
@@ -106,12 +100,17 @@ class VaccineWidget extends StatelessWidget {
                       maxLines: 3,
                     ),
                   ),
-                  const Spacer(),
                   TextButton(
-                    onPressed: () {
-                      //model.status == 0
-                      cubit.attatchVaccination([model.id]);
-                      // : cubit.stopOrActiveVaccination(model.id);
+                    onPressed: () async{
+                      if (await AppConstants.checkConnectivity() ==
+                                ConnectivityResult.none) {
+                              AppConstants.showSnackbar(
+                                context: context,
+                                content: AppStrings.noInternet,
+                              );
+                            } else {
+                        cubit.attatchVaccination(model.id);
+                      }
                     },
                     child: CustomText(
                       text: model.status == 1 ? 'تم التطعيم' : 'لم يتم التطعيم',
@@ -119,13 +118,16 @@ class VaccineWidget extends StatelessWidget {
                       color: AppColors.darkGreyColor,
                     ),
                   ),
-                  //attach api تبع الدوسه هنا لو تم التطعيم
-                  IconButton(
-                    onPressed: () {
-                      //vaccinatedOrNot=true;
-                    },
-                    icon: const Icon(Icons.check_rounded),
-                  )
+                  CircleAvatar(
+                      radius: 10.r,
+                      backgroundColor: model.status == 0
+                          ? AppColors.greyColor
+                          : AppColors.appBarColor,
+                      child: Icon(
+                        Icons.check_rounded,
+                        color: AppColors.white,
+                        size: 16.r,
+                      )),
                 ],
               ),
             ),

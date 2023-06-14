@@ -8,6 +8,9 @@ abstract class BaseMedicalDetailsRepository {
   Future<Either<Failure, MedicalDetails>> storeMedicalDetails(
       StoreMedicalDetailsParameters parameters);
   Future<Either<Failure, MedicalDetails>> updateMedicalDetails(
-      StoreMedicalDetailsParameters parameters);    
+      StoreMedicalDetailsParameters parameters);   
+      Future<Either<Failure, MedicalDetails>> showMedicalDetails();    
+  
+     
   
     }

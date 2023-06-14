@@ -36,21 +36,29 @@ class LatestDevelopmentWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const ReportTextWidget(text: AppStrings.developmentInfo),
+          SizedBox(
+            height: 8.h,
+          ),
           CustomText(
             text: AppStrings.babyAbility,
             size: 14.sp,
             fontWeight: FontWeight.w600,
           ),
-
+          SizedBox(
+            height: 10.h,
+          ),
           ListView.builder(
             itemBuilder: (context, index) => Row(
               children: [
                 const Icon(
                   Icons.star,
-                  size: 15,
+                  size: 10,
+                ),
+                SizedBox(
+                  width: 4.w,
                 ),
                 CustomText(
-                  text: latestDevelopmentModel.question[index],
+                  text: latestDevelopmentModel.question[index]['question'],
                   size: 14.sp,
                   fontWeight: FontWeight.normal,
                 ),

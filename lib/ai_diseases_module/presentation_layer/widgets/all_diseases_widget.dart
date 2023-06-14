@@ -1,5 +1,5 @@
-import 'package:graduation_project/ai_diseases_module/domain_layer/entities/disease.dart';
 
+import '../../../core/caching_data/ai_disease_cach.dart';
 import '../../../core/utils/exports.dart';
 
 class AllDiseasesWidget extends StatelessWidget {
@@ -13,6 +13,7 @@ class AllDiseasesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+      margin: EdgeInsets.all(4.r),
       decoration: BoxDecoration(
         color: AppColors.backColor,
         borderRadius: BorderRadius.circular(
@@ -43,6 +44,7 @@ class AllDiseasesWidget extends StatelessWidget {
                 width: 10.w,
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
                     text: disease.disease == 'allergy'
@@ -61,9 +63,15 @@ class AllDiseasesWidget extends StatelessWidget {
               ),
               const Spacer(),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  AppConstants.showDialoog(
+                    context,
+                    id: disease.id,
+                    isDisease: true,
+                  );
+                },
                 icon: Icon(
-                  Icons.delete,
+                  Icons.delete_outline,
                   color: AppColors.appBarColor,
                   size: 27.r,
                 ),

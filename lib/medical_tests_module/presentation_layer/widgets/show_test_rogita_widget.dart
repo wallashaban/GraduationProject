@@ -1,9 +1,11 @@
+import 'package:graduation_project/core/caching_data/pres_cach.dart';
+import 'package:graduation_project/core/caching_data/test_cach.dart';
+
 import '../../../core/utils/exports.dart';
-import '../../../prescription_module/domain_layer/entities/prescribtion.dart';
 
 class ShowTestRogita extends StatelessWidget {
-  final Presccription? prescription;
-  final MediaclTest? medicalTests;
+  final PresCach? prescription;
+  final TestCach? medicalTests;
   final bool isPrescription;
   const ShowTestRogita(
       {super.key,
@@ -32,6 +34,7 @@ class ShowTestRogita extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(20.r),
+                  
                   child: Image(
                     image: NetworkImage(
                       isPrescription

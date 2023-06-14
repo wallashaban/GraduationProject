@@ -15,18 +15,18 @@ class SettingsDone extends SettingsNotificationsState{}
 
 class SettingsNotificationsInitial extends SettingsNotificationsState {}
 
-class UpdateUserInfoLoadingState extends SettingsNotificationsState {}
+// class UpdateUserInfoLoadingState extends SettingsNotificationsState {}
 
-class UpdateUserInfoSuccessState extends SettingsNotificationsState {}
+// class UpdateUserInfoSuccessState extends SettingsNotificationsState {}
 
-class UpdateUserInfoErrorState extends SettingsNotificationsState {
- final String error;
- const UpdateUserInfoErrorState({
-    required this.error,
-  });
+// class UpdateUserInfoErrorState extends SettingsNotificationsState {
+//  final String error;
+//  const UpdateUserInfoErrorState({
+//     required this.error,
+//   });
 
   
-}
+// }
 
 class LogOutSuccessState extends SettingsNotificationsState {}
 

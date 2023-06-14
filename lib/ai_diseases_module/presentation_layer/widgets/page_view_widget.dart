@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:graduation_project/ai_diseases_module/presentation_layer/widgets/second_instruction_widget.dart';
 
 import '../../../core/utils/exports.dart';

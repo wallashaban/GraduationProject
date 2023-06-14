@@ -61,7 +61,7 @@ class PrescriptionRepository implements BasePrescriptionRepository {
     }
   }
    @override
-  Future<Either<Failure, General>> storePrescribtion(PresccriptionParameters parameters)  async {
+  Future<Either<Failure, Presccription>> storePrescribtion(PresccriptionParameters parameters)  async {
     
     try {
       final result = await basePrescriptionRemotDataSource.storePrescribtion(

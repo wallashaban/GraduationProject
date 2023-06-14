@@ -1,3 +1,4 @@
+import '../../../core/utils/dio_helper.dart';
 import '../../../core/utils/exports.dart';
 
 abstract class BaseMedicationReminderRemoteDataSource {
@@ -14,6 +15,7 @@ class MedicationReminderRemoteDataSource
   Dio? dio;
 
   MedicationReminderRemoteDataSource() {
+    debugPrint('token reminder ${token}');
     BaseOptions options = BaseOptions(
         baseUrl: AppConstants.baseUrl,
         receiveDataWhenStatusError: true,
@@ -26,8 +28,9 @@ class MedicationReminderRemoteDataSource
 
   @override
   Future<GeneralModel> deleteReminder(int id) async {
-    final Response response = await dio!.delete(
-      '${AppConstants.deleteReminder} $id',
+    final Response response = await DioHelper.deleteData(
+     url: '${AppConstants.deleteReminder} $id',
+     token: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint('delete reminder remote data ${response.data}');
@@ -41,8 +44,9 @@ class MedicationReminderRemoteDataSource
 
   @override
   Future<List<Days>> getAllDays() async {
-    final Response response = await dio!.get(
-      AppConstants.getAllDays,
+    final Response response = await DioHelper.getData(
+     url: AppConstants.getAllDays,
+     bearerToken: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint('days  remote data ${response.data}');
@@ -58,8 +62,9 @@ class MedicationReminderRemoteDataSource
 
   @override
   Future<List<Reminder>> getAllMedicationReminder() async {
-    final Response response = await dio!.get(
-      AppConstants.getAllReminders,
+    final Response response = await DioHelper.getData(
+      url: AppConstants.getAllReminders,
+      bearerToken: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint('all reminders  remote data ${response.data}');
@@ -75,8 +80,9 @@ class MedicationReminderRemoteDataSource
 
   @override
   Future<Reminder> getSingleMedicationReminder(int id) async {
-    final Response response = await dio!.get(
-      '${AppConstants.getSingleReminder}$id',
+    final Response response = await DioHelper.getData(
+     url: '${AppConstants.getSingleReminder}$id',
+     bearerToken: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint('single reminder   remote data ${response.data}');
@@ -90,14 +96,15 @@ class MedicationReminderRemoteDataSource
 
   @override
   Future<GeneralModel> storeRemnider(ReminderParameters parameters) async {
-    FormData data = FormData.fromMap({
+    Map<dynamic, dynamic> data = {
       'medicine_name': parameters.medicineName,
       'appointment': parameters.appointment,
       'end_date': parameters.endDate,
       'mediceTimes': parameters.times,
-    });
+    };
     final Response response =
-        await dio!.post(AppConstants.storeReminder, data: data);
+        await DioHelper.postData(url: AppConstants.storeReminder, data: data,
+        token: CashHelper.getData(key: 'token'),);
     if (response.data['status'] == true) {
       debugPrint('store reminder details  remote data ${response.data}');
       return GeneralModel.fromJson(response.data);
@@ -108,17 +115,18 @@ class MedicationReminderRemoteDataSource
     }
   }
 
-  void func() {}
   @override
   Future<GeneralModel> updateReminder(ReminderParameters parameters) async {
-    final Response response = await dio!.put(
-        '${AppConstants.updateReminder}${parameters.id}',
-        queryParameters: {
+    final Response response = await DioHelper.putData(
+        url:'${AppConstants.updateReminder}${parameters.id}',
+        query: {
           'medicine_name': parameters.medicineName,
           'appointment': parameters.appointment,
           'end_date': parameters.endDate,
           'mediceTimes': parameters.times,
-        });
+        },
+        token: CashHelper.getData(key: 'token'),
+        );
     if (response.data['status'] == true) {
       debugPrint('update reminder details  remote data ${response.data}');
       return GeneralModel.fromJson(response.data);

@@ -8,17 +8,7 @@ import '../../domain_layer/entites/medical_details.dart';
 class MedicalRepository implements BaseMedicalDetailsRepository {
   final BaseMedicalRemoteDataSource baseMedicalRemoteDataSource;
 
-  MedicalRepository(this.baseMedicalRemoteDataSource);
-
-  
-
- 
- 
-
-  
-  
-  @override
- 
+  MedicalRepository(this.baseMedicalRemoteDataSource); 
    @override
   Future<Either<Failure, MedicalDetails>> storeMedicalDetails(StoreMedicalDetailsParameters parameters)  async {
     
@@ -42,6 +32,20 @@ class MedicalRepository implements BaseMedicalDetailsRepository {
       final result = await baseMedicalRemoteDataSource.updateMedicalDetails(
       parameters,
     );
+      return Right(result);
+    } on ServerException catch (failure) {
+      return Left(
+        ServerFailure(
+          message: failure.errorMessageModel.message,
+        ),
+      );
+    }
+  }
+  
+  @override
+  Future<Either<Failure, MedicalDetails>> showMedicalDetails()  async {
+    try {
+      final result = await baseMedicalRemoteDataSource.showMedicalDetails(    );
       return Right(result);
     } on ServerException catch (failure) {
       return Left(

@@ -4,11 +4,15 @@ import 'dropdown_list_widget.dart';
 
 class AllDropdownListWidget extends StatelessWidget {
   final bool isRecorded;
-  const AllDropdownListWidget({super.key,required this.isRecorded,});
-
+  AllDropdownListWidget({
+    super.key,
+    required this.isRecorded,
+  });
+  var user = Hive.box('UserDataCach').get('user');
   @override
   Widget build(BuildContext context) {
-    var medicalSetails = Hive.box('userDataCach').get('medicalDetails');
+    var medicalSetails =
+        Hive.box('userDataCach').get('medicalDetails${user.id}');
     var cubit = BlocProvider.of<MedicalCubit>(context);
     return Column(
       children: [
@@ -16,7 +20,7 @@ class AllDropdownListWidget extends StatelessWidget {
           hint: AppStrings.bloodType,
           items: cubit.bloodTypes.map(AppConstants.buildMenuItem).toList(),
           onChanged: (bloodType) {
-            debugPrint('gen ${medicalSetails.genticDisease}');
+            //  debugPrint('gen ${medicalSetails.genticDisease}');
             cubit.changeBloodTypeValue(bloodType);
           },
           value: isRecorded && cubit.bloodType == null

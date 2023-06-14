@@ -14,31 +14,36 @@ class CustomButton extends StatelessWidget {
   final FontWeight? fontWeight;
   final VoidCallback? onPressed;
   final bool isLoading;
+  final Color? btnColor;
   double width;
-  CustomButton(
-      {Key? key,
-       this.text,
-      this.maxLines = 1,
-      this.textAlign = TextAlign.start,
-       this.color ,
-       this.size,
-       this.fontWeight,
-       this.onPressed,
-      this.isLoading = false,
-      this.width = 220,// todo fixed width XX
-      })
-      : super(key: key);
+  CustomButton({
+    Key? key,
+    this.text,
+    this.maxLines = 1,
+    this.textAlign = TextAlign.start,
+    this.color,
+    this.size,
+    this.fontWeight,
+    this.onPressed,
+    this.btnColor,
+    this.isLoading = false,
+    this.width = 220, // todo fixed width XX
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Center(
-     // height: 50.h,
-     // width: width,
+      // height: 50.h,
+      // width: width,
       child: ElevatedButton(
-        
         onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: btnColor,
+        ),
         child: isLoading
-            ? CircularProgressIndicator(color: AppColors.white,)
+            ? CircularProgressIndicator(
+                color: AppColors.white,
+              )
             : CustomText(
                 text: text!,
               ),

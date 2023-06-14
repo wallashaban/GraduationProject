@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 
 import 'package:graduation_project/ai_diseases_module/domain_layer/repository/disease_base_repository.dart';
 import 'package:graduation_project/core/utils/exports.dart';

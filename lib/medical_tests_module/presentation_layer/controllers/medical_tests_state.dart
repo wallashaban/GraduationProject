@@ -13,6 +13,7 @@ class MedicalTestsInitial extends MedicalTestsState {}
 class PickImageSuccessState extends MedicalTestsState {}
 class Cansel extends MedicalTestsState{}
 class TestDone extends MedicalTestsState {}
+class ChangeDateState extends MedicalTestsState {}
 
 ///medical test
 

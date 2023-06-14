@@ -1,3 +1,5 @@
+import 'package:graduation_project/core/caching_data/pres_cach.dart';
+import 'package:graduation_project/core/caching_data/test_cach.dart';
 import 'package:graduation_project/medical_tests_module/presentation_layer/widgets/show_test_rogita_widget.dart';
 import 'package:graduation_project/medical_tests_module/presentation_layer/widgets/text_icon_button.dart';
 import 'package:graduation_project/prescription_module/presentation_layer/screens/new_prescription_screen.dart';
@@ -7,10 +9,9 @@ import '../../../core/utils/exports.dart';
 import '../../../prescription_module/domain_layer/entities/prescribtion.dart';
 import '../screens/new_test_screen.dart';
 
-
 class TestsPrescriptionBlock extends StatelessWidget {
-  final MediaclTest? model;
-  final Presccription? prescriptionModel;
+  final TestCach? model;
+  final PresCach? prescriptionModel;
   final bool isPrescription;
   const TestsPrescriptionBlock({
     super.key,
@@ -34,7 +35,7 @@ class TestsPrescriptionBlock extends StatelessWidget {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(top: 10, bottom: 5, left: 10, right: 10),
+        margin: const EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
         decoration: BoxDecoration(
           color: AppColors.backColor,
           boxShadow: [
@@ -157,11 +158,6 @@ class TestsPrescriptionBlock extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  /*  CustomTextIconButton(
-                    icon: Icons.print,
-                    text: AppStrings.print,
-                    onPressed: () {},
-                  ), */
                   CustomTextIconButton(
                     icon: Icons.telegram_sharp,
                     text: AppStrings.share,

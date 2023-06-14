@@ -134,10 +134,12 @@ class PresccriptionParameters {
 
 class TeethParameters {
   int? id;
+  int? toothId;
   String? teethName;
   String? apperenceDate;
   TeethParameters({
-    required this.id,
+    this.id,
+    required this.toothId,
     required this.teethName,
     required this.apperenceDate,
   });
@@ -148,7 +150,7 @@ class ReminderParameters {
   final String? medicineName;
   final String? appointment;
   final String? endDate;
-  final List<dynamic> times;
+  final List times;
   const ReminderParameters({
     this.id,
     required this.medicineName,
@@ -178,15 +180,26 @@ class MedicineTimes {
 }
 
 class TipsParameters {
-  final int questionId;
-  final int status;
+  int questionId;
+  int status;
   TipsParameters({
     required this.questionId,
     required this.status,
   });
+  Map<String, dynamic> toMap() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['question_id'] = questionId;
+    data['status'] = status;
+    return data;
+    /* return {
+      'question_id': questionId,
+      'status': status,
+    }; */
+  }
 }
 
 class GrowthParameters {
+  int? id;
   double height;
   double weight;
   String measureDate;
@@ -194,5 +207,6 @@ class GrowthParameters {
     required this.height,
     required this.weight,
     required this.measureDate,
+    this.id,
   });
 }

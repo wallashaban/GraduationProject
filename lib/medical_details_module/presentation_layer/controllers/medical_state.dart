@@ -22,6 +22,15 @@ class Done extends MedicalState{}
 /////////////////////////////////
 ///medical details
 
+class ShowMedicalDetailsSuccessState extends MedicalState {}
+class ShowMedicalDetailsLoadingState extends MedicalState {}
+class ShowMedicalDetailsErrorState extends MedicalState {
+ final String error;
+ const ShowMedicalDetailsErrorState({
+    required this.error,
+  });
+}
+///////////////////////////////////
 class StoreMedicalDetailsSuccessState extends MedicalState {}
 class StoreMedicalDetailsLoadingState extends MedicalState {}
 class StoreMedicalDetailsErrorState extends MedicalState {
@@ -30,7 +39,6 @@ class StoreMedicalDetailsErrorState extends MedicalState {
     required this.error,
   });
 }
-///////////////////////////////////
 ///
 class UpdateMedicalDetailsSuccessState extends MedicalState {}
 class UpdateMedicalDetailsLoadingState extends MedicalState {}

@@ -3,13 +3,13 @@ import 'package:graduation_project/ai_diseases_module/domain_layer/entities/dise
 import 'package:graduation_project/ai_diseases_module/domain_layer/repository/disease_base_repository.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 
-class GetAiDiseaseUseCase implements BaseUseCase<Either<Failure,List<AiDisease>>, NoParameters> {
+class GetAiDiseaseUseCase implements BaseUseCase<Either<Failure,List<AiDiseasee>>, NoParameters> {
   final DiseaseBaseRepository diseaseBaseRepository;
 
   GetAiDiseaseUseCase(this.diseaseBaseRepository);
   
   @override
-  Future<Either<Failure,List<AiDisease>>> call(NoParameters parameters)async {
+  Future<Either<Failure,List<AiDiseasee>>> call(NoParameters parameters)async {
    return await diseaseBaseRepository.getAllAiDiseases();
   }
 }

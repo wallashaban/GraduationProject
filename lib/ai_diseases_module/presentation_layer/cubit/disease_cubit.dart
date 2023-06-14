@@ -10,6 +10,8 @@ import 'package:graduation_project/ai_diseases_module/domain_layer/use_cases/sto
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../core/caching_data/ai_disease_cach.dart';
+
 part 'disease_state.dart';
 
 class DiseaseCubit extends Cubit<DiseaseState> {
@@ -29,12 +31,8 @@ class DiseaseCubit extends Cubit<DiseaseState> {
     message: 'message',
     status: false,
   );
-  General diseaseStore = const GeneralModel(
-    data: 'data',
-    message: 'message',
-    status: false,
-  );
-  List<AiDisease> allDiseases = [];
+  AiDiseasee? diseaseStore;
+  List<AiDiseasee> allDiseases = [];
   Failure serverFailure = const ServerFailure(message: 'message');
   String? disease;
   FilePickerResult? result;
@@ -91,8 +89,19 @@ class DiseaseCubit extends Cubit<DiseaseState> {
       },
       (r) {
         diseaseStore = r;
+        Hive.box('diseaseCach').put(
+          'disease ${r.id} ${CashHelper.getData(key: 'id')}',
+          AiDisease(
+            id: r.id,
+            disease: r.disease,
+            createdAt: r.createdAt,
+            photo: r.photo,
+            prediction: r.prediction,
+          ),
+        );
+        pickedFile = null;
         emit(StoreDiseaseSuccessState());
-        getAllAiDiseases();
+        //  getAllAiDiseases();
         //pickedFile = null;
       },
     );
@@ -134,8 +143,10 @@ class DiseaseCubit extends Cubit<DiseaseState> {
       },
       (r) {
         diseasedel = r;
+        Hive.box('diseaseCach')
+            .delete('disease $id ${CashHelper.getData(key: 'id')}');
         emit(DeleteDiseaseSuccessState());
-        getAllAiDiseases();
+        //  getAllAiDiseases();
       },
     );
   }

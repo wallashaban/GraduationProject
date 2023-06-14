@@ -12,16 +12,18 @@ class MonthlyReminderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-       
-        CustomTextFormField(
-          controller: dateController,
+        InkWell(
           onTap: () async {
             dateController.text = await AppConstants.showDate(context);
           },
-          obscureText: false,
-          labelText: AppStrings.dateMonth,
-          validator: (value) {},
-          suffix: Icons.date_range_outlined,
+          child: CustomTextFormField(
+            controller: dateController,
+            enabled: false,
+            obscureText: false,
+            labelText: AppStrings.dateMonth,
+            validator: (value) {},
+            suffix: Icons.date_range_outlined,
+          ),
         ),
         SizedBox(
           height: 20.h,

@@ -1,4 +1,6 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../../../core/utils/exports.dart';
 
@@ -143,11 +145,19 @@ class CheckCodeScreen extends StatelessWidget {
                       }
                       return CustomButton(
                         text: AppStrings.verificationCode,
-                        onPressed: () {
-                          String code =
-                              '${otp1.text}${otp2.text}${otp3.text}${otp4.text}${otp5.text}${otp6.text}';
-                          debugPrint('code $code');
-                          cubit.checkCode(code);
+                        onPressed: () async{
+                          if (await AppConstants.checkConnectivity() ==
+                              ConnectivityResult.none) {
+                            AppConstants.showSnackbar(
+                              context: context,
+                              content: AppStrings.noInternet,
+                            );
+                          } else {
+                            String code =
+                                '${otp1.text}${otp2.text}${otp3.text}${otp4.text}${otp5.text}${otp6.text}';
+                            debugPrint('code $code');
+                            cubit.checkCode(code);
+                          }
                         },
                         color: AppColors.textColor,
                         size: 18.sp,

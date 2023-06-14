@@ -1,7 +1,9 @@
-// ignore_for_file: must_be_immutable, avoid_function_literals_in_foreach_calls
+// ignore_for_file: must_be_immutable, avoid_function_literals_in_foreach_calls, use_build_context_synchronously
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 
+import '../../../logger.dart';
 import '../../../medical_details_module/presentation_layer/widgets/dropdown_list_widget.dart';
 import '../controllers/medication_reminder_cubit.dart';
 import '../widgets/add_new_dose_widget.dart';
@@ -23,6 +25,7 @@ class AddReminderScreen extends StatelessWidget {
   List<int> days = [];
   @override
   Widget build(BuildContext context) {
+    logger.e('error add reminder');
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -80,6 +83,8 @@ class AddReminderScreen extends StatelessWidget {
                                 .map(AppConstants.buildMenuItem)
                                 .toList(),
                             onChanged: (time) {
+                              logger.e('error timer reminder');
+
                               cubit.changeReminderTimeValue(time);
                             },
                             value: cubit.medicineTime,
@@ -111,16 +116,19 @@ class AddReminderScreen extends StatelessWidget {
                           SizedBox(
                             height: 15.h,
                           ),
-                          CustomTextFormField(
-                            controller: endDateController,
+                          InkWell(
                             onTap: () async {
                               endDateController.text =
                                   await AppConstants.showDate(context);
                             },
-                            obscureText: false,
-                            labelText: AppStrings.stopMedicineTime,
-                            validator: (value) {},
-                            suffix: Icons.date_range_outlined,
+                            child: CustomTextFormField(
+                              controller: endDateController,
+                              enabled: false,
+                              obscureText: false,
+                              labelText: AppStrings.stopMedicineTime,
+                              validator: (value) {},
+                              suffix: Icons.date_range_outlined,
+                            ),
                           ),
                           SizedBox(
                             height: 15.h,
@@ -133,24 +141,39 @@ class AddReminderScreen extends StatelessWidget {
                             CustomButton(
                               text: AppStrings.saveData,
                               onPressed: () async {
-                                debugPrint('days $days');
-                                await AppConstants.addTime(
-                                  context: context,
-                                  dateController: dateController,
-                                  timeController: timeController,
-                                  days: days,
-                                  timerController: cubit.timerController,
-                                ).then((value) {
-                                  debugPrint('times $value');
-                                  cubit.storeMedicationReminder(
-                                    ReminderParameters(
-                                      medicineName: medicineNAmeController.text,
-                                      appointment: cubit.medicineTime,
-                                      endDate: endDateController.text,
-                                      times: value,
-                                    ),
+                                if (await AppConstants.checkConnectivity() ==
+                                    ConnectivityResult.none) {
+                                  AppConstants.showSnackbar(
+                                    context: context,
+                                    content: AppStrings.noInternet,
                                   );
-                                });
+                                } else {
+                                  await AppConstants.addTime(
+                                    context: context,
+                                    dateController: dateController,
+                                    timeController: timeController,
+                                    days: days,
+                                    timerController: cubit.timerController,
+                                  ).then((value) {
+                                    if (cubit.medicineTime == 'اسبوعيا' &&
+                                        days.isEmpty) {
+                                      AppConstants.showSnackbar(
+                                        context: context,
+                                        content: 'من فضلك قم باضافه الايام',
+                                      );
+                                    } else {
+                                      cubit.storeMedicationReminder(
+                                        ReminderParameters(
+                                          medicineName:
+                                              medicineNAmeController.text,
+                                          appointment: cubit.medicineTime,
+                                          endDate: endDateController.text,
+                                          times: value,
+                                        ),
+                                      );
+                                    }
+                                  });
+                                }
                               },
                             ),
                         ],

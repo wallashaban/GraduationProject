@@ -10,20 +10,23 @@ class MedicalDetailsScreen extends StatelessWidget {
   MedicalDetailsScreen({super.key});
   var formKey = GlobalKey<FormState>();
   var medicineNameController = TextEditingController();
-  bool isLoading = false;
-  var medicalSetails = Hive.box('userDataCach').get('medicalDetails');
-  bool isRecorded = CashHelper.getData(key: 'medicalDetailsRecorded') == true;
+
+  bool isRecorded =
+      Hive.box('userDataCach').get('medicalDetails${userDataCach.id}') != null;
+
   @override
   Widget build(BuildContext context) {
+    var cubit = BlocProvider.of<MedicalCubit>(context);
+    debugPrint('statement ${userDataCach.id}');
     if (isRecorded) {
-      medicineNameController.text = medicalSetails.medicineFile ?? '';
+      medicineNameController.text = cubit.medical?.medicineFile ?? '';
     }
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.pop(context);
               },
               icon: const Icon(
@@ -40,19 +43,21 @@ class MedicalDetailsScreen extends StatelessWidget {
               key: formKey,
               child: BlocConsumer<MedicalCubit, MedicalState>(
                 listener: (context, state) {
-                  if (state is StoreMedicalDetailsErrorState) {
+                  if ((state is StoreMedicalDetailsErrorState)) {
                     AppConstants.showSnackbar(
                       context: context,
                       content: state.error,
                     );
                   }
-                  if (state is UpdateMedicalDetailsSuccessState) {
+                  if ((state is UpdateMedicalDetailsErrorState)) {
                     AppConstants.showSnackbar(
                       context: context,
-                      content: AppStrings.saveSuccess,
+                      content: state.error,
                     );
                   }
-                  if (state is StoreMedicalDetailsSuccessState) {
+
+                  if ((state is StoreMedicalDetailsSuccessState) ||
+                      (state is UpdateMedicalDetailsSuccessState)) {
                     AppConstants.showSnackbar(
                       context: context,
                       content: AppStrings.saveSuccess,
@@ -61,6 +66,7 @@ class MedicalDetailsScreen extends StatelessWidget {
                 },
                 builder: (context, state) {
                   var cubit = BlocProvider.of<MedicalCubit>(context);
+
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -87,7 +93,7 @@ class MedicalDetailsScreen extends StatelessWidget {
                             RadioWidget(
                                 groupValue:
                                     isRecorded && cubit.isMedicine == null
-                                        ? (medicalSetails.isMedicine == true
+                                        ? (cubit.medical?.isMedicine == true
                                             ? AppStrings.yes
                                             : AppStrings.no)
                                         : (cubit.isMedicine == true
@@ -108,15 +114,17 @@ class MedicalDetailsScreen extends StatelessWidget {
                             RadioWidget(
                                 groupValue:
                                     isRecorded && cubit.isMedicine == null
-                                        ? (medicalSetails.isMedicine == true
-                                            ? AppStrings.yes
+                                        ? (cubit.medical?.isMedicine != null
+                                            ? cubit.medical.isMedicine == true
+                                                ? AppStrings.yes
+                                                : AppStrings.no
                                             : AppStrings.no)
                                         : (cubit.isMedicine == true
                                             ? AppStrings.yes
                                             : AppStrings.no),
                                 onChanged: (value) {
-                                  debugPrint(
-                                      'value ${medicalSetails.medicineFile}');
+                                  /* debugPrint(
+                                      'value ${cubit.medical.medicineFile}'); */
                                   if (value == 'لا') {
                                     cubit.existMedicineOrNot(false);
                                   } else {
@@ -132,7 +140,8 @@ class MedicalDetailsScreen extends StatelessWidget {
                         height: 5.h,
                       ),
                       if (cubit.isMedicine == true ||
-                          (medicalSetails.isMedicine == true &&
+                          (isRecorded &&
+                              cubit.medical?.isMedicine == true &&
                               cubit.isMedicine == null))
                         CustomTextFormField(
                           controller: medicineNameController,
@@ -160,17 +169,15 @@ class MedicalDetailsScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             RadioWidget(
-                                groupValue: (isRecorded &&
-                                        cubit.isGeneticDisease == null)
-                                    ? (medicalSetails.isGenticDisease == true
+                                groupValue: isRecorded &&
+                                        cubit.isGeneticDisease == null
+                                    ? (cubit.medical?.isGenticDisease == true
                                         ? AppStrings.yes
                                         : AppStrings.no)
                                     : (cubit.isGeneticDisease == true
                                         ? AppStrings.yes
                                         : AppStrings.no),
                                 onChanged: (value) {
-                                  debugPrint(
-                                      'geni ${medicalSetails.isGenticDisease}');
                                   if (value == 'لا') {
                                     cubit.existGeneticDiseaseOrNot(false);
                                   } else {
@@ -183,9 +190,9 @@ class MedicalDetailsScreen extends StatelessWidget {
                               width: MediaQuery.of(context).size.width * 0.1,
                             ),
                             RadioWidget(
-                                groupValue: !(isRecorded &&
-                                        cubit.isGeneticDisease != null)
-                                    ? (medicalSetails.isGenticDisease == true
+                                groupValue: isRecorded &&
+                                        cubit.isGeneticDisease == null
+                                    ? (cubit.medical?.isGenticDisease == true
                                         ? AppStrings.yes
                                         : AppStrings.no)
                                     : (cubit.isGeneticDisease == true
@@ -207,7 +214,8 @@ class MedicalDetailsScreen extends StatelessWidget {
                         height: 5.h,
                       ),
                       if (cubit.isGeneticDisease == true ||
-                          (medicalSetails.isGenticDisease == true &&
+                          (isRecorded &&
+                              cubit.medical?.isGenticDisease == true &&
                               cubit.isGeneticDisease == null))
                         CustomDropdownList(
                           hint: AppStrings.geneticDisease,
@@ -216,18 +224,18 @@ class MedicalDetailsScreen extends StatelessWidget {
                               .toList(),
                           onChanged: (geneticisease) {
                             cubit.changeGeneticDiseaseValue(geneticisease);
-                            debugPrint(
-                                'genetic ${medicalSetails.genticDisease}');
+                            /*  debugPrint(
+                                'genetic ${cubit.medical.genticDisease}'); */
                           },
                           value: isRecorded && cubit.geneticDiseaseValue == null
-                              ? medicalSetails.genticDisease
+                              ? cubit.medical?.genticDisease
                               : cubit.geneticDiseaseValue,
                         ),
                       SizedBox(
                         height: 45.h,
                       ),
-                      if (state is StoreMedicalDetailsLoadingState ||
-                          state is UpdateMedicalDetailsLoadingState)
+                      if ((state is StoreMedicalDetailsLoadingState) ||
+                          (state is UpdateMedicalDetailsLoadingState))
                         CustomButton(
                           isLoading: true,
                         )
@@ -236,6 +244,9 @@ class MedicalDetailsScreen extends StatelessWidget {
                           isRecorded: isRecorded,
                           medicineNameController: medicineNameController,
                         ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
                     ],
                   );
                 },

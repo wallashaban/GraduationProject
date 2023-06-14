@@ -73,7 +73,6 @@ export 'package:graduation_project/authentication_module/presentaion_layer/scree
 export 'package:graduation_project/authentication_module/presentaion_layer/screens/password_success_screen.dart';
 export 'package:graduation_project/authentication_module/presentaion_layer/screens/reset_new_password_screen.dart';
 export 'package:graduation_project/authentication_module/presentaion_layer/screens/check_code_screen.dart';
-export 'package:graduation_project/authentication_module/presentaion_layer/screens/reset_screen.dart';
 export 'package:graduation_project/authentication_module/presentaion_layer/screens/splash_screen.dart';
 export 'package:graduation_project/core/routes/routers.dart';
 export '../../authentication_module/presentaion_layer/screens/login_screen.dart';

@@ -4,9 +4,9 @@ import 'package:graduation_project/core/utils/exports.dart';
 
 
 abstract class DiseaseBaseRepository {
-  Future<Either<Failure, General>> storeAiDisease(DiseaseParameters parameters);
+  Future<Either<Failure, AiDiseasee>> storeAiDisease(DiseaseParameters parameters);
   Future<Either<Failure, General>> deleteAiDisease(int id);
-  Future<Either<Failure, List<AiDisease>>> getAllAiDiseases();
+  Future<Either<Failure, List<AiDiseasee>>> getAllAiDiseases();
    Future<String> predictDisease(
     PredictDiseaseParameters parameters
   );

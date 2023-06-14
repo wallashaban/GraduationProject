@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dotted_border/dotted_border.dart';
 
 import '../../../core/utils/exports.dart';
@@ -50,9 +53,17 @@ class ReminderWidget extends StatelessWidget {
               ),
               const Spacer(),
               IconButton(
-                  onPressed: () {
-                    AppConstants.showDialoog(context,
+                  onPressed: () async{
+                    if (await AppConstants.checkConnectivity() ==
+                                ConnectivityResult.none) {
+                              AppConstants.showSnackbar(
+                                context: context,
+                                content: AppStrings.noInternet,
+                              );
+                            } else {
+                      AppConstants.showDialoog(context,
                         id: reminder.id, isReminder: true);
+                    }
                   },
                   icon: Icon(
                     Icons.close,
@@ -85,39 +96,50 @@ class ReminderWidget extends StatelessWidget {
               children: [
                 Container(
                   width: reminder.apponitment == 'اسبوعيا'
-                      ? reminder.times.length * 55.w >
+                      ? reminder.days!.length * 55.w >
                               MediaQuery.of(context).size.width
                           ? double.infinity
-                          : reminder.times.length * 55.w
-                      : reminder.times.length * 70.w >
+                          : reminder.days!.length * 55.w
+                      : reminder.times.length * 60.w >
                               MediaQuery.of(context).size.width
                           ? double.infinity
-                          : reminder.times.length * 70.w,
+                          : reminder.times.length * 60.w,
                   height: 25.h,
                   //width: MediaQuery.of(context).size.width * 0.6,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                  padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
                   decoration: BoxDecoration(
                     color: AppColors.appBarColor.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(15.r),
                   ),
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: reminder.apponitment == 'اسبوعيا'
-                        ? reminder.days!.length
-                        : reminder.times.length,
-                    itemBuilder: (context, index) => SizedBox(
-                      width: reminder.apponitment == 'اسبوعيا' ? 50.w : 70.w,
-                      child: CustomText(
-                        text: reminder.apponitment == 'اسبوعيا'
-                            ? '${reminder.days![index].day}    ${index != reminder.days!.length - 1 ? ' و' : ''}'
-                            : '${reminder.times[index].time}   ${index != reminder.times.length - 1 ? ' و' : ''}',
-                        color: AppColors.darkColor,
-                        size: 12.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
+                  child: reminder.apponitment == 'اسبوعيا'
+                      ? ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: reminder.days!.length,
+                          itemBuilder: (context, index) => SizedBox(
+                            width: 55.w,
+                            child: CustomText(
+                              text:
+                                  '${reminder.days![index].day} ${index != reminder.days!.length - 1 ? ',' : ''}',
+                              color: AppColors.darkColor,
+                              size: 12.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: reminder.times.length,
+                          itemBuilder: (context, index) => SizedBox(
+                            width: 60.w,
+                            child: CustomText(
+                              text:
+                                  '${reminder.times[index].time.split(' ').first} ${reminder.times[index].time.split(' ').last == 'pm' ? 'م' : 'ص'} ${index != reminder.times.length - 1 ? ',' : ''}',
+                              color: AppColors.darkColor,
+                              size: 12.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                 ),
                 SizedBox(
                   height: 10.h,
@@ -134,7 +156,7 @@ class ReminderWidget extends StatelessWidget {
               text: reminder.apponitment == 'يوميا' ||
                       reminder.apponitment == 'اسبوعيا'
                   ? 'بدايه من  ${reminder.startDate} الى ${reminder.endDate}'
-                  : '${reminder.times[0].month}     ${reminder.times[0].time}',
+                  : '${reminder.times[0].month}  ,   ${reminder.times[0].time}',
               color: AppColors.darkColor,
               size: 12.sp,
               fontWeight: FontWeight.bold,

@@ -1,8 +1,10 @@
+import 'package:graduation_project/core/caching_data/teeth_cach%20.dart';
+
 import '../../../core/utils/exports.dart';
 import '../../domain_layer/entities/teeth.dart';
 
 class TeethWidget extends StatelessWidget {
-  final Teeth teeth;
+  final TeethCach teeth;
   const TeethWidget({
     super.key,
     required this.teeth,
@@ -17,7 +19,6 @@ class TeethWidget extends StatelessWidget {
       ),
       margin: EdgeInsets.symmetric(
         vertical: 10.h,
-        horizontal: 10.w,
       ),
       decoration: BoxDecoration(
         boxShadow: [
@@ -33,7 +34,7 @@ class TeethWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(
-            text: teeth.apperenceDate,
+            text: teeth.appearanceDate,
             size: 16.sp,
             fontWeight: FontWeight.normal,
           ),
@@ -41,7 +42,8 @@ class TeethWidget extends StatelessWidget {
             height: 5.h,
           ),
           CustomText(
-            text: '${AppStrings.age} : ${teeth.ageInMonths}${AppStrings.month}',
+            text:
+                '${AppStrings.age} : ${teeth.ageInMonth} ${AppStrings.month} , ${teeth.ageInYears} ${AppStrings.year}',
             size: 14.sp,
             fontWeight: FontWeight.normal,
           ),
@@ -50,23 +52,30 @@ class TeethWidget extends StatelessWidget {
           ),
           Row(
             children: [
-              Icon(
-                Icons.telegram,
-                color: AppColors.appBarColor,
+              SvgPicture.asset(
+                AppImages.toothImage,
+                width: 18.w,
+                height: 21.4.h,
+                fit: BoxFit.fill,
+              ),
+              SizedBox(
+                width: 5.w,
               ),
               CustomText(
-                text: ' ${teeth.teethName}',
+                text: ' ${teeth.teeth}',
                 size: 14.sp,
                 fontWeight: FontWeight.normal,
               ),
               const Spacer(),
               IconButton(
                   onPressed: () {
-                    AppConstants.showDialoog(context, isTooth: true,id: teeth.id);
+                    AppConstants.showDialoog(context,
+                        isTooth: true, id: teeth.id);
                   },
                   icon: Icon(
-                    Icons.delete,
+                    Icons.delete_outlined,
                     color: AppColors.appBarColor,
+                    size: 30,
                   ))
             ],
           ),

@@ -23,7 +23,8 @@ class CustomDropdownList extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(color: AppColors.appBarColor, width: 2.w)),
+          border: Border.all(
+              color: AppColors.appBarColor.withOpacity(0.8), width: 2.w)),
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
           items: items,
@@ -33,7 +34,6 @@ class CustomDropdownList extends StatelessWidget {
           iconSize: 35.r,
           selectedItemBuilder: (BuildContext context) {
             return items.map((item) {
-
               return CustomText(
                 text: item.value,
               );

@@ -28,16 +28,21 @@ class VaccinationDetailsScreen extends StatelessWidget {
           title: const CustomText(
             text: AppStrings.vaccinedetails,
           ),
-          leading: const Icon(
-            Icons.arrow_back,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+            ),
           ),
           actions: [
             IconButton(
               onPressed: () {
                 AppConstants.navigateTo(
-                context: context,
-                routeName: AppRoutes.vaccineReminderScreen,
-              );
+                  context: context,
+                  routeName: AppRoutes.vaccineReminderScreen,
+                );
               },
               icon: const Icon(
                 Icons.notification_add,
@@ -48,19 +53,21 @@ class VaccinationDetailsScreen extends StatelessWidget {
         body: BlocConsumer<VaccinationsCubit, VaccinationsState>(
           listener: (context, state) {},
           builder: (context, state) => Padding(
-            padding: EdgeInsets.all(15.r),
-            child: Column(
-              children: [
-                VaccineDetailsFirstComponent(
-                  vaccineDetailsFirstModel: vaccineModel,
-                ),
-                SizedBox(
-                  height: 10.h,
-                ),
-                VaccineDetailsSecondComponent(
-                  vaccineDetailsSecondModel: vaccineModel,
-                ),
-              ],
+            padding: EdgeInsets.all(10.r),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  VaccineDetailsFirstComponent(
+                    model: vaccineModel,
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  VaccineDetailsSecondComponent(
+                    model: vaccineModel,
+                  ),
+                ],
+              ),
             ),
           ),
         ),

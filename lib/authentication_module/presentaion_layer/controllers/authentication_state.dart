@@ -11,6 +11,22 @@ class PickImageAuthState extends AuthenticationState{}
 class DeleteImageState extends AuthenticationState{}
 class GenderState extends AuthenticationState{}
 class AuthDone extends AuthenticationState{}
+class GetTokenSuccessState extends AuthenticationState{}
+
+class UpdateUserInfoLoadingState extends AuthenticationState {}
+
+class UpdateUserInfoSuccessState extends AuthenticationState {}
+
+class UpdateUserInfoErrorState extends AuthenticationState {
+ final String error;
+ const UpdateUserInfoErrorState({
+    required this.error,
+  });
+
+  
+}
+
+
 
 // login states
 class AuthenticationInitial extends AuthenticationState {}

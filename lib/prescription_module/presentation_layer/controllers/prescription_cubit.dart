@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:file_picker/file_picker.dart';
+import 'package:graduation_project/core/caching_data/pres_cach.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../core/utils/exports.dart';
 
 import '../../data_layer/models/prescribtion_model.dart';
 import '../../domain_layer/entities/prescribtion.dart';
-
 
 part 'prescription_state.dart';
 
@@ -27,11 +27,7 @@ class PrescriptionCubit extends Cubit<PrescriptionState> {
   ) : super(PrescriptionInitial());
 
   ///prescription
-  General prescription = const General(
-    data: 'data',
-    message: 'message',
-    status: false,
-  );
+  Presccription? prescription;
   List<Presccription> allPrescriptions = [];
   Presccription singlePrescription = const PrescribtionModel(
     id: 1,
@@ -95,8 +91,18 @@ class PrescriptionCubit extends Cubit<PrescriptionState> {
       },
       (r) {
         prescription = r;
+        Hive.box('presCach').put(
+          'pres ${r.id} ${CashHelper.getData(key: 'id').toString()}',
+          PresCach(
+            id: r.id,
+            date: r.date,
+            file: r.file,
+            note: r.note,
+          ),
+        );
+        debugPrint('pres id ${CashHelper.getData(key: 'id')}');
         emit(StorePrescriptionSuccessState());
-        getAllPrescriiptions();
+        //getAllPrescriiptions();
       },
     );
   }
@@ -161,8 +167,17 @@ class PrescriptionCubit extends Cubit<PrescriptionState> {
       },
       (r) {
         prescriptionUpdated = r;
+        Hive.box('presCach').put(
+          'pres ${r.id} ${CashHelper.getData(key: 'id').toString()}',
+          PresCach(
+            id: r.id,
+            date: r.date,
+            file: r.file,
+            note: r.note,
+          ),
+        );
         emit(UpdatePrescriptionSuccessState());
-        getAllPrescriiptions();
+        // getAllPrescriiptions();
       },
     );
   }
@@ -171,7 +186,7 @@ class PrescriptionCubit extends Cubit<PrescriptionState> {
   Future deletePrescription(int id) async {
     emit(DeletePrescriptionLoadingState());
     final result = await deletePrescriptionUseCase(id);
-
+    //Hive.box('presCach').deleteAll(Hive.box('presCach').keys);
     result.fold(
       (l) {
         serverFailure = l;
@@ -183,8 +198,10 @@ class PrescriptionCubit extends Cubit<PrescriptionState> {
       },
       (r) {
         prescriptionDel = r;
+        Hive.box('presCach')
+            .delete('pres $id ${CashHelper.getData(key: 'id').toString()}');
         emit(DeletePrescriptionSuccessState());
-        getAllPrescriiptions();
+        //getAllPrescriiptions();
       },
     );
   }

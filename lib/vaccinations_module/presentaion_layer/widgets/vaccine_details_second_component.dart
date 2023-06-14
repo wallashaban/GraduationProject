@@ -8,26 +8,26 @@ import '../../../core/utils/app_colors.dart';
 import '../../domain_layer/entities/vaccination.dart';
 
 class VaccineDetailsSecondComponent extends StatelessWidget {
-  final Vaccination vaccineDetailsSecondModel;
+  final Vaccination model;
   const VaccineDetailsSecondComponent({
     Key? key,
-    required this.vaccineDetailsSecondModel,
+    required this.model,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      padding: EdgeInsets.only(top: 10.h, bottom: 5.h, left: 10.w, right: 10.w),
+      padding: EdgeInsets.all(10.r),
+      margin: const EdgeInsets.only(top: 10, bottom: 5, left: 5, right: 5),
       decoration: BoxDecoration(
-        color: AppColors.backColor,
         boxShadow: [
           BoxShadow(
               color: Colors.grey[400]!,
               blurRadius: 5,
               blurStyle: BlurStyle.outer),
         ],
-        borderRadius: BorderRadius.circular(
-          15.r,
+        color: AppColors.backColor,
+        borderRadius: BorderRadius.all(
+          Radius.circular(15.r),
         ),
       ),
       child: Column(
@@ -45,17 +45,17 @@ class VaccineDetailsSecondComponent extends StatelessWidget {
               CustomText(
                 text: AppStrings.aboutVaccine,
                 size: 14.sp,
+                fontWeight: FontWeight.w500,
               ),
             ],
           ),
-          const SizedBox(
-            height: 5,
+          SizedBox(
+            height: 10.h,
           ),
           CustomText(
-            text:
-                'يحتوى اللقاح الفموي المضاد لشلل الأطفال على فيروس ينشط إستجابة مناعية في الجسم و عندما يطعم الطفل باللقاح فإن الفيروس الموجود في اللقح يتكاثر في أمعائه' /* vaccineDetailsSecondModel.about */,
-            maxLines: 7,
-            size: 10.sp,
+            text: model.about!,
+            maxLines: 30,
+            size: 11.sp,
           ),
           SizedBox(
             height: 15.h,
@@ -76,14 +76,14 @@ class VaccineDetailsSecondComponent extends StatelessWidget {
             ],
           ),
           SizedBox(
-            height: 5.h,
+            height: 10.h,
           ),
           CustomText(
-            text: vaccineDetailsSecondModel.prevention, //
+            text: model.prevention, //
             size: 10.sp,
           ),
           SizedBox(
-            height: 5.h,
+            height: 15.h,
           ),
           Row(
             children: [
@@ -101,15 +101,16 @@ class VaccineDetailsSecondComponent extends StatelessWidget {
             ],
           ),
           SizedBox(
-            width: 5.w,
+            height: 10.h,
           ),
           CustomText(
-            text: vaccineDetailsSecondModel.vaccineAge == '0'
+            text: model.vaccineAge == '0'
                 ? AppStrings.whileBorn
-                : '${vaccineDetailsSecondModel.vaccineAge} ${AppStrings.month} ',
+                : '${model.vaccineAge} ${AppStrings.month} ',
+            size: 11.sp,
           ),
           SizedBox(
-            height: 5.h,
+            height: 15.h,
           ),
           Row(
             children: [
@@ -127,12 +128,12 @@ class VaccineDetailsSecondComponent extends StatelessWidget {
             ],
           ),
           SizedBox(
-            width: 5.w,
+            height: 10.h,
           ),
           CustomText(
-            //side effect
-            text: vaccineDetailsSecondModel.prevention,
-            size: 10.sp,
+            text: model.sideEffects!,
+            size: 11.sp,
+            maxLines: 30,
           ),
         ],
       ),

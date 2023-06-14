@@ -1,22 +1,22 @@
 import 'package:flutter/cupertino.dart';
 
-
-
 class CustomText extends StatelessWidget {
- final String text;
- final int maxLines;
- final TextAlign textAlign;
- final Color? color;
- final double? size;
- final FontWeight? fontWeight;
+  final String text;
+  final int maxLines;
+  final TextAlign textAlign;
+  final Color? color;
+  final double? size;
+  final FontWeight? fontWeight;
+  final TextDirection? textDirection;
   const CustomText({
     Key? key,
     required this.text,
-     this.maxLines =1,
-     this.textAlign = TextAlign.start,
-     this.color,
-     this.size,
-     this.fontWeight,
+    this.maxLines = 1,
+    this.textAlign = TextAlign.start,
+    this.color,
+    this.size,
+    this.fontWeight,
+    this.textDirection,
   }) : super(key: key);
 
   @override
@@ -25,6 +25,7 @@ class CustomText extends StatelessWidget {
       text,
       maxLines: maxLines,
       textAlign: textAlign,
+      textDirection: textDirection,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
         color: color,

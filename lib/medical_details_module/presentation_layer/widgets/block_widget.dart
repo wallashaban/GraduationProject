@@ -63,6 +63,7 @@ class BlockWidget extends StatelessWidget {
                 image,
                 width: imageWidth,
                 height: imageHeight,
+                fit: BoxFit.fill,
               ),
             ],
           ),

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
 import 'package:file_picker/file_picker.dart';
+import 'package:graduation_project/core/caching_data/test_cach.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../core/utils/exports.dart';
@@ -25,17 +26,9 @@ class MedicalTestsCubit extends Cubit<MedicalTestsState> {
   ) : super(MedicalTestsInitial());
 
   ///medical test
-  General medicalTest = const GeneralModel(
-    data: 'data',
-    message: 'message',
-    status: false,
-  );
+  MediaclTest? medicalTest;
 
-  General updateMedicalTest = const GeneralModel(
-    data: 'data',
-    message: 'message',
-    status: false,
-  );
+  MediaclTest? updateMedicalTest;
 
   List<MediaclTest> allMedicalTests = [];
   MediaclTest singleMedicalTest = const MediaclTestModel(
@@ -58,6 +51,13 @@ class MedicalTestsCubit extends Cubit<MedicalTestsState> {
     pickedFile = null;
     filePath = null;
     emit(Cansel());
+  }
+
+  String date = '01/01/2023';
+  changeDate(String date) {
+    this.date = date;
+    emit(ChangeDateState());
+    emit(TestDone());
   }
 
   FilePickerResult? result;
@@ -104,8 +104,18 @@ class MedicalTestsCubit extends Cubit<MedicalTestsState> {
       },
       (r) {
         medicalTest = r;
+        Hive.box('testCach').put(
+          'test ${r.id} ${CashHelper.getData(key: 'id')}',
+          TestCach(
+            id: r.id,
+            labName: r.labName,
+            labFile: r.labFile,
+            labDate: r.labDate,
+            type: r.type,
+          ),
+        );
         emit(StoreMedicaltestSuccessState());
-        getAllMedicalTests();
+        //getAllMedicalTests();
         pickedFile = null;
       },
     );
@@ -127,6 +137,7 @@ class MedicalTestsCubit extends Cubit<MedicalTestsState> {
       },
       (r) {
         allMedicalTests = r;
+        //  debugPrint('all medical tests cubit $allMedicalTests');
         emit(GellAllMedicaltestSuccessState());
       },
     );
@@ -170,8 +181,18 @@ class MedicalTestsCubit extends Cubit<MedicalTestsState> {
       },
       (r) {
         medicalTest = r;
+        Hive.box('testCach').put(
+          'test ${r.id} ${CashHelper.getData(key: 'id')}',
+          TestCach(
+            id: r.id,
+            labName: r.labName,
+            labFile: r.labFile,
+            labDate: r.labDate,
+            type: r.type,
+          ),
+        );
         emit(UpdateMedicaltestSuccessState());
-        getAllMedicalTests();
+        // getAllMedicalTests();
       },
     );
   }
@@ -180,7 +201,7 @@ class MedicalTestsCubit extends Cubit<MedicalTestsState> {
   Future deleteMedicalTest(int id) async {
     emit(DeleteMedicaltestLoadingState());
     final result = await deleteMedicalTestUseCase(id);
-
+    // Hive.box('testCach').deleteAll(Hive.box('testCach').keys);
     result.fold(
       (l) {
         serverFailure = l;
@@ -192,8 +213,10 @@ class MedicalTestsCubit extends Cubit<MedicalTestsState> {
       },
       (r) {
         testDel = r;
+        Hive.box('testCach')
+            .delete('test $id ${CashHelper.getData(key: 'id')}');
         emit(DeleteMedicaltestSuccessState());
-        getAllMedicalTests();
+        // getAllMedicalTests();
       },
     );
   }

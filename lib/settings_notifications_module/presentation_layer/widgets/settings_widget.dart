@@ -28,25 +28,25 @@ class SettingsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (() {
-        isLogOut
-            ? BlocProvider.of<SettingsNotificationsCubit>(context)
-                .logOutUser()
-                .then((value) {
-                CashHelper.deleteData(key: 'token');
-                AppConstants.navigateReplacement(
-                  context: context,
-                  routeName: AppRoutes.login,
-                );
-              })
-            : AppConstants.navigateTo(context: context, routeName: widget);
+        if (isLogOut) {
+          BlocProvider.of<SettingsNotificationsCubit>(context)
+              .logOutUser(context)
+              .then((value) {
+            AppConstants.navigateReplacement(
+              context: context,
+              routeName: AppRoutes.login,
+            );
+          });
+        }
       }),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor:
-                  isAccount ? Colors.transparent : AppColors.textColor,
+              backgroundColor: Colors.transparent,
+              /* backgroundImage:
+                  SvgPicture.asset(AppImages.pointImage) as ImageProvider, */
               radius: 25,
               child: isAccount
                   ? Container(
@@ -70,9 +70,15 @@ class SettingsWidget extends StatelessWidget {
                                 fit: BoxFit.cover,
                               ),
                             ))
-                  : Icon(
-                      icon,
-                      color: AppColors.white,
+                  : Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        SvgPicture.asset(AppImages.pointImage),
+                        Icon(
+                          icon,
+                          color: AppColors.appBarColor.withOpacity(0.8),
+                        ),
+                      ],
                     ),
             ),
             const SizedBox(
@@ -100,11 +106,13 @@ class SettingsWidget extends StatelessWidget {
             const Spacer(),
             if (!isLogOut)
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  AppConstants.navigateTo(context: context, routeName: widget);
+                },
                 icon: Icon(
-                  Icons.arrow_forward_ios,
+                  Icons.arrow_forward_ios_sharp,
                   size: 20.r,
-                  color: AppColors.darkColor,
+                  color: AppColors.appBarColor,
                 ),
               ),
           ],

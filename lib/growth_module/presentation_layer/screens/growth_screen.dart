@@ -1,13 +1,14 @@
 // ignore_for_file: avoid_print, use_build_context_synchronously
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:graduation_project/core/caching_data/growth_cach.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/growth_module/domain_layer/entities/growth.dart';
-import 'package:graduation_project/growth_module/presentation_layer/controllers/growth_cubit.dart';
 import 'package:graduation_project/growth_module/presentation_layer/widgets/reminder_widget.dart';
 
 import '../../../medical_tests_module/presentation_layer/widgets/date_text_form_field.dart';
 
 class GrowParameters {
-  Growth? growth;
+  GrowrhCach? growth;
   bool isEdit;
   GrowParameters({
     this.growth,
@@ -51,7 +52,7 @@ class GrowthScreen extends StatelessWidget {
             padding: const EdgeInsets.all(15.0),
             child: BlocConsumer<GrowthCubit, GrowthState>(
               listener: (context, state) async {
-                if (state is ClaculateGrowthErrorSatate) {
+                if ((state is ClaculateGrowthErrorSatate)) {
                   if (state.error == 'هذا الوزن لا يتوافق مع المعدل الطبيعي') {
                     await showReminder(context);
                   } else {
@@ -59,23 +60,22 @@ class GrowthScreen extends StatelessWidget {
                         context: context, content: state.error);
                   }
                 }
-                /* if (state is ClaculateGrowthErrorSatate) {
-                  AppConstants.showSnackbar(
-                      context: context, content: state.error);
-                } */
-                if (state is ClaculateGrowthLoadingSatate) {
-                  isLoading = true;
-                } else {
-                  isLoading = false;
+                if ((state is EditGrowthErrorSatate)) {
+                  if (state.error == 'هذا الوزن لا يتوافق مع المعدل الطبيعي') {
+                    await showReminder(context);
+                  } else {
+                    AppConstants.showSnackbar(
+                        context: context, content: state.error);
+                  }
                 }
                 if (state is ClaculateGrowthSuccessSatate) {
                   AppConstants.showSnackbar(
                       context: context, content: AppStrings.saveSuccess);
                 }
-               /*  if (state is UpdatePrescriptionSuccessState) {
+                if (state is EditGrowthSuccessSatate) {
                   AppConstants.showSnackbar(
                       context: context, content: AppStrings.saveSuccess);
-                } */
+                }
               },
               builder: (context, state) {
                 var cubit = BlocProvider.of<GrowthCubit>(context);
@@ -96,15 +96,14 @@ class GrowthScreen extends StatelessWidget {
                       SizedBox(
                         height: 10.h,
                       ),
-                      DateTextFormField(
-                        controller: dateController,
-                      ),
+                      const DateTextFormField(),
                       SizedBox(
                         height: 20.h,
                       ),
                       CustomTextFormField(
                         controller: weightController,
                         labelText: AppStrings.weightKg,
+                        keyBoardType: TextInputType.number,
                         obscureText: false,
                         validator: (value) {},
                       ),
@@ -114,6 +113,7 @@ class GrowthScreen extends StatelessWidget {
                       CustomTextFormField(
                         controller: heightController,
                         labelText: AppStrings.heghtCm,
+                        keyBoardType: TextInputType.number,
                         obscureText: false,
                         validator: (value) {},
                       ),
@@ -127,33 +127,50 @@ class GrowthScreen extends StatelessWidget {
                       SizedBox(
                         height: 30.h,
                       ),
-                      CustomButton(
-                          isLoading: isLoading,
-                          size: 18.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.textColor,
-                          text: growParameters.isEdit
-                              ? AppStrings.edit
-                              : AppStrings.saveData,
-                          onPressed: () {
-                            if (formkey.currentState!.validate()) {
-                              /* if (growParameters.isEdit) {
-                               cubit.updatePrescription(
-                                        PresccriptionParameters(
-                                            note: noteController.text,
-                                            date: dateController.text,
-                                            file: cubit.filePath,
-                                            id: presParameters
-                                                .presccription!.id));
-                              } else { */
-
-                              cubit.calculateGrowth(GrowthParameters(
-                                measureDate: dateController.text,
-                                weight: double.parse(weightController.text),
-                                height: double.parse(heightController.text),
-                              ));
-                            }
-                          }),
+                      if ((state is ClaculateGrowthLoadingSatate) ||
+                          (state is EditGrowthLoadingSatate))
+                        CustomButton(
+                          isLoading: true,
+                        ),
+                      if ((state is! ClaculateGrowthLoadingSatate) &&
+                          (state is! EditGrowthLoadingSatate))
+                        CustomButton(
+                            text: growParameters.isEdit
+                                ? AppStrings.edit
+                                : AppStrings.saveData,
+                            onPressed: () async {
+                              if (await AppConstants.checkConnectivity() ==
+                                  ConnectivityResult.none) {
+                                AppConstants.showSnackbar(
+                                  context: context,
+                                  content: AppStrings.noInternet,
+                                );
+                              } else if (formkey.currentState!.validate()) {
+                                if (growParameters.isEdit) {
+                                  cubit.editeGrowth(
+                                    GrowthParameters(
+                                      height:
+                                          double.parse(heightController.text),
+                                      weight:
+                                          double.parse(weightController.text),
+                                      measureDate: BlocProvider.of<
+                                              TeethDevelopmentCubit>(context)
+                                          .date,
+                                      id: growParameters.growth!.id,
+                                    ),
+                                  );
+                                } else {
+                                  cubit.calculateGrowth(GrowthParameters(
+                                    measureDate:
+                                        BlocProvider.of<TeethDevelopmentCubit>(
+                                                context)
+                                            .date,
+                                    weight: double.parse(weightController.text),
+                                    height: double.parse(heightController.text),
+                                  ));
+                                }
+                              }
+                            }),
                     ],
                   ),
                 );

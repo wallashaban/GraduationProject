@@ -7,30 +7,34 @@ import '../../../core/utils/exports.dart';
 class DoseTimeWidget extends StatelessWidget {
   final timeController;
   final bool isDaily;
-  const DoseTimeWidget({super.key, required this.timeController,
-  this.isDaily=false});
+  const DoseTimeWidget(
+      {super.key, required this.timeController, this.isDaily = false});
 
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<MedicationReminderCubit>(context);
-    return CustomTextFormField(
+    return InkWell(
       onTap: () {
         showTimePicker(
+          
           context: context,
           initialTime: TimeOfDay.now(),
         ).then(
             (value) => timeController.text = '${value!.hour}:${value.minute}');
       },
-      controller: timeController,
-      obscureText: false,
-      labelText: AppStrings.time,
-      validator: (value) {},
-      suffix:isDaily? Icons.alarm_off: Icons.alarm,
-      sufixPressed: () {
-        if (isDaily) {
-          cubit.deleteDose();
-        }
-      },
+      child: CustomTextFormField(
+        enabled: false,
+        controller: timeController,
+        obscureText: false,
+        labelText: AppStrings.time,
+        validator: (value) {},
+        suffix: isDaily ? Icons.alarm_off : Icons.alarm,
+        sufixPressed: () {
+          if (isDaily) {
+            cubit.deleteDose();
+          }
+        },
+      ),
     );
   }
 }

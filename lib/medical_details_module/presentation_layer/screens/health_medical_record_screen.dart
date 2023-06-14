@@ -9,6 +9,12 @@ class HealthMedicalRecord extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isExistMedical = false;
+    bool isExistTest = false;
+    bool isExistPres = false;
+    bool isExistGrowth = false;
+    bool isExistTeeth = false;
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -33,22 +39,50 @@ class HealthMedicalRecord extends StatelessWidget {
                     children: [
                       BlockWidget(
                         isMedicalHealthRecord: true,
-                        onTap: () {
-                          AppConstants.navigateTo(
-                            context: context,
-                            routeName: AppRoutes.previousTestScreen,
-                          );
+                        onTap: () async {
+                          if (CashHelper.getData(
+                                  key:
+                                      'testSaved ${CashHelper.getData(key: 'id')}') ==
+                              null) {
+                            await AppConstants.userExistTestOrNot(
+                                    isExistTest, context)
+                                .then((value) {
+                              AppConstants.navigateTo(
+                                context: context,
+                                routeName: AppRoutes.previousTestScreen,
+                              );
+                            });
+                          } else {
+                            AppConstants.navigateTo(
+                              context: context,
+                              routeName: AppRoutes.previousTestScreen,
+                            );
+                          }
                         },
                         text: AppStrings.tests,
                         image: AppImages.testsImage,
                       ),
                       BlockWidget(
                         isMedicalHealthRecord: true,
-                        onTap: () {
-                          AppConstants.navigateTo(
-                            context: context,
-                            routeName: AppRoutes.medicalDetailsScreen,
-                          );
+                        onTap: () async {
+                          if (CashHelper.getData(
+                                  key:
+                                      'medicalDetailsSaved ${CashHelper.getData(key: 'id')}') ==
+                              null) {
+                            await AppConstants.userExistMedicalOrNot(
+                                    isExistMedical, context)
+                                .then((value) {
+                              AppConstants.navigateTo(
+                                context: context,
+                                routeName: AppRoutes.medicalDetailsScreen,
+                              );
+                            });
+                          } else {
+                            AppConstants.navigateTo(
+                              context: context,
+                              routeName: AppRoutes.medicalDetailsScreen,
+                            );
+                          }
                         },
                         text: AppStrings.medicalDetails,
                         image: AppImages.medicalDetailsImage,
@@ -63,12 +97,25 @@ class HealthMedicalRecord extends StatelessWidget {
                     children: [
                       BlockWidget(
                         isMedicalHealthRecord: true,
-                        onTap: () {
-                         
-                          AppConstants.navigateTo(
-                            context: context,
-                            routeName: AppRoutes.growthHistoryScreen,
-                          );
+                        onTap: () async {
+                          if (CashHelper.getData(
+                                  key:
+                                      'growthSaved ${CashHelper.getData(key: 'id')}') ==
+                              null) {
+                            await AppConstants.userExistGrowthOrNot(
+                                    isExistGrowth, context)
+                                .then((value) {
+                              AppConstants.navigateTo(
+                                context: context,
+                                routeName: AppRoutes.growthHistoryScreen,
+                              );
+                            });
+                          } else {
+                            AppConstants.navigateTo(
+                              context: context,
+                              routeName: AppRoutes.growthHistoryScreen,
+                            );
+                          }
                         },
                         text: AppStrings.growth,
                         image: AppImages.growthImage,
@@ -76,14 +123,18 @@ class HealthMedicalRecord extends StatelessWidget {
                       BlockWidget(
                         isMedicalHealthRecord: true,
                         onTap: () async {
-                          var cubit =
-                              BlocProvider.of<TeethDevelopmentCubit>(context);
-                          await cubit.getAllteeth();
-                          if (cubit.allTeeth.isEmpty) {
-                            AppConstants.navigateTo(
-                              context: context,
-                              routeName: AppRoutes.addToothScreen,
-                            );
+                          if (CashHelper.getData(
+                                  key:
+                                      'teethSaved ${CashHelper.getData(key: 'id')}') ==
+                              null) {
+                            await AppConstants.userExistTeethOrNot(
+                                    isExistTeeth, context)
+                                .then((value) {
+                              AppConstants.navigateTo(
+                                context: context,
+                                routeName: AppRoutes.teethDwvelopmentScreen,
+                              );
+                            });
                           } else {
                             AppConstants.navigateTo(
                               context: context,
@@ -104,18 +155,37 @@ class HealthMedicalRecord extends StatelessWidget {
                     children: [
                       BlockWidget(
                         isMedicalHealthRecord: true,
-                        onTap: () {
-                          AppConstants.navigateTo(
-                            context: context,
-                            routeName: AppRoutes.previousPrescriptionScreen,
-                          );
+                        onTap: () async {
+                          if (CashHelper.getData(
+                                  key:
+                                      'presSaved ${CashHelper.getData(key: 'id')}') ==
+                              null) {
+                            await AppConstants.userExistPresOrNot(
+                                    isExistPres, context)
+                                .then((value) {
+                              AppConstants.navigateTo(
+                                context: context,
+                                routeName: AppRoutes.previousPrescriptionScreen,
+                              );
+                            });
+                          } else {
+                            AppConstants.navigateTo(
+                              context: context,
+                              routeName: AppRoutes.previousPrescriptionScreen,
+                            );
+                          }
                         },
                         text: AppStrings.prescribtion,
                         image: AppImages.prescribtionImage,
                       ),
                       BlockWidget(
                         isMedicalHealthRecord: true,
-                        onTap: () {},
+                        onTap: () {
+                          AppConstants.navigateTo(
+                            context: context,
+                            routeName: AppRoutes.subjectWithQuestionScreen,
+                          );
+                        },
                         text: AppStrings.development,
                         image: AppImages.developmentImage,
                       ),

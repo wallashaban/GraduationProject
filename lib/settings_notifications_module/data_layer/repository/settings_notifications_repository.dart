@@ -9,7 +9,7 @@ class SettingsNotificationsRepository implements SettingsNotificationsBaseReposi
 
   SettingsNotificationsRepository(this.baseSettingsNotificationsRemotDataSource);
 
-  @override
+ /*  @override
   Future<Either<Failure, Authentication>> updateUserInfo(
       RegisterUserParameters parameters) async {
     
@@ -25,7 +25,7 @@ class SettingsNotificationsRepository implements SettingsNotificationsBaseReposi
         ),
       );
     }
-  }
+  } */
   
   @override
   Future<Either<Failure, General>> logOut() async{

@@ -4,8 +4,8 @@ class Teeth extends Equatable {
   final int id;
   final String apperenceDate;
   final String teethName;
-  final String? ageInYears;
-  final String? ageInMonths;
+  final dynamic ageInYears;
+  final dynamic ageInMonths;
   final String? ageInDays;
   const Teeth({
     required this.id,

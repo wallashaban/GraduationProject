@@ -1,5 +1,6 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, use_build_context_synchronously
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 
 class EnterEmailScreen extends StatelessWidget {
@@ -90,9 +91,17 @@ class EnterEmailScreen extends StatelessWidget {
                     }
                     return CustomButton(
                       text: AppStrings.sendcode,
-                      onPressed: () {
-                        BlocProvider.of<AuthenticationCubit>(context)
-                            .forgetPassword(emailController.text.trim());
+                      onPressed: () async{
+                        if (await AppConstants.checkConnectivity() ==
+                            ConnectivityResult.none) {
+                          AppConstants.showSnackbar(
+                            context: context,
+                            content: AppStrings.noInternet,
+                          );
+                        } else {
+                          BlocProvider.of<AuthenticationCubit>(context)
+                              .forgetPassword(emailController.text.trim());
+                        }
                       },
                     );
                   }),

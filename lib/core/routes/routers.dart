@@ -19,6 +19,8 @@ class AppRoutes {
   static const String allMedicationReminderScreen =
       '/allmedicationReminderScreen';
   static const String previousTestScreen = '/prevtestscreen';
+    static const String subjectWithQuestionScreen = '/subjectWithQuestionScreen';
+
   static const String newTestScreen = '/newtestscreen';
     static const String newPrescriptionScreen = '/newprescriptionscreen';
       static const String previousPrescriptionScreen = '/prevprescriptionscreen';
@@ -38,7 +40,12 @@ class AppRoutes {
                                 static const String previousDiseasesScreen = '/previousdiseases';
                                 static const String growthScreen = '/growth';
                                 static const String growthHistoryScreen = '/growthHistory';
+                                static const String historyDevelopmentFlowScreen = '/HistoryDevelopmentFlowScreen';
+                                static const String allTipsScreen = '/AllTipsScreen';
+                                static const String developmentFlowScreen = '/DevelopmentFlowScreen';
 
+                                static const String onboardingScreen = '/onboarding';
+  static const String noInternetScreen = '/nointernet';
 
 
 }

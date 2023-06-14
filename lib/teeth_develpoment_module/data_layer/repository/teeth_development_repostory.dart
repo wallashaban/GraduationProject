@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:graduation_project/teeth_develpoment_module/domain_layer/entities/medical_teeth.dart';
 
 import '../../../core/error/exception.dart';
 import '../../../core/error/failure.dart';
@@ -65,7 +66,7 @@ class TeethDevelopmentRepository implements BaseTeetDevelopmentRepository {
   }
 
  @override
-  Future<Either<Failure, General>> storeTeethDevelopment(TeethParameters parameters)  async {
+  Future<Either<Failure, Teeth>> storeTeethDevelopment(TeethParameters parameters)  async {
     
     try {
       final result = await baseTeethDevelopmentRemoteDataSource.storeTeethDevelopment(
@@ -80,12 +81,27 @@ class TeethDevelopmentRepository implements BaseTeetDevelopmentRepository {
       );
     }
   }  @override
-  Future<Either<Failure, General>> updateTeethDevelopment(TeethParameters parameters)  async {
+  Future<Either<Failure, Teeth>> updateTeethDevelopment(TeethParameters parameters)  async {
     
     try {
       final result = await baseTeethDevelopmentRemoteDataSource.updateTeethDevelopment(
       parameters,
     );
+      return Right(result);
+    } on ServerException catch (failure) {
+      return Left(
+        ServerFailure(
+          message: failure.errorMessageModel.message,
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<MedicalTeeth>>> getMedicalTeeth() async {
+     try {
+      final result = await baseTeethDevelopmentRemoteDataSource.getMedicalTeeth();
+   
       return Right(result);
     } on ServerException catch (failure) {
       return Left(

@@ -1,13 +1,14 @@
+import 'package:graduation_project/core/utils/dio_helper.dart';
 
 import '../../../core/utils/exports.dart';
 import '../models/medical_test_model.dart';
 
 abstract class BaseMedicalTestsRemoteDataSource {
   /// medical tests
-  Future<GeneralModel> storeMedicalTest(MediaclTestParameters file);
+  Future<MediaclTestModel> storeMedicalTest(MediaclTestParameters file);
   Future<List<MediaclTestModel>> getAllMedicalTest();
   Future<MediaclTestModel> getSingleMedicalTest(int id);
-  Future<GeneralModel> updateMedicalTest(MediaclTestParameters parameters);
+  Future<MediaclTestModel> updateMedicalTest(MediaclTestParameters parameters);
   Future<GeneralModel> deleteMedicalTest(int id);
 }
 
@@ -29,8 +30,9 @@ class MedicalTestsRemoteDataSource implements BaseMedicalTestsRemoteDataSource {
 
   @override
   Future<GeneralModel> deleteMedicalTest(int id) async {
-    final Response response = await dio!.delete(
-      '${AppConstants.deleteMedicalTrest} $id',
+    final Response response = await DioHelper.deleteData(
+      url: '${AppConstants.deleteMedicalTrest} $id',
+      token: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint('delete test remote data ${response.data}');
@@ -44,8 +46,9 @@ class MedicalTestsRemoteDataSource implements BaseMedicalTestsRemoteDataSource {
 
   @override
   Future<List<MediaclTestModel>> getAllMedicalTest() async {
-    final Response response = await dio!.get(
-      AppConstants.getallMedicalTrest,
+    final Response response = await DioHelper.getData(
+      url: AppConstants.getallMedicalTrest,
+      bearerToken: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint('medical tests  remote data ${response.data}');
@@ -61,8 +64,9 @@ class MedicalTestsRemoteDataSource implements BaseMedicalTestsRemoteDataSource {
 
   @override
   Future<MediaclTestModel> getSingleMedicalTest(int id) async {
-    final Response response = await dio!.get(
-      '${AppConstants.getSingleMedicalTest}$id',
+    final Response response = await DioHelper.getData(
+      url: '${AppConstants.getSingleMedicalTest}$id',
+      bearerToken: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint('single medical test  remote data ${response.data}');
@@ -74,32 +78,28 @@ class MedicalTestsRemoteDataSource implements BaseMedicalTestsRemoteDataSource {
     }
   }
 
-
   @override
-  Future<GeneralModel> storeMedicalTest(
+  Future<MediaclTestModel> storeMedicalTest(
       MediaclTestParameters parameters) async {
- 
     FormData data = FormData.fromMap({
       'lab_name': parameters.labName,
       'type': parameters.type,
       'date': parameters.labDate,
-       "file":
-         parameters.labFile==null?null:   await MultipartFile.fromFile(parameters.labFile!, ),
+      "file": parameters.labFile == null
+          ? null
+          : await MultipartFile.fromFile(
+              parameters.labFile!,
+            ),
     });
-    final Response response =
-        await dio!.post(AppConstants.storeMedicalTest, /* queryParameters: {
-      'lab_name': parameters.labName,
-      'type': parameters.type,
-      'date': parameters.labDate,
-      'file': await MultipartFile.fromFile(parameters.labFile!.path,),
-
-    }, */data: data,
-    
+    final Response response = await DioHelper.postData(
+      url: AppConstants.storeMedicalTest,
+      token: CashHelper.getData(key: 'token'),
+      data: data,
     );
-    
+
     if (response.data['status'] == true) {
       debugPrint('store medical test  remote data ${response.data}');
-      return GeneralModel.fromJson(response.data);
+      return MediaclTestModel.fromJson(response.data['data']);
     } else {
       throw ServerException(
         errorMessageModel: ErrorMessageModel.fromJson(response.data),
@@ -108,26 +108,25 @@ class MedicalTestsRemoteDataSource implements BaseMedicalTestsRemoteDataSource {
   }
 
   @override
-  Future<GeneralModel> updateMedicalTest(
+  Future<MediaclTestModel> updateMedicalTest(
       MediaclTestParameters parameters) async {
-        FormData data = FormData.fromMap({
+    FormData data = FormData.fromMap({
       'lab_name': parameters.labName,
       'type': parameters.type,
       'date': parameters.labDate,
-   if  (parameters.labFile!=null ) "file":
-            await MultipartFile.fromFile(parameters.labFile!, ),
+      if (parameters.labFile != null)
+        "file": await MultipartFile.fromFile(
+          parameters.labFile!,
+        ),
     });
-    final Response response = await dio!.post(
-        '${AppConstants.updateMedicalTrest}${parameters.id}',data: data,
-       /*  queryParameters: {
-          'lab_name': parameters.labName,
-          'type': parameters.type,
-          'date': parameters.labDate,
-          'file': parameters.labFile,
-        } */);
+    final Response response = await DioHelper.postData(
+      url: '${AppConstants.updateMedicalTrest}${parameters.id}',
+      data: data,
+      token: CashHelper.getData(key: 'token'),
+    );
     if (response.data['status'] == true) {
       debugPrint('store medical details  remote data ${response.data}');
-      return GeneralModel.fromJson(response.data);
+      return MediaclTestModel.fromJson(response.data['data']);
     } else {
       throw ServerException(
         errorMessageModel: ErrorMessageModel.fromJson(response.data),

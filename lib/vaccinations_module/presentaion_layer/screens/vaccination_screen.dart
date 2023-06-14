@@ -1,14 +1,14 @@
 import 'package:graduation_project/core/utils/exports.dart';
-import '../controllers/vaccinations_cubit.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import '../../../authentication_module/presentaion_layer/widgets/cutom_circular.dart';
+import '../../../medication_reminder_module/presentation_layer/Screens/no_internet_screen.dart';
 import '../widgets/vaccine_widget.dart';
 
 class VaccinationScreen extends StatelessWidget {
   const VaccinationScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<VaccinationsCubit>(context);
-
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
@@ -16,8 +16,13 @@ class VaccinationScreen extends StatelessWidget {
           title: const CustomText(
             text: AppStrings.vaccine,
           ),
-          leading: const Icon(
-            Icons.arrow_back,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+            ),
           ),
           actions: [
             IconButton(
@@ -33,48 +38,71 @@ class VaccinationScreen extends StatelessWidget {
             ),
           ],
         ),
-        body: BlocConsumer<VaccinationsCubit, VaccinationsState>(
-          listener: (context, state) {
-            /*  if (state is GetAllVaccinationsSuccessState) {
-              cubit.getAllVaccinations();
-            } */
-          },
-          builder: (context, state) => Padding(
-            padding: EdgeInsets.symmetric(vertical: 20.r, horizontal: 10.r),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      CustomText(
-                        text: '${AppStrings.roya}"',
-                        size: 14.sp,
-                      ),
-                      const Icon(
-                        Icons.star,
-                        color: Colors.yellow,
-                      ),
-                      CustomText(
-                        text: '"${AppStrings.vaccineNote}',
-                        size: 14.sp,
-                      ),
-                    ],
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return VaccineWidget(
-                        model: cubit.allVaccinations[index],
-                      );
-                    },
-                    itemCount: cubit.allVaccinations.length,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+        body: StreamBuilder<Object>(
+            stream: InternetConnectionChecker().onStatusChange,
+            builder: (context, snapshot) {
+              if (cubit.allVaccinations == null &&
+                  snapshot.data == InternetConnectionStatus.disconnected) {
+                return const NoInternetScreen();
+              } else {
+                return BlocConsumer<VaccinationsCubit, VaccinationsState>(
+                  listener: (context, state) {},
+                  builder: (context, state) {
+                    if (cubit.allVaccinations == null) {
+                      cubit.getAllVaccinations();
+                    }
+                    if (cubit.allVaccinations == null) {
+                      return const CustomCircularProgress();
+                    } else {
+                      return Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 20.r, horizontal: 10.r),
+                          child: /* cubit.allVaccinations != null
+                                      ? */
+                              SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(right: 10.0.w),
+                                  child: Row(
+                                    children: [
+                                      CustomText(
+                                        text: '${AppStrings.roya}"',
+                                        size: 14.sp,
+                                      ),
+                                      const Icon(
+                                        Icons.star,
+                                        color: Colors.yellow,
+                                      ),
+                                      CustomText(
+                                        text: '"${AppStrings.vaccineNote}',
+                                        size: 14.sp,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                if (cubit.allVaccinations != null)
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemBuilder: (context, index) {
+                                      return VaccineWidget(
+                                        model: cubit.allVaccinations![index],
+                                      );
+                                    },
+                                    itemCount: cubit.allVaccinations!.length,
+                                  ),
+                              ],
+                            ),
+                          )
+                          //: const SizedBox(),
+                          );
+                    }
+                  },
+                );
+              }
+            }),
       ),
     );
   }
