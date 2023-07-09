@@ -14,7 +14,7 @@ class DiseaseInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        top: 15.h,
+        bottom: 32.h,
       ),
       padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 5.h, bottom: 15.h),
       decoration: BoxDecoration(
@@ -47,8 +47,7 @@ class DiseaseInfoWidget extends StatelessWidget {
             itemBuilder: (context, index) => Row(
               children: [
                 CustomText(
-                  text: diseaseReportModel[index].disease=='allergy'?AppStrings.allergyDisease:
-                  diseaseReportModel[index].disease=='bacteria'?AppStrings.bacteria:AppStrings.aboutApp,
+                  text: diseaseReportModel[index].disease,
                   size: 15.sp,
                   fontWeight: FontWeight.w500,
                 ),

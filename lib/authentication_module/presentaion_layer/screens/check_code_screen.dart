@@ -25,7 +25,7 @@ class CheckCodeScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: SafeArea(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 45.h),
+              padding: EdgeInsets.only(top: 16.h, left: 32.w, right: 24.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -35,9 +35,9 @@ class CheckCodeScreen extends StatelessWidget {
                     size: 20.sp,
                   )),
                   SizedBox(
-                    height: 30.h,
+                    height: 64.h,
                   ),
-                  CustomText(
+                  /* CustomText(
                     text: AppStrings.verification,
                     // color: AppColors.darkColor,
                     size: 18.sp,
@@ -51,7 +51,7 @@ class CheckCodeScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     height: 30.h,
-                  ),
+                  ), */
                   Directionality(
                     textDirection: TextDirection.ltr,
                     child: Row(
@@ -79,15 +79,16 @@ class CheckCodeScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 20.h,
+                    height: 32.h,
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomText(
                         text: AppStrings.notsend,
                         //color: AppColors.darkGreyColor,
-                        size: 18.sp,
-                        fontWeight: FontWeight.normal,
+                        size: 16.sp,
+                        fontWeight: FontWeight.w400,
                       ),
                       BlocListener<AuthenticationCubit, AuthenticationState>(
                         listener: (context, state) {
@@ -106,14 +107,14 @@ class CheckCodeScreen extends StatelessWidget {
                             );
                           },
                           color: AppColors.appBarColor,
-                          size: 20.sp,
-                          fontWeight: FontWeight.bold,
+                          size: 16.sp,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ],
                   ),
                   SizedBox(
-                    height: 30.h,
+                    height: 24.h,
                   ),
                   Center(
                       child: BlocConsumer<AuthenticationCubit,
@@ -145,7 +146,7 @@ class CheckCodeScreen extends StatelessWidget {
                       }
                       return CustomButton(
                         text: AppStrings.verificationCode,
-                        onPressed: () async{
+                        onPressed: () async {
                           if (await AppConstants.checkConnectivity() ==
                               ConnectivityResult.none) {
                             AppConstants.showSnackbar(

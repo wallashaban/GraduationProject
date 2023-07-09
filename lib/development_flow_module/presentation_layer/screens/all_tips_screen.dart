@@ -1,47 +1,119 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/utils/app_colors.dart';
-import '../controllers/development_flow_cubit.dart';
-import '../controllers/development_flow_state.dart';
-import '../widgets/all_tips_widget.dart';
+import '../../../core/utils/exports.dart';
+import '../../domain_layer/entity/all_tips.dart';
 
 class AllTipsScreen extends StatelessWidget {
+  final AllTips allTips;
   const AllTipsScreen({
     Key? key,
+    required this.allTips,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-var cubit = BlocProvider.of<DevelopmentFlowCubit>(context);
+   // var cubit = BlocProvider.of<DevelopmentFlowCubit>(context);
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-            centerTitle: true,
-            backgroundColor: AppColors.appBarColor,
-            elevation: 0,
-            toolbarHeight: 100,
-            title:  Text(
-              'النصائح',
-              style: TextStyle(
-                color: AppColors.appBarColor,
-              ),
-            ),
-            leading: Icon(
-              Icons.arrow_back,
-              color: AppColors.textColor,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(
+                Icons.arrow_back,
+              )),
+          title: const CustomText(
+            text: AppStrings.tips,
+          ),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+                  margin: EdgeInsets.symmetric(vertical: 23.h),
+                  decoration: BoxDecoration(
+                    color: AppColors.backColor,
+                    borderRadius: BorderRadius.circular(16.r),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.grey[400]!,
+                          blurRadius: 2,
+                          blurStyle: BlurStyle.outer),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomText(
+                        text: AppStrings.behave,
+                        size: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        maxLines: 3,
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: allTips.unanweredQuestions.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                size: 10.r,
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              CustomText(
+                                  size: 14.sp,
+                                  maxLines: 3,
+                                  text: allTips
+                                      .unanweredQuestions[index].question),
+                            ],
+                          );
+                        },
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      CustomText(
+                        text: '${AppStrings.tips} :',
+                        size: 16.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      CustomText(
+                        text: allTips.description,
+                        maxLines: 50,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                CustomButton(
+                  text: AppStrings.done,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                SizedBox(
+                  height: 20.h,
+                ),
+              ],
             ),
           ),
-        body: BlocConsumer<DevelopmentFlowCubit, DevelopmentFlowState>(
-          listener: (context, state) {},
-          builder: (context, state) => ListView.builder(
-            shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) => AllTipsWidget(allTipsDetails: cubit.allTips[index]),           
-            itemCount: cubit.allTips.length,
-          ),
-          
         ),
       ),
     );

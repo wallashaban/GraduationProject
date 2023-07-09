@@ -57,46 +57,50 @@ class PreviousPrescriptionsScreen extends StatelessWidget {
                           arguments: pres,
                         );
                       } else {
-                        return Column(
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: dataa.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return InkWell(
-                                  onTap: () {
-                                    PresParameters presParameters =
-                                        PresParameters(
-                                            isEdit: true,
-                                            presccription: dataa[index]);
-                                    AppConstants.navigateTo(
-                                      context: context,
-                                      routeName: AppRoutes.addToothScreen,
-                                      arguments: presParameters,
-                                    );
-                                  },
-                                  child: TestsPrescriptionBlock(
-                                    prescriptionModel: dataa[index],
-                                    isPrescription: true,
-                                  ),
-                                );
-                              },
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(20.0.r),
-                              child: CustomButton(
-                                text: AppStrings.addNewrRgeta,
-                                onPressed: () {
-                                  AppConstants.navigateTo(
-                                    arguments: pres,
-                                    context: context,
-                                    routeName: AppRoutes.newPrescriptionScreen,
+                        return Padding(
+                          padding: EdgeInsets.only(top: 20.h),
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: dataa.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkWell(
+                                    onTap: () {
+                                      PresParameters presParameters =
+                                          PresParameters(
+                                              isEdit: true,
+                                              presccription: dataa[index]);
+                                      AppConstants.navigateTo(
+                                        context: context,
+                                        routeName: AppRoutes.addToothScreen,
+                                        arguments: presParameters,
+                                      );
+                                    },
+                                    child: TestsPrescriptionBlock(
+                                      prescriptionModel: dataa[index],
+                                      isPrescription: true,
+                                    ),
                                   );
                                 },
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding: EdgeInsets.all(20.0.r),
+                                child: CustomButton(
+                                  text: AppStrings.addNewrRgeta,
+                                  onPressed: () {
+                                    AppConstants.navigateTo(
+                                      arguments: pres,
+                                      context: context,
+                                      routeName:
+                                          AppRoutes.newPrescriptionScreen,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         );
                       }
                     },

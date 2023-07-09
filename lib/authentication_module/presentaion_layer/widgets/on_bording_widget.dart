@@ -14,6 +14,8 @@ class OnboardingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SvgPicture.asset(
             height: 300.h,
@@ -21,14 +23,14 @@ class OnboardingWidget extends StatelessWidget {
             image,
           ),
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1,
+            height: 64.h,
           ),
           SizedBox(
             height: 80.h,
             child: CustomText(
               maxLines: 5,
               text: title,
-              size: 15.sp,
+              size: 14.sp,
             ),
           ),
         ],

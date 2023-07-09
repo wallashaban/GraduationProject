@@ -11,6 +11,8 @@ import 'package:graduation_project/core/utils/exports.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../core/caching_data/ai_disease_cach.dart';
+import '../screens/all_diseases_screen.dart';
+import '../screens/home_ai_disease_screen.dart';
 
 part 'disease_state.dart';
 
@@ -39,8 +41,25 @@ class DiseaseCubit extends Cubit<DiseaseState> {
   File? file;
   String? filePath;
   var pickedFile;
+  void clear() {
+    pickedFile = file = filePath = disease = null;
+    emit(DiseaseDone());
+  }
+
   final picker = ImagePicker();
   bool isGallery = false;
+  List<Widget> screens = [
+    const HomeAiDiseaseScreen(),
+    const BottomNavBarScreen(),
+    const PreviousDiseasesScreen(),
+  ];
+  int currentIndex = 0;
+  void changeNavbar(int index) {
+    currentIndex = index;
+    emit(ChangeBottomNavbatDiseaseState());
+    emit(DiseaseDone());
+  }
+
   Future pickImageFromCamera() async {
     debugPrint('befor');
     pickedFile = await picker.pickImage(source: ImageSource.camera);

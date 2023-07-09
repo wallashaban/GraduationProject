@@ -44,8 +44,9 @@ class VaccinationDetailsScreen extends StatelessWidget {
                   routeName: AppRoutes.vaccineReminderScreen,
                 );
               },
-              icon: const Icon(
-                Icons.notification_add,
+              icon: Icon(
+                Icons.notifications,
+                size: 24.r,
               ),
             ),
           ],
@@ -53,7 +54,7 @@ class VaccinationDetailsScreen extends StatelessWidget {
         body: BlocConsumer<VaccinationsCubit, VaccinationsState>(
           listener: (context, state) {},
           builder: (context, state) => Padding(
-            padding: EdgeInsets.all(10.r),
+            padding: EdgeInsets.only(top: 32.h, left: 24.w, right: 16.w),
             child: SingleChildScrollView(
               child: Column(
                 children: [

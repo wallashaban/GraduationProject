@@ -7,13 +7,13 @@ import 'package:graduation_project/core/utils/app_colors.dart';
 
 class OtpField extends StatelessWidget {
   final controller;
-  const OtpField({super.key,required this.controller});
+  const OtpField({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 45.h,
-        width: 45.w,
+        height: 40.h,
+        width: 40.w,
         child: TextFormField(
           controller: controller,
           onChanged: (value) {
@@ -23,16 +23,17 @@ class OtpField extends StatelessWidget {
           },
           decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(8.r),
                 borderSide: BorderSide(color: AppColors.appBarColor, width: 2),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
                 borderSide: BorderSide(color: AppColors.appBarColor, width: 2),
-              )
+              )),
+          cursorHeight: 16.h,
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                fontSize: 14.sp,
               ),
-          style:
-              Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 20.sp),
           keyboardType: TextInputType.number,
           inputFormatters: [
             LengthLimitingTextInputFormatter(1),

@@ -1,12 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:graduation_project/development_flow_module/data_layer/data_source/development_flow_remote_data_source.dart';
 import 'package:graduation_project/development_flow_module/domain_layer/base_repository/development_flow_repository.dart';
-import 'package:graduation_project/development_flow_module/domain_layer/entity/get_all_tips.dart';
+import 'package:graduation_project/development_flow_module/domain_layer/entity/all_tips.dart';
 import 'package:graduation_project/development_flow_module/domain_layer/entity/get_question.dart';
 import 'package:graduation_project/development_flow_module/domain_layer/entity/subject_questions.dart';
 
 import '../../../core/utils/exports.dart';
-import '../model/development_flow_parameters.dart';
 
 class DevelopmentFlowRepository extends BaseDevelopmentFlowRepository {
   final BaseDevelopmentFlowRemoteDataSource baseDevelopmentFlowRemoteDataSource;
@@ -72,7 +71,7 @@ try {
   }
 
   @override
-  Future<Either<Failure, General>> updateTips(List parameters) async{
+  Future<Either<Failure, General>> updateTips(UpdateTipsParameters parameters) async{
 try {
       final result = await baseDevelopmentFlowRemoteDataSource.updateTips(
     parameters);

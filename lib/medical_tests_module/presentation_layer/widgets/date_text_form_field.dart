@@ -23,16 +23,17 @@ class DateTextFormField extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 5.h),
             decoration: BoxDecoration(
                 border: Border(
-                    bottom:
-                        BorderSide(color: AppColors.appBarColor, width: 3))),
+                    bottom: BorderSide(
+                        color: AppColors.appBarColor, width: 1.5.w))),
             child: Row(
               children: [
                 Icon(
-                  Icons.date_range,
+                  Icons.calendar_today_outlined,
                   color: AppColors.appBarColor,
+                  size: 24.r,
                 ),
                 SizedBox(
-                  width: 5.w,
+                  width: 6.w,
                 ),
                 CustomText(
                   size: 14.sp,
@@ -42,26 +43,6 @@ class DateTextFormField extends StatelessWidget {
               ],
             ),
           ),
-          /*      TextField(
-            controller: controller,
-            enabled: false,
-            decoration: InputDecoration(
-              border: UnderlineInputBorder(
-                borderSide: BorderSide(width: 3, color: AppColors.appBarColor),
-              ),
-              hintStyle: TextStyle(
-                  color: AppColors.textColor, fontWeight: FontWeight.bold),
-              hintText: '01/01/2023',
-              prefixIcon: IconButton(
-                onPressed: () async {
-                  controller.text = await AppConstants.showDate(context);
-                },
-                icon: const Icon(Icons.date_range),
-                color: AppColors.textColor,
-              ),
-            ),
-          ),
-        */
         );
       },
     );

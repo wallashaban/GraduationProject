@@ -17,12 +17,12 @@ class VaccineDetailsSecondComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(10.r),
-      margin: const EdgeInsets.only(top: 10, bottom: 5, left: 5, right: 5),
+      margin: EdgeInsets.only(top: 4, bottom: 32.h, left: 4.w, right: 4.w),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
               color: Colors.grey[400]!,
-              blurRadius: 5,
+              blurRadius: 2,
               blurStyle: BlurStyle.outer),
         ],
         color: AppColors.backColor,

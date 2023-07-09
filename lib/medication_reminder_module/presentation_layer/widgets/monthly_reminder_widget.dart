@@ -12,6 +12,9 @@ class MonthlyReminderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 16.h,
+        ),
         InkWell(
           onTap: () async {
             dateController.text = await AppConstants.showDate(context);
@@ -22,12 +25,12 @@ class MonthlyReminderWidget extends StatelessWidget {
             obscureText: false,
             labelText: AppStrings.dateMonth,
             validator: (value) {},
-            suffix: Icons.date_range_outlined,
+            suffix: Icons.calendar_today_outlined,
           ),
         ),
-        SizedBox(
-          height: 20.h,
-        ),
+        /*  SizedBox(
+          height: 16.h,
+        ), */
         DoseTimeWidget(timeController: timeController),
       ],
     );

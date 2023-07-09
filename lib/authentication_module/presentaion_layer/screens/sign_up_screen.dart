@@ -1,6 +1,8 @@
 // ignore_for_file: must_be_immutable, use_build_context_synchronously
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graduation_project/authentication_module/presentaion_layer/widgets/radio_widget.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 
@@ -25,8 +27,7 @@ class SignUpScreen extends StatelessWidget {
           child: Center(
             child: SingleChildScrollView(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: EdgeInsets.only(right: 24.w, left: 32),
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -35,27 +36,31 @@ class SignUpScreen extends StatelessWidget {
                       Center(
                         child: CustomText(
                           text: AppStrings.createAccount,
-                          fontWeight: FontWeight.normal,
+                          fontWeight: FontWeight.w600,
                           size: 20.sp,
                         ),
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 24.h,
                       ),
-                      CustomText(
-                        text: AppStrings.welcomeText1,
-                        fontWeight: FontWeight.bold,
-                        size: 16.sp,
+                      Center(
+                        child: CustomText(
+                          text: AppStrings.welcomeText1,
+                          fontWeight: FontWeight.normal,
+                          size: 16.sp,
+                        ),
                       ),
-                      CustomText(
-                        text: AppStrings.welcomeText2,
-                        fontWeight: FontWeight.normal,
-                        size: 14.sp,
+                      Center(
+                        child: CustomText(
+                          text: AppStrings.welcomeText2,
+                          fontWeight: FontWeight.normal,
+                          size: 12.sp,
+                        ),
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 24.h,
                       ),
-                      BlocBuilder<AuthenticationCubit, AuthenticationState>(
+                      /*       BlocBuilder<AuthenticationCubit, AuthenticationState>(
                         builder: (context, state) {
                           var cubit =
                               BlocProvider.of<AuthenticationCubit>(context);
@@ -108,7 +113,7 @@ class SignUpScreen extends StatelessWidget {
                       ),
                       SizedBox(
                         height: 20.h,
-                      ),
+                      ), */
                       CustomTextFormField(
                         obscureText: false,
                         controller: nameController,
@@ -120,13 +125,13 @@ class SignUpScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 10.h,
+                        height: 16.h,
                       ),
                       CustomTextFormField(
                         obscureText: false,
                         controller: birthdateController,
                         labelText: AppStrings.birthdate,
-                        suffix: Icons.date_range_sharp,
+                        suffix: Icons.calendar_today_outlined,
                         validator: (value) {
                           if (value.isEmpty) {
                             return AppStrings.birthdateText;
@@ -139,7 +144,7 @@ class SignUpScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 10.h,
+                        height: 16.h,
                       ),
                       CustomTextFormField(
                         obscureText: false,
@@ -153,7 +158,7 @@ class SignUpScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 10.h,
+                        height: 16.h,
                       ),
                       CustomTextFormField(
                         obscureText: false,
@@ -167,7 +172,7 @@ class SignUpScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 10.h,
+                        height: 16.h,
                       ),
                       BlocBuilder<AuthenticationCubit, AuthenticationState>(
                         builder: (context, state) {
@@ -192,7 +197,7 @@ class SignUpScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 10.h,
+                        height: 16.h,
                       ),
                       BlocBuilder<AuthenticationCubit, AuthenticationState>(
                         builder: (context, state) {
@@ -217,7 +222,7 @@ class SignUpScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 10.h,
+                        height: 16.h,
                       ),
                       BlocBuilder<AuthenticationCubit, AuthenticationState>(
                         builder: (context, state) {
@@ -234,8 +239,7 @@ class SignUpScreen extends StatelessWidget {
                                 groupValue: cubit.gender,
                               ),
                               SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.width * 0.03,
+                                width: 32.w,
                               ),
                               RadioWidget(
                                 text: AppStrings.male,
@@ -250,7 +254,7 @@ class SignUpScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 32.h,
                       ),
                       Center(
                         child: BlocConsumer<AuthenticationCubit,

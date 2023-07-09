@@ -1,8 +1,7 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graduation_project/core/caching_data/growth_cach.dart';
 import 'package:graduation_project/growth_module/presentation_layer/screens/growth_screen.dart';
-
 import '../../../core/utils/exports.dart';
-import '../../domain_layer/entities/growth.dart';
 
 class GrowthHistoryWidget extends StatelessWidget {
   final GrowrhCach growth;
@@ -11,7 +10,7 @@ class GrowthHistoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 15.h),
+      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 8.h),
       margin: EdgeInsets.symmetric(vertical: 10.h),
       decoration: BoxDecoration(
         color: AppColors.backColor,
@@ -19,7 +18,7 @@ class GrowthHistoryWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
               color: Colors.grey[400]!,
-              blurRadius: 10,
+              blurRadius: 3,
               blurStyle: BlurStyle.outer),
         ],
       ),
@@ -28,12 +27,13 @@ class GrowthHistoryWidget extends StatelessWidget {
           Row(
             children: [
               Icon(
-                Icons.date_range_sharp,
+                Icons.calendar_today_outlined,
                 color: AppColors.appBarColor,
               ),
               CustomText(
                 text: '   ${growth.measureDate}',
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.normal,
+                size: 16.sp,
               ),
               const Spacer(),
               IconButton(
@@ -49,14 +49,14 @@ class GrowthHistoryWidget extends StatelessWidget {
                     );
                   },
                   icon: Icon(
-                    Icons.edit,
+                    Icons.edit_outlined,
                     color: AppColors.appBarColor,
                     size: 24.r,
                   ))
             ],
           ),
           SizedBox(
-            height: 10.h,
+            height: 8.h,
           ),
           Row(
             children: [
@@ -66,18 +66,18 @@ class GrowthHistoryWidget extends StatelessWidget {
                   RichText(
                     text: TextSpan(children: [
                       TextSpan(
-                          text: '${AppStrings.height}  ',
+                          text: '${AppStrings.height} ',
                           style: TextStyle(
                             fontSize: 16.sp,
                             color: AppColors.black,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.normal,
                           )),
                       TextSpan(
-                        text: '${growth.height} ',
+                        text: growth.height,
                         style: TextStyle(
                           fontSize: 16.sp,
                           color: AppColors.appBarColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
                       TextSpan(
@@ -85,7 +85,7 @@ class GrowthHistoryWidget extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16.sp,
                             color: AppColors.black,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.normal,
                           )),
                     ]),
                   ),
@@ -95,7 +95,7 @@ class GrowthHistoryWidget extends StatelessWidget {
                   CustomText(
                     size: 13.sp,
                     text: growth.heightStatus,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.normal,
                     color: growth.heightStatus.contains('طبيعي')
                         ? AppColors.greenColor
                         : AppColors.redColor,
@@ -111,18 +111,18 @@ class GrowthHistoryWidget extends StatelessWidget {
                   RichText(
                     text: TextSpan(children: [
                       TextSpan(
-                          text: '${AppStrings.weight}  ',
+                          text: '${AppStrings.weight} ',
                           style: TextStyle(
                             fontSize: 16.sp,
                             color: AppColors.black,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.normal,
                           )),
                       TextSpan(
-                        text: '${growth.weight} ',
+                        text: growth.weight,
                         style: TextStyle(
                           fontSize: 16.sp,
                           color: AppColors.appBarColor,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
                       TextSpan(
@@ -130,16 +130,16 @@ class GrowthHistoryWidget extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16.sp,
                             color: AppColors.black,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.normal,
                           )),
                     ]),
                   ),
                   SizedBox(
-                    height: 7.h,
+                    height: 8.h,
                   ),
                   CustomText(
                     text: growth.weightStatus,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.normal,
                     size: 13.sp,
                     color: growth.weightStatus.contains('طبيعي')
                         ? AppColors.greenColor

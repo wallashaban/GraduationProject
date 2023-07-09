@@ -23,7 +23,7 @@ class CustomTextIconButton extends StatelessWidget {
         onPressed: onPressed,
         icon: Icon(
           icon,
-          size: 20.r,
+          size: 24.r,
         ),
         label: CustomText(
             text: text,

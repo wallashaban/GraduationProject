@@ -75,6 +75,9 @@ dependencies:
   lottie: ^2.3.2
   internet_connection_checker: ^1.0.0+1
   logger: ^1.4.0
+  url_launcher: ^6.1.11
+  datetime_picker_formfield_new: ^2.1.0
+  intl: ^0.18.1
 
 
 dev_dependencies:
@@ -117,9 +120,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-     - family: IBM Plex Sans Arabic
+     - family: Changa
        fonts:
-         - asset: assets/fonts/IBMPlexSansArabic-Regular.ttf
+         - asset: assets/fonts/Changa-Regular.ttf
+         - asset: assets/fonts/Changa-Bold.ttf
+         - asset: assets/fonts/Changa-Medium.ttf
+         - asset: assets/fonts/Changa-SemiBold.ttf   
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

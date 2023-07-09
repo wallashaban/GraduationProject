@@ -31,7 +31,7 @@ class GrowthHistoryScreen extends StatelessWidget {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.only(top: 32.h, left: 24.w, right: 16.w),
             child: BlocBuilder<GrowthCubit, GrowthState>(
               builder: (context, state) {
                 var cubit = BlocProvider.of<GrowthCubit>(context);
@@ -42,19 +42,20 @@ class GrowthHistoryScreen extends StatelessWidget {
                   children: [
                     if (cubit.rangeGrowth != null) const NormalGrowWidget(),
                     SizedBox(
-                      height: 10.h,
+                      height: 8.h,
                     ),
                     ValueListenableBuilder(
                       valueListenable: Hive.box('growthCach').listenable(),
                       builder: (context, value, child) {
                         List<GrowrhCach> dataa = [];
 
-                        /* final data =  */value.values.map((e) {
-                          if (e.key.split(' ').last.contains(CashHelper.getData(key: 'id').toString())) {
+                        /* final data =  */ value.values.map((e) {
+                          if (e.key.split(' ').last.contains(
+                              CashHelper.getData(key: 'id').toString())) {
                             dataa += [e];
                           }
                         }).toList();
-                    
+
                         if (dataa.isEmpty && cubit.rangeGrowth == null) {
                           return NoDataWidget(
                             text: AppStrings.noRecords,
@@ -77,21 +78,6 @@ class GrowthHistoryScreen extends StatelessWidget {
                         }
                       },
                     ),
-
-                    /* ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: cubit.allGrowth.length,
-                      separatorBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                          height: 15.h,
-                        );
-                      },
-                      itemBuilder: (BuildContext context, int index) {
-                        return GrowthHistoryWidget(
-                            growth: cubit.allGrowth[index]);
-                      },
-                    ), */
                     SizedBox(
                       height: 20.h,
                     ),
@@ -108,7 +94,10 @@ class GrowthHistoryScreen extends StatelessWidget {
                               context: context,
                               routeName: AppRoutes.growthScreen,
                             );
-                          })
+                          }),
+                    SizedBox(
+                      height: 32.h,
+                    ),
                   ],
                 );
               },

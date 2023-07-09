@@ -1,3 +1,6 @@
+import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../../../core/utils/exports.dart';
 import '../../../settings_notifications_module/presentation_layer/cotrollers/settings_notifications_state.dart';
 
@@ -12,58 +15,111 @@ class BottomNavBarScreen extends StatelessWidget {
         builder: (context, state) {
           var cubit = BlocProvider.of<MedicalCubit>(context);
 
-          return Scaffold(
-            appBar: AppBar(
-              leading: Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: SvgPicture.asset(
-                  /* height: 45.h,
-                  width: 45.w, */
-                  AppImages.babyImage,
+          return WillPopScope(
+            onWillPop: () async {
+              bool willPPop = true;
+              SystemNavigator.pop();
+              return willPPop;
+            },
+            child: Scaffold(
+              appBar: AppBar(
+                leading: Padding(
+                  padding: EdgeInsets.only(right: 24.w),
+                  child: SvgPicture.asset(
+                    // height: 45.h,
+                    // width: 45.w,
+                    AppImages.babyImage,
+                    //fit: BoxFit.cover,
+                  ),
+                ),
+                centerTitle: false,
+                title: BlocBuilder<AuthenticationCubit, AuthenticationState>(
+                  builder: (context, state) {
+                    var cubitSettings =
+                        BlocProvider.of<AuthenticationCubit>(context);
+                    return Padding(
+                      padding: EdgeInsets.only(right: 8.0.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomText(
+                            fontWeight: FontWeight.normal,
+                            size: 16.sp,
+                            text: cubitSettings
+                                .userData!.name, // AppStrings.userData!.name,
+                          ),
+                          CustomText(
+                            text: cubitSettings.userData!.gender!,
+                            size: 14.sp,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
               ),
-              centerTitle: false,
-              title: BlocBuilder<AuthenticationCubit, AuthenticationState>(
-                builder: (context, state) {
-                  var cubitSettings =
-                      BlocProvider.of<AuthenticationCubit>(context);
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomText(
-                        fontWeight: FontWeight.normal,
-                        size: 16.sp,
-                        text: cubitSettings
-                            .userData!.name, // AppStrings.userData!.name,
+              body: cubit.screens[cubit.currentIndex],
+              bottomNavigationBar: Container(
+                height: 56.h,
+                decoration: BoxDecoration(
+                  color: AppColors.white,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(30.r),
+                      topLeft: Radius.circular(30.r)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.appBarColor.withOpacity(0.3),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32.0.r),
+                    topRight: Radius.circular(32.0.r),
+                  ),
+                  child: BottomNavigationBar(
+                      currentIndex: cubit.currentIndex,
+                      onTap: (index) {
+                        cubit.changeNavbar(index);
+                      },
+                      selectedIconTheme: IconThemeData(
+                        color: AppColors.appBarColor,
                       ),
-                      CustomText(
-                        text: cubitSettings.userData!.gender!,
-                        size: 14.sp,
-                        fontWeight: FontWeight.normal,
+                      unselectedIconTheme: IconThemeData(
+                        color: AppColors.disabledColor,
                       ),
-                    ],
-                  );
-                },
+                      items: [
+                        BottomNavigationBarItem(
+                            icon: Icon(
+                              PhosphorIcons.houseBold,
+                              size: 24.r,
+                            ),
+                            label: AppStrings.mainPage),
+                        BottomNavigationBarItem(
+                          icon: Icon(
+                            Icons.notifications_none_sharp,
+                            size: 24.r,
+                          ),
+                          label: AppStrings.notifications,
+                        ),
+                        BottomNavigationBarItem(
+                            icon: Icon(
+                              Icons.analytics_outlined,
+                              size: 24.r,
+                            ),
+                            label: AppStrings.reports),
+                        BottomNavigationBarItem(
+                            icon: Icon(
+                              Icons.settings,
+                              size: 24.r,
+                            ),
+                            label: AppStrings.settings),
+                      ]),
+                ),
               ),
             ),
-            body: cubit.screens[cubit.currentIndex],
-            bottomNavigationBar: BottomNavigationBar(
-                currentIndex: cubit.currentIndex,
-                onTap: (index) {
-                  cubit.changeNavbar(index);
-                },
-                items: [
-                  BottomNavigationBarItem(
-                      icon: const Icon(Icons.home), label: AppStrings.mainPage),
-                  BottomNavigationBarItem(
-                      icon: const Icon(Icons.notifications),
-                      label: AppStrings.notifications),
-                  BottomNavigationBarItem(
-                      icon: const Icon(Icons.copy), label: AppStrings.reports),
-                  BottomNavigationBarItem(
-                      icon: const Icon(Icons.settings),
-                      label: AppStrings.settings),
-                ]),
           );
         },
       ),

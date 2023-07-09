@@ -21,17 +21,24 @@ class RadioWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Radio(
-            fillColor: MaterialStatePropertyAll(AppColors.appBarColor),
-            activeColor: AppColors.appBarColor,
-            value: value,
-            groupValue: groupValue,
-            onChanged: onChanged),
+        SizedBox(
+          height: 24.h,
+          width: 24.w,
+          child: Radio(
+              fillColor: MaterialStatePropertyAll(AppColors.appBarColor),
+              activeColor: AppColors.appBarColor,
+              value: value,
+              groupValue: groupValue,
+              onChanged: onChanged),
+        ),
+        SizedBox(
+          width: 8.w,
+        ),
         CustomText(
           text: text,
           size: 14.sp,
           color: AppColors.appBarColor,
-          fontWeight: FontWeight.bold,
+          // fontWeight: FontWeight.bold,
         ),
       ],
     );

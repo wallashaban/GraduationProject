@@ -62,7 +62,11 @@ class ReportsScreen extends StatelessWidget {
                                     isReport: true,
                                   )
                                 : Padding(
-                                    padding: EdgeInsets.all(15.r),
+                                    padding: EdgeInsets.only(
+                                      top: 32.h,
+                                      left: 24.w,
+                                      right: 16.w,
+                                    ),
                                     child: Column(
                                       children: [
                                         state is MedicalInfoLoadingState

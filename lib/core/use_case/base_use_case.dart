@@ -17,6 +17,15 @@ class PredictDiseaseParameters {
   });
 }
 
+class UpdateTipsParameters {
+  List tips;
+  int id;
+  UpdateTipsParameters({
+    required this.tips,
+    required this.id,
+  });
+}
+
 class LoginUserParameters {
   String email;
   String password;

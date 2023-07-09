@@ -32,17 +32,17 @@ class ContactUsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CustomText(
+                  /* CustomText(
                     text: AppStrings.sendNote,
                     size: 16.sp,
                     fontWeight: FontWeight.bold,
                   ),
                   SizedBox(
                     height: 10.h,
-                  ),
+                  ), */
                   textAreaWidget(controller),
                   SizedBox(
-                    height: 20.h,
+                    height: 32.h,
                   ),
                   BlocConsumer<SettingsNotificationsCubit,
                       SettingsNotificationsState>(
@@ -93,7 +93,7 @@ Widget textAreaWidget(controller) => Container(
           boxShadow: [
             BoxShadow(
                 color: Colors.grey[400]!,
-                blurRadius: 5.r,
+                blurRadius: 2.r,
                 blurStyle: BlurStyle.outer),
           ]),
       child: ClipRRect(

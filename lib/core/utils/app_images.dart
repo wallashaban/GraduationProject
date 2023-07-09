@@ -20,9 +20,9 @@ class AppImages {
   static const String signupImage = 'assets/images/signup.svg';
   static const String noteImage = 'assets/images/note.svg';
   static const String developImage = 'assets/images/develop.svg';
-    static const String noRogitaImage = 'assets/images/no_pres.svg';
-    static const String noTestsImage = 'assets/images/no_tests.svg';
-    static const String noTeethImage = 'assets/images/no_teeth.svg';
+  static const String noRogitaImage = 'assets/images/no_pres.svg';
+  static const String noTestsImage = 'assets/images/no_tests.svg';
+  static const String noTeethImage = 'assets/images/no_teeth.svg';
 
   static const String allTeethImage = 'assets/images/all_teeth.svg';
   static const String monthImage = 'assets/images/month.svg';
@@ -34,8 +34,8 @@ class AppImages {
   static const String eyeImage = 'assets/images/eye_disease.svg';
   static const String babiesImage = 'assets/images/babies.svg';
   static const String aiTalkImage = 'assets/images/ai_talk.svg';
-    static const String noReportsImage = 'assets/images/no_reports.svg';
-    static const String noDiseaseImage = 'assets/images/noDisease.svg';
+  static const String noReportsImage = 'assets/images/no_reports.svg';
+  static const String noDiseaseImage = 'assets/images/noDisease.svg';
 
   static const String cameraTakeImage = 'assets/images/camera_take.svg';
   static const String babyImage = 'assets/images/baby.svg';
@@ -45,6 +45,13 @@ class AppImages {
   static const String noInternetImage = 'assets/no_internet.json';
   static const String hoknaImage = 'assets/images/hokna.svg';
   static const String notificationImage = 'assets/images/notification.svg';
+  static const String childImage = 'assets/images/child.svg';
+  static const String lightImage = 'assets/images/light.svg';
+  static const String lightWhiteImage = 'assets/images/lightWhite.svg';
+  static const String allergyImage = 'assets/images/allergy.svg';
+  static const String splashAnimationImage = 'assets/final_anim_heart.json';
+
+  static const String noDevelopmentImage = 'assets/images/no_development.svg';
 
   static const String cameraDiseaseImage = 'assets/images/camera_disease.svg';
 }

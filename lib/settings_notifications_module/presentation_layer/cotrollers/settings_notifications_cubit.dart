@@ -2,18 +2,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/medication_reminder_module/presentation_layer/controllers/medication_reminder_cubit.dart';
-import 'package:graduation_project/settings_notifications_module/data_layer/models/user_update_model.dart';
 import 'package:graduation_project/settings_notifications_module/domain_layer/use_cases/get_history_notifications_use_case.dart';
 import 'package:graduation_project/settings_notifications_module/domain_layer/use_cases/log_out_use_case.dart';
 import 'package:graduation_project/settings_notifications_module/domain_layer/use_cases/make_review_use_case.dart';
 import 'package:graduation_project/settings_notifications_module/presentation_layer/cotrollers/settings_notifications_state.dart';
 import 'package:graduation_project/settings_notifications_module/presentation_layer/screens/notifications_screen.dart';
-import 'package:hive/hive.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../core/caching_data/user_data_cach.dart';
 import '../../domain_layer/entities/notifications.dart';
-import '../../domain_layer/use_cases/update_user_info_use_case.dart';
 
 class SettingsNotificationsCubit extends Cubit<SettingsNotificationsState> {
   // final UpdateUserInfoUseCase updateUserInfoUseCase;
@@ -71,42 +67,7 @@ class SettingsNotificationsCubit extends Cubit<SettingsNotificationsState> {
     emit(DeleteImageSettingsState());
   }
 
-  /*  Future updateUserInfo(RegisterUserParameters parameters) async {
-    emit(
-      UpdateUserInfoLoadingState(),
-    );
-    final result = await updateUserInfoUseCase(parameters);
-    result.fold(
-      (l) {
-        serverFailure = l;
-        emit(
-          UpdateUserInfoErrorState(
-            error: l.message,
-          ),
-        );
-      },
-      (r) async {
-        profileUpdate = r;
 
-        emit(UpdateUserInfoSuccessState());
-        Hive.box('userDataCach').put(
-            'user',
-            UserDataCach(
-              id: r.id,
-              name: r.name,
-              email: r.email,
-              accessToken: '',
-              birthDate: r.birthDate,
-              gender: r.gender,
-              photo: r.photo, //todo refactor the photo
-              phone: r.phone,
-            ));
-        userData = Hive.box('userDataCach').get('user');
-        emit(SettingsDone());
-      },
-    );
-  }
- */
   Future logOutUser(context) async {
     /*  emit(
       UpdateUserInfoLoadingState(),

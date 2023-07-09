@@ -18,6 +18,10 @@ class StoreDiseaseErrorState extends DiseaseState {
   });
 }
 
+
+class ChangeBottomNavbatDiseaseState extends DiseaseState {}
+
+
 class GetAllDiseaseSuccessState extends DiseaseState {}
 class GetAllDiseaseLoadingState extends DiseaseState {}
 class GetAllDiseaseErrorState extends DiseaseState {

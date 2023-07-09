@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
+import 'package:graduation_project/core/utils/exports.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String labelText;
@@ -35,29 +36,27 @@ class CustomTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyBoardType,
-        onTap: onTap,
-        obscureText: obscureText,
-        enabled: enabled,
-        style: const TextStyle(
-            // fontWeight: FontWeight.bold, color: AppColors.textFielfColor,
-            ), //todo if you have nothing to do then delete it😁
-        autocorrect: true,
-        validator: validator,
-        decoration: InputDecoration(
-          hintText: hintText,
-          labelText: labelText,
-          prefixIcon: IconButton(
-            onPressed: prefixPressed,
-            icon: Icon(prefix),
-          ),
-          suffixIcon: IconButton(
-            onPressed: sufixPressed,
-            icon: Icon(suffix),
+    return TextFormField(
+      
+      cursorColor: AppColors.black,
+      controller: controller,
+      keyboardType: keyBoardType,
+      onTap: onTap,
+      obscureText: obscureText,
+      enabled: enabled,
+      autocorrect: true,
+      validator: validator,
+      decoration: InputDecoration(
+        hintText: hintText,
+        labelText: labelText,
+        // contentPadding: EdgeInsets.only(right: 16.r),
+        prefixIcon: null,
+        suffixIcon: IconButton(
+          onPressed: sufixPressed,
+          icon: Icon(
+            suffix,
+            color: AppColors.disabledColor,
+            size: 24.r,
           ),
         ),
       ),

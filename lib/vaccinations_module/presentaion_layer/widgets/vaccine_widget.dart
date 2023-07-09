@@ -23,7 +23,7 @@ class VaccineWidget extends StatelessWidget {
       },
       child: Container(
         padding: EdgeInsets.all(10.r),
-        margin: const EdgeInsets.only(top: 10, bottom: 5, left: 5, right: 5),
+        margin: EdgeInsets.only(top: 4.h, bottom: 4.h, left: 4.w, right: 4.w),
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -100,34 +100,43 @@ class VaccineWidget extends StatelessWidget {
                       maxLines: 3,
                     ),
                   ),
-                  TextButton(
-                    onPressed: () async{
+                  InkWell(
+                    onTap: () async {
                       if (await AppConstants.checkConnectivity() ==
-                                ConnectivityResult.none) {
-                              AppConstants.showSnackbar(
-                                context: context,
-                                content: AppStrings.noInternet,
-                              );
-                            } else {
+                          ConnectivityResult.none) {
+                        AppConstants.showSnackbar(
+                          context: context,
+                          content: AppStrings.noInternet,
+                        );
+                      } else {
                         cubit.attatchVaccination(model.id);
                       }
                     },
-                    child: CustomText(
-                      text: model.status == 1 ? 'تم التطعيم' : 'لم يتم التطعيم',
-                      size: 12.sp,
-                      color: AppColors.darkGreyColor,
+                    child: Row(
+                      children: [
+                        CustomText(
+                          text: model.status == 1
+                              ? 'تم التطعيم'
+                              : 'لم يتم التطعيم',
+                          size: 12.sp,
+                          color: AppColors.darkGreyColor,
+                        ),
+                        SizedBox(
+                          width: 4.w,
+                        ),
+                        CircleAvatar(
+                            radius: 10.r,
+                            backgroundColor: model.status == 0
+                                ? AppColors.greyColor
+                                : AppColors.appBarColor,
+                            child: Icon(
+                              Icons.check_rounded,
+                              color: AppColors.white,
+                              size: 16.r,
+                            )),
+                      ],
                     ),
                   ),
-                  CircleAvatar(
-                      radius: 10.r,
-                      backgroundColor: model.status == 0
-                          ? AppColors.greyColor
-                          : AppColors.appBarColor,
-                      child: Icon(
-                        Icons.check_rounded,
-                        color: AppColors.white,
-                        size: 16.r,
-                      )),
                 ],
               ),
             ),

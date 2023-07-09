@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:graduation_project/development_flow_module/domain_layer/entity/get_all_tips.dart';
+import 'package:graduation_project/development_flow_module/domain_layer/entity/all_tips.dart';
 import 'package:graduation_project/development_flow_module/domain_layer/entity/get_question.dart';
 import 'package:graduation_project/development_flow_module/domain_layer/use_case/create_tips_usecase.dart';
 import 'package:graduation_project/development_flow_module/domain_layer/use_case/get_all_tips_usecase.dart';
@@ -35,9 +35,9 @@ class DevelopmentFlowCubit extends Cubit<DevelopmentFlowState> {
     message: 'message',
   );
 
-  List<AllTips> allTips = [];
-  List<QuestionsOfTip> questionsOfTip = [];
-  List<SubjectWithQuestion> subjectWithQuestion = [];
+  List<AllTips>? allTips;
+  List<QuestionsOfTip>? questionsOfTip;
+  List<SubjectWithQuestion>? subjectWithQuestion;
 
   Future toGetAllTips() async {
     emit(AllTipsLoadingState());
@@ -59,6 +59,8 @@ class DevelopmentFlowCubit extends Cubit<DevelopmentFlowState> {
     );
   }
 
+  List<TipsParameters> tipsParametersQuestions = [];
+
   Future allQuestionsOfTips(int id) async {
     emit(QuestionsOfTipsLoadingState());
     final result = await questionsOfTipUseCase(id);
@@ -74,6 +76,13 @@ class DevelopmentFlowCubit extends Cubit<DevelopmentFlowState> {
       },
       (r) {
         questionsOfTip = r;
+        r.forEach(
+          (element) {
+            tipsParametersQuestions += [
+              TipsParameters(questionId: element.id, status: element.status),
+            ];
+          },
+        );
         emit(QuestionsOfTipsSuccessState());
       },
     );
@@ -128,7 +137,7 @@ class DevelopmentFlowCubit extends Cubit<DevelopmentFlowState> {
     );
   }
 
-  Future updateTips(List parameters) async {
+  Future updateTips(UpdateTipsParameters parameters) async {
     emit(UpdateTipsLoadingState());
     final result = await updateTipsUseCase(parameters);
     result.fold(
@@ -143,31 +152,10 @@ class DevelopmentFlowCubit extends Cubit<DevelopmentFlowState> {
       },
       (r) {
         general = r;
+        allQuestionsOfTips(parameters.id);
+        toGetAllTips();
         emit(UpdateTipsSuccessState());
       },
     );
   }
-
-// Future changeCheckboxState()async{
-//   check = !check;
-//   debugPrint(check.toString());
-//   emit(changeCheckboxSuccessState());
-//   emit(FlowDone());
-// }
-
-// Future showCheckbox(context) async {
-//     changeCheckboxState().then((value) {
-//       if (check) {
-//       checkboxComponent(
-//         isChecked: check,
-//       );
-//       createTips(parameter);
-//       }
-//     else{
-//       checkboxComponent( isChecked: check);
-//       createTips(parameter);
-//       }});
-//     emit(changeCheckboxSuccessState());
-//     emit(showCheckboxSuccessState());
-//   }
 }

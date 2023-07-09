@@ -9,6 +9,8 @@ class DioHelper {
       BaseOptions(
         baseUrl: AppConstants.baseUrl,
         receiveDataWhenStatusError: true,
+       // connectTimeout: const Duration(milliseconds: 40000),
+        //receiveTimeout: const Duration(milliseconds: 30000),
       ),
     );
   }

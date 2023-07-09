@@ -29,7 +29,7 @@ class PreviousDiseasesScreen extends StatelessWidget {
             listener: (context, state) {},
             builder: (context, state) {
               return Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: EdgeInsets.only(top: 24.h, left: 24.w, right: 16.w),
                 child: ValueListenableBuilder(
                     valueListenable: Hive.box('diseaseCach').listenable(),
                     builder:
@@ -49,7 +49,7 @@ class PreviousDiseasesScreen extends StatelessWidget {
                           text: AppStrings.noResults,
                           image: AppImages.noDiseaseImage,
                           textButton: AppStrings.addNewDiagnose,
-                          screen: AppRoutes.uploadPhotoOfDiseaseScreen,
+                          screen: AppRoutes.homeAiDiseaseScreen,
                         );
                       } else {
                         return Column(
@@ -65,14 +65,14 @@ class PreviousDiseasesScreen extends StatelessWidget {
                               },
                             ),
                             SizedBox(
-                              height: 20.h,
+                              height: 24.h,
                             ),
                             CustomButton(
                               text: AppStrings.addNewDiagnose,
                               onPressed: () {
                                 AppConstants.navigateTo(
                                   context: context,
-                                  routeName: AppRoutes.medicalDetailsScreen,
+                                  routeName: AppRoutes.homeAiDiseaseScreen,
                                 );
                               },
                             ),

@@ -15,6 +15,9 @@ class WeeklyReminderWidget extends StatelessWidget {
     var cubit = BlocProvider.of<MedicationReminderCubit>(context);
     return Column(
       children: [
+        SizedBox(
+          height: 16.h,
+        ),
         MultiSelectChipField(
           chipColor: AppColors.appBarColor,
           items: cubit.days
@@ -33,7 +36,6 @@ class WeeklyReminderWidget extends StatelessWidget {
             border: Border.all(color: Colors.white, width: 1.8),
           ),
           selectedChipColor: AppColors.appBarColor,
-          // selectedTextStyle: TextStyle(color: AppColors.black, fontSize: 12.sp),
           chipWidth: 40.w,
           showHeader: false,
           height: 30.h,
@@ -48,66 +50,8 @@ class WeeklyReminderWidget extends StatelessWidget {
             debugPrint('days $days');
           },
         ),
-        /* MultiSelectDialogField(
-          items: cubit.allDays.map((e) => MultiSelectItem(e, e)).toList(),
-          // title: Text("Animals"),
-          selectedColor: Colors.blue,
-          decoration: BoxDecoration(
-            color: Colors.blue.withOpacity(0.1),
-            borderRadius: BorderRadius.all(Radius.circular(40)),
-            border: Border.all(
-              color: Colors.blue,
-              width: 2,
-            ),
-          ),
-          buttonIcon: Icon(
-            Icons.pets,
-            color: Colors.blue,
-          ),
-          buttonText: Text(
-            "Favorite Animals",
-            style: TextStyle(
-              color: Colors.blue[800],
-              fontSize: 16,
-            ),
-          ),
-          onConfirm: (results) {
-            //_selectedAnimals = results;
-          },
-        ),
-        */
-        /*   MultiSelectChipDisplay(
-          //dialogHeight: 30.h,
-          height: 30.h,
-          chipWidth: 40.w,
-          scroll: true,
-          textStyle: TextStyle(fontSize: 12.sp, color: AppColors.white),
-          chipColor: AppColors.black,
-          colorator: (p0) {
-            
-            return AppColors.redColor;
-          },
-          decoration: BoxDecoration(
-            color: AppColors.white,
-          ),
-
-          items: cubit.allDays.map((e) => MultiSelectItem(e, e)).toList(),
-          onTap: (values) async {
-            debugPrint('statement $values');
-
-            for (var element in cubit.days) {
-              if (values == element.day) {
-                days.add(element.id);
-                debugPrint('statementtt');
-              }
-            }
-
-            debugPrint('days $days');
-          },
-        ),
-       */
         SizedBox(
-          height: 20.h,
+          height: 10.h,
         ),
         DoseTimeWidget(timeController: timeController),
       ],

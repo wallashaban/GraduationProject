@@ -1,5 +1,6 @@
 import 'package:graduation_project/core/caching_data/teeth_cach%20.dart';
 import 'package:graduation_project/teeth_develpoment_module/domain_layer/use_cases/get_medical_teeth_use_case.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/utils/exports.dart';
 import '../../data_layer/models/teeth_model.dart';
@@ -46,7 +47,7 @@ class TeethDevelopmentCubit extends Cubit<TeethDevelopmentState> {
   Failure serverFailure = const ServerFailure(
     message: 'message',
   );
-  String date = '2023-01-01';
+  String date = DateFormat('y-MM-dd').format(DateTime.now());
   changeDate(String date) {
     this.date = date;
     emit(ChangeDateTeethState());

@@ -1,4 +1,5 @@
 import 'package:graduation_project/authentication_module/presentaion_layer/screens/on_boarding_screen.dart';
+import 'package:graduation_project/development_flow_module/domain_layer/entity/all_tips.dart';
 import 'package:graduation_project/settings_notifications_module/presentation_layer/screens/contact_us_screen.dart';
 import 'package:graduation_project/settings_notifications_module/presentation_layer/screens/notifications_screen.dart';
 import 'package:graduation_project/vaccinations_module/domain_layer/entities/vaccination.dart';
@@ -10,7 +11,6 @@ import '../../ai_diseases_module/presentation_layer/screens/uplaod_photo_disease
 import '../../development_flow_module/presentation_layer/screens/all_tips_screen.dart';
 import '../../development_flow_module/presentation_layer/screens/history_development_flow_screen.dart';
 import '../../development_flow_module/presentation_layer/screens/subject_with_questions_screen.dart';
-import '../../development_flow_module/presentation_layer/widgets/development_flow_widget.dart';
 import '../../growth_module/presentation_layer/screens/growth_history_screen.dart';
 import '../../growth_module/presentation_layer/screens/growth_screen.dart';
 import '../../medical_tests_module/presentation_layer/screens/new_test_screen.dart';
@@ -26,6 +26,7 @@ import '../../settings_notifications_module/presentation_layer/screens/about_scr
 import '../../settings_notifications_module/presentation_layer/screens/update_user_data_screen.dart';
 import '../../teeth_develpoment_module/presentation_layer/screens/add_tooth_screen.dart';
 import '../../teeth_develpoment_module/presentation_layer/screens/teeth_development_screen.dart';
+import '../../teeth_develpoment_module/presentation_layer/screens/tips_screen.dart';
 import '../../vaccinations_module/presentaion_layer/screens/vaccination_screen.dart';
 import '../../vaccinations_module/presentaion_layer/screens/vaccine_details.dart';
 import '../../vaccinations_module/presentaion_layer/screens/vaccine_reminder.dart';
@@ -47,7 +48,10 @@ Route<dynamic> onGenerate(RouteSettings settings) {
           code: settings.arguments.toString(),
         );
       });
-   
+    case AppRoutes.tipsScreen:
+      return MaterialPageRoute(builder: (_) {
+        return const TipsScreen();
+      });
     case AppRoutes.splashScreen:
       return MaterialPageRoute(builder: (_) => const SplashScreen());
     case AppRoutes.checkCodeScreen:
@@ -61,9 +65,10 @@ Route<dynamic> onGenerate(RouteSettings settings) {
     case AppRoutes.medicalDetailsScreen:
       return MaterialPageRoute(builder: (_) => MedicalDetailsScreen());
     case AppRoutes.addToothScreen:
-      return MaterialPageRoute(builder: (_) => AddToothScreen(
-        toothParameters: settings.arguments as ToothParameters,
-      ));
+      return MaterialPageRoute(
+          builder: (_) => AddToothScreen(
+                toothParameters: settings.arguments as ToothParameters,
+              ));
     case AppRoutes.teethDwvelopmentScreen:
       return MaterialPageRoute(builder: (_) => const TeethDevelopmentScreen());
     case AppRoutes.medicationReminderScreen:
@@ -99,7 +104,10 @@ Route<dynamic> onGenerate(RouteSettings settings) {
     case AppRoutes.homeAiDiseaseScreen:
       return MaterialPageRoute(builder: (_) => const HomeAiDiseaseScreen());
     case AppRoutes.advicesPageViewScreen:
-      return MaterialPageRoute(builder: (_) => const AdvicesPageViewScreen());
+      return MaterialPageRoute(
+          builder: (_) => AdvicesPageViewScreen(
+                field: settings.arguments as String,
+              ));
     case AppRoutes.vaccineScreen:
       return MaterialPageRoute(builder: (_) => const VaccinationScreen());
     case AppRoutes.vaccineDetailsScreen:
@@ -114,7 +122,9 @@ Route<dynamic> onGenerate(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const ReportsScreen());
     case AppRoutes.uploadPhotoOfDiseaseScreen:
       return MaterialPageRoute(
-          builder: (_) =>  UploadPhotoOfDiseaseScreen(field: settings.arguments as String,));
+          builder: (_) => UploadPhotoOfDiseaseScreen(
+                field: settings.arguments as String,
+              ));
     case AppRoutes.previousDiseasesScreen:
       return MaterialPageRoute(builder: (_) => const PreviousDiseasesScreen());
     case AppRoutes.growthScreen:
@@ -124,18 +134,26 @@ Route<dynamic> onGenerate(RouteSettings settings) {
               ));
     case AppRoutes.growthHistoryScreen:
       return MaterialPageRoute(builder: (_) => const GrowthHistoryScreen());
-    case AppRoutes.developmentFlowScreen:
-      return MaterialPageRoute(builder: (_) =>  DevelopmentFlowWidget());
-      case AppRoutes.allTipsScreen:
-      return MaterialPageRoute(builder: (_) => const AllTipsScreen());
-      case AppRoutes.historyDevelopmentFlowScreen:
-      return MaterialPageRoute(builder: (_) => const HistoryDevelopmentFlowScreen());  
-      case AppRoutes.onboardingScreen:
-      return MaterialPageRoute(builder: (_) => const OnboardingScreen());  
-      case AppRoutes.noInternetScreen:
-      return MaterialPageRoute(builder: (_) => const NoInternetScreen());  
-      case AppRoutes.subjectWithQuestionScreen:
-      return MaterialPageRoute(builder: (_) => const SubjectWithQuestionsScreen());  
+    /*  case AppRoutes.developmentFlowScreen:
+      return MaterialPageRoute(builder: (_) =>  DevelopmentFlowWidget()); */
+    case AppRoutes.allTipsScreen:
+      return MaterialPageRoute(
+          builder: (_) => AllTipsScreen(
+                allTips: settings.arguments as AllTips,
+              ));
+    case AppRoutes.historyDevelopmentFlowScreen:
+      return MaterialPageRoute(
+          builder: (_) => const HistoryDevelopmentFlowScreen());
+    case AppRoutes.onboardingScreen:
+      return MaterialPageRoute(builder: (_) => const OnboardingScreen());
+    case AppRoutes.noInternetScreen:
+      return MaterialPageRoute(builder: (_) => const NoInternetScreen());
+    case AppRoutes.subjectWithQuestionScreen:
+      return MaterialPageRoute(
+          builder: (_) => SubjectWithQuestionsScreen(
+                developmentParameters:
+                    settings.arguments as DevelopmentParameters,
+              ));
     default:
       return MaterialPageRoute(builder: (_) => const SplashScreen());
   }

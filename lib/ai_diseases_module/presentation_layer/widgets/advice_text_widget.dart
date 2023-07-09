@@ -20,7 +20,7 @@ class InstructionWidget extends StatelessWidget {
         CustomText(
           text: text,
           size: 12.sp,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.normal,
         ),
       ],
     );

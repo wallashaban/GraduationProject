@@ -16,7 +16,7 @@ class ResetNewPasswordScreen extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
             child: Padding(
-          padding: EdgeInsets.all(30.r),
+          padding: EdgeInsets.only(top: 16.h),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,14 +24,13 @@ class ResetNewPasswordScreen extends StatelessWidget {
                 Center(
                   child: CustomText(
                     text: AppStrings.resetPasswordTitle,
-                    // color: AppColors.textColor,
-                    size: 25.sp,
+                    size: 20.sp,
                   ),
                 ),
                 SizedBox(
-                  height: 20.h,
+                  height: 40.h,
                 ),
-                CustomText(
+                /*   CustomText(
                   text: AppStrings.newpassword,
                   // color: AppColors.darkColor,
                   size: 18.sp,
@@ -46,6 +45,7 @@ class ResetNewPasswordScreen extends StatelessWidget {
                 SizedBox(
                   height: 40.h,
                 ),
+              */
                 Center(child: SvgPicture.asset(AppImages.resetPasswordImage)),
                 SizedBox(
                   height: 40.h,
@@ -54,46 +54,52 @@ class ResetNewPasswordScreen extends StatelessWidget {
                   builder: (context, state) {
                     var cubit = BlocProvider.of<AuthenticationCubit>(context);
 
-                    return CustomTextFormField(
-                      controller: passwordController,
-                      labelText: AppStrings.newPassword,
-                      suffix: cubit.isPassword
-                          ? PhosphorIcons.eyeClosed
-                          : PhosphorIcons.eyeBold,
-                      obscureText: cubit.isPassword,
-                      sufixPressed: () {
-                        cubit.obscurePassword();
-                      },
-                      validator: (value) {
-                        return AppStrings.passwordTextForm;
-                      },
+                    return Padding(
+                      padding: EdgeInsets.only(left: 32.w, right: 24.w),
+                      child: CustomTextFormField(
+                        controller: passwordController,
+                        labelText: AppStrings.newPassword,
+                        suffix: cubit.isPassword
+                            ? PhosphorIcons.eyeClosed
+                            : PhosphorIcons.eyeBold,
+                        obscureText: cubit.isPassword,
+                        sufixPressed: () {
+                          cubit.obscurePassword();
+                        },
+                        validator: (value) {
+                          return AppStrings.passwordTextForm;
+                        },
+                      ),
                     );
                   },
                 ),
                 SizedBox(
-                  height: 10.h,
+                  height: 16.h,
                 ),
                 BlocBuilder<AuthenticationCubit, AuthenticationState>(
                   builder: (context, state) {
                     var cubit = BlocProvider.of<AuthenticationCubit>(context);
-                    return CustomTextFormField(
-                      controller: confirmPasswordController,
-                      labelText: AppStrings.confirmNewPassword,
-                      obscureText: cubit.isPassword,
-                      suffix: cubit.isPassword
-                          ? PhosphorIcons.eyeClosed
-                          : PhosphorIcons.eyeBold,
-                      sufixPressed: () {
-                        cubit.obscurePassword();
-                      },
-                      validator: (value) {
-                        return AppStrings.confirmText;
-                      },
+                    return Padding(
+                      padding: EdgeInsets.only(left: 32.w, right: 24.w),
+                      child: CustomTextFormField(
+                        controller: confirmPasswordController,
+                        labelText: AppStrings.confirmNewPassword,
+                        obscureText: cubit.isPassword,
+                        suffix: cubit.isPassword
+                            ? PhosphorIcons.eyeClosed
+                            : PhosphorIcons.eyeBold,
+                        sufixPressed: () {
+                          cubit.obscurePassword();
+                        },
+                        validator: (value) {
+                          return AppStrings.confirmText;
+                        },
+                      ),
                     );
                   },
                 ),
                 SizedBox(
-                  height: 40.h,
+                  height: 32.h,
                 ),
                 Center(
                   child: BlocConsumer<AuthenticationCubit, AuthenticationState>(

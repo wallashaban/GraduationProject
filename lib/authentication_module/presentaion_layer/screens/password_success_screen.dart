@@ -12,16 +12,15 @@ class SuccessPasswordScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          
             SvgPicture.asset(AppImages.successImage),
             SizedBox(
-              height: 30.h,
+              height: 56.h,
             ),
             CustomText(
               text: AppStrings.congratulation,
               // color: AppColors.darkColor,
-              size: 20.sp,
-              fontWeight: FontWeight.bold,
+              size: 16.sp,
+              fontWeight: FontWeight.w400,
             ),
             CustomText(
               text: AppStrings.successPassword,
@@ -30,7 +29,7 @@ class SuccessPasswordScreen extends StatelessWidget {
               fontWeight: FontWeight.normal,
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.1,
+              height: 32.h,
             ),
             CustomButton(
               text: AppStrings.startnew,

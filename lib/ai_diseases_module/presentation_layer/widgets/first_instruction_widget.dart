@@ -6,14 +6,39 @@ class FirstInstructionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(30.r),
+      padding: EdgeInsets.only(
+        right: 24.w,
+      ),
       child: Column(
         children: [
-          SvgPicture.asset(
-            AppImages.aiTalkImage,
+          SizedBox(
+            height: 56.h,
+          ),
+          Stack(
+            children: [
+              SvgPicture.asset(
+                AppImages.aiTalkImage,
+              ),
+              Positioned(
+                right: 135.w,
+                width: 150.w,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 24.h,
+                    horizontal: 6.w,
+                  ),
+                  child: CustomText(
+                    text: AppStrings.robot,
+                    maxLines: 6,
+                    size: 10.sp,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            ],
           ),
           SizedBox(
-            height: 20.h,
+            height: 32.h,
           ),
           CustomText(
             text: AppStrings.robbotAdvice,

@@ -4,15 +4,17 @@ import 'package:graduation_project/core/utils/exports.dart';
 
 import '../widgets/page_view_widget.dart';
 
-
 class AdvicesPageViewScreen extends StatelessWidget {
- const  AdvicesPageViewScreen({super.key});
+  final String field;
+
+  const AdvicesPageViewScreen({super.key, required this.field});
   // int index = 1;
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        //backgroundColor: AppColors.black,
         appBar: AppBar(
           leading: IconButton(
               onPressed: () {
@@ -27,7 +29,9 @@ class AdvicesPageViewScreen extends StatelessWidget {
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: 20.0.r),
-          child: PageviewWidget(),
+          child: PageviewWidget(
+            field: field,
+          ),
         ),
       ),
     );

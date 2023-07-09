@@ -35,7 +35,8 @@ class NotificationsScreen extends StatelessWidget {
                       return const NoNotificationWidget();
                     } else {
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.only(
+                            top: 20.h, left: 24.w, right: 16.w, bottom: 8.h),
                         child: ListView.builder(
                           itemBuilder: (context, index) => NotificationWidget(
                             notifications: cubit.notifications![index],

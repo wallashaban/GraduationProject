@@ -10,7 +10,7 @@ import '../caching_data/test_cach.dart';
 
 class AppConstants {
   static const String baseUrl = 'https://baby-health-care.sonicar.tech/api/';
-  static const String aiBaseUrl = 'https://gpapis-production.up.railway.app/';
+  static const String aiBaseUrl = 'https://api-test-ai.azurewebsites.net/';
   static const String skin = 'predict_skin_Api';
   static const String lgp = 'predict_LGP_Api';
   static const String mpc = 'predict_MPC_Api';
@@ -88,7 +88,7 @@ class AppConstants {
   static const String questionsOfTips = 'get-questions-of-tip/';
   static const String subjectsWithQuestions = 'get-questions';
   static const String createTips = 'create-tips';
-  static const String updateTips = 'update-tips';
+  static const String updateTips = 'update-tips/';
 //reports
   static const String latestDevelopment = 'development-follow-info';
   static const String vaccinationReport = 'vaccine-report';
@@ -112,8 +112,8 @@ class AppConstants {
         fontWeight: FontWeight.bold,
       ));
   static navigateReplacement(
-      {required BuildContext context, required String routeName}) {
-    Navigator.pushReplacementNamed(context, routeName);
+      {required BuildContext context, required String routeName,arguments}) {
+    Navigator.pushReplacementNamed(context, routeName,arguments: arguments);
   }
 
   static navigateTo(
@@ -122,7 +122,17 @@ class AppConstants {
   }
 
   static Future showDate(context) async {
+   // final format = DateFormat("yyyy-MM-dd");
     String? date;
+   /*  DateTimeField(
+        format: format,
+        onShowPicker: (context, currentValue) {
+          return showDatePicker(
+            context: context,
+            firstDate: DateTime(1900),
+            initialDate: currentValue ?? DateTime.now(),
+            lastDate: DateTime(2100),
+          ); */
     await showDatePicker(
       context: context,
       initialDate: DateTime.now(),

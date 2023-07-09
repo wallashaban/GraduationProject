@@ -33,7 +33,7 @@ class UpdateUserDataScreen extends StatelessWidget {
         ),
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            padding: EdgeInsets.only(left: 32.w, top: 16.w, right: 24.w),
             child: BlocConsumer<AuthenticationCubit, AuthenticationState>(
               listener: (context, state) {
                 if (state is UpdateUserInfoErrorState) {
@@ -76,7 +76,9 @@ class UpdateUserDataScreen extends StatelessWidget {
                                   : cubit.pickedFile == null
                                       ? SvgPicture.asset(
                                           AppImages.signupImage,
-                                          fit: BoxFit.cover,
+                                          fit: BoxFit.fill,
+                                          /*  height: 60.h,
+                                          width: 60.w, */
                                         )
                                       : Image.file(
                                           cubit.file!,
@@ -86,8 +88,8 @@ class UpdateUserDataScreen extends StatelessWidget {
                                         ),
                             ),
                             Positioned(
-                              bottom: 10,
-                              right: 5,
+                              bottom: 10.h,
+                              right: 5.w,
                               child: CircleAvatar(
                                 radius: 18,
                                 backgroundColor: AppColors.appBarColor,
@@ -99,19 +101,19 @@ class UpdateUserDataScreen extends StatelessWidget {
                                     },
                                     icon: Icon(
                                       cubit.pickedFile != null
-                                          ? Icons.delete
-                                          : Icons.edit,
+                                          ? Icons.delete_outline
+                                          : Icons.edit_outlined,
                                       color: AppColors.white,
-                                      size: 19,
+                                      size: 19.r,
                                     )),
                               ),
                             ),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
+                      /* SizedBox(
+                        height: 4.h,
+                      ), */
                       Center(
                         child: CustomText(
                           text: cubit.userData!.name,
@@ -120,7 +122,7 @@ class UpdateUserDataScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 16.h,
                       ),
                       CustomTextFormField(
                         obscureText: false,
@@ -133,13 +135,13 @@ class UpdateUserDataScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 16.h,
                       ),
                       CustomTextFormField(
                         obscureText: false,
                         controller: birthdateController,
                         labelText: AppStrings.birth,
-                        suffix: Icons.date_range_sharp,
+                        suffix: Icons.calendar_today_outlined,
                         validator: (value) {
                           if (value.isEmpty) {
                             return AppStrings.birthdateText;
@@ -152,7 +154,7 @@ class UpdateUserDataScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 16.h,
                       ),
                       CustomTextFormField(
                         obscureText: false,
@@ -166,7 +168,7 @@ class UpdateUserDataScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 16.h,
                       ),
                       CustomTextFormField(
                         obscureText: false,
@@ -180,7 +182,7 @@ class UpdateUserDataScreen extends StatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 16.h,
                       ),
                       Row(
                         children: [
@@ -200,13 +202,14 @@ class UpdateUserDataScreen extends StatelessWidget {
                             value: AppStrings.male,
                             onChanged: (value) {
                               cubit.chooseGender(value!);
+                              debugPrint('gender ${cubit.userData!.gender}');
                             },
                             groupValue: cubit.gender ?? cubit.userData!.gender,
                           ),
                         ],
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 16.h,
                       ),
                       if (state is UpdateUserInfoLoadingState)
                         CustomButton(
@@ -255,7 +258,7 @@ class UpdateUserDataScreen extends StatelessWidget {
                           text: AppStrings.edit,
                         ),
                       SizedBox(
-                        height: 20.h,
+                        height: 16.h,
                       ),
                       TextButton.icon(
                           onPressed: () {
@@ -272,7 +275,7 @@ class UpdateUserDataScreen extends StatelessWidget {
                           label: CustomText(
                             text: AppStrings.setPassword,
                             size: 16.sp,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w600,
                             color: AppColors.darkColor,
                           ))
                     ],

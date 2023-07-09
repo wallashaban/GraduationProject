@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) =>
-              sl<DevelopmentFlowCubit>()..getSubjectsWithQuestions(),
+              sl<DevelopmentFlowCubit>()//..getSubjectsWithQuestions()..toGetAllTips(),
         ),
         BlocProvider(create: (context) => sl<GrowthCubit>() //..getAllGrowth()
             // ..getRangeGrowth(),

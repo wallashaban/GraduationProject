@@ -49,6 +49,8 @@ class MedicalCubit extends Cubit<MedicalState> {
     'B-',
     'O-',
     'O+',
+    'AB+',
+    'AB-',
   ];
   List<String> chronicDiseaes = [
     ' ',
@@ -170,8 +172,8 @@ class MedicalCubit extends Cubit<MedicalState> {
     emit(Done());
   }
 
-  var medical = Hive.box('userDataCach')
-      .get('medicalDetails${CashHelper.getData(key: 'token')}');
+  var medical =
+      Hive.box('userDataCach').get('medicalDetails${userDataCach.id}');
 
   Future storeMedicalDetails(StoreMedicalDetailsParameters parameters) async {
     emit(StoreMedicalDetailsLoadingState());
@@ -190,7 +192,7 @@ class MedicalCubit extends Cubit<MedicalState> {
       (r) {
         medicalDetails = r;
         emit(StoreMedicalDetailsSuccessState());
-        medical = Hive.box('userDataCach').get('medicalDetails${r.userId}');
+        // medical = Hive.box('userDataCach').get('medicalDetails${r.userId}');
         Hive.box('userDataCach').put(
             'medicalDetails${r.userId}',
             MedicalDetailsCach(
@@ -209,6 +211,8 @@ class MedicalCubit extends Cubit<MedicalState> {
                   : null,
               isGenticDisease: r.genticDisease == null ? false : true,
             ));
+        medical =
+            Hive.box('userDataCach').get('medicalDetails${userDataCach.id}');
         CashHelper.saveData(
           key: 'medicalDetailsRecorded',
           value: true,
@@ -236,7 +240,7 @@ class MedicalCubit extends Cubit<MedicalState> {
       (r) {
         medicalDetailsUpdate = r;
         emit(UpdateMedicalDetailsSuccessState());
-        medical = Hive.box('userDataCach').get('medicalDetails${r.userId}');
+        // medical = Hive.box('userDataCach').get('medicalDetails${r.userId}');
         debugPrint('statement cubit ${r.userId}');
         Hive.box('userDataCach').put(
             'medicalDetails${r.userId}',
@@ -259,6 +263,7 @@ class MedicalCubit extends Cubit<MedicalState> {
             chronicDiseaseValue = allergyValue = bloodType = null;
       },
     );
+    medical = Hive.box('userDataCach').get('medicalDetails${userDataCach.id}');
     debugPrint(
         'data cubit ${Hive.box('userDataCach').get('medicalDetails${userDataCach.id}')}');
     emit(Done());
@@ -281,7 +286,6 @@ class MedicalCubit extends Cubit<MedicalState> {
       (r) {
         medicalDetails = r;
         if (medicalDetails != null) {
-          medical = Hive.box('userDataCach').get('medicalDetails${r.userId}');
           Hive.box('userDataCach').put(
               'medicalDetails${r.userId}',
               MedicalDetailsCach(
@@ -293,10 +297,19 @@ class MedicalCubit extends Cubit<MedicalState> {
                 skinDisease: r.skinDisease,
                 chronicDisease: r.chronicDisease,
                 isMedicine:
-                    isMedicine ?? medical == null ? false : medical.isMedicine,
-                medicineFile: r.isMedicine ?? ' ',
+                    isMedicine ?? medical == null ? null : medical.isMedicine,
+                medicineFile: (isMedicine == true ||
+                        (medical != null && medical.isMedicine == true))
+                    ? r.isMedicine
+                    : null,
                 isGenticDisease: r.genticDisease == null ? false : true,
               ));
+          medical =
+              Hive.box('userDataCach').get('medicalDetails${userDataCach.id}');
+          CashHelper.saveData(
+            key: 'medicalDetailsRecorded',
+            value: true,
+          );
         }
         emit(ShowMedicalDetailsSuccessState());
       },

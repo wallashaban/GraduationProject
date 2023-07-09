@@ -14,14 +14,14 @@ class NotificationWidget extends StatelessWidget {
     List<String> date = notifications.createdAt.split(' ');
     return Container(
       height: 100.h,
-      margin: EdgeInsets.only(bottom: 10.h, top: 5.h, left: 5.w, right: 5.w),
+      margin: EdgeInsets.only(bottom: 12.h, top: 4.h, left: 4.w, right: 4.w),
       decoration: BoxDecoration(
           color: AppColors.backColor,
           borderRadius: BorderRadius.circular(20.r),
           boxShadow: [
             BoxShadow(
                 color: Colors.grey[400]!,
-                blurRadius: 5,
+                blurRadius: 2,
                 blurStyle: BlurStyle.outer),
           ]),
       child: Row(
@@ -34,11 +34,11 @@ class NotificationWidget extends StatelessWidget {
             imageWidth: 90.w,
             imageHeight: 55.h,
             image: notifications.type == 'الادوية'
-                ? AppImages.medicalImage
+                ? AppImages.reminderImage
                 : notifications.type == 'التطعيمات'
                     ? AppImages.vaccinationImage
                     : notifications.type == 'التطور'
-                        ? AppImages.developImage
+                        ? AppImages.developmentImage
                         : notifications.type == 'الاسنان'
                             ? AppImages.teethImage
                             : AppImages.developImage,
@@ -46,10 +46,10 @@ class NotificationWidget extends StatelessWidget {
             text: notifications.type,
           ),
           SizedBox(
-            width: 15.w,
+            width: 16.w,
           ),
           Container(
-            padding: EdgeInsets.only(top: 30.h),
+            padding: EdgeInsets.only(top: 16.h),
             width: MediaQuery.of(context).size.width * 0.3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +72,7 @@ class NotificationWidget extends StatelessWidget {
           ),
           const Spacer(),
           Padding(
-            padding: EdgeInsets.all(20.w),
+            padding: EdgeInsets.only(left: 16.w, top: 16.h, bottom: 0),
             child: Align(
               alignment: Alignment.topLeft,
               child: CustomText(

@@ -70,27 +70,30 @@ class SettingsWidget extends StatelessWidget {
                                 fit: BoxFit.cover,
                               ),
                             ))
-                  : Stack(
+                  : Container(
+                      height: 40.h,
+                      width: 40.w,
                       alignment: Alignment.center,
-                      children: [
-                        SvgPicture.asset(AppImages.pointImage),
-                        Icon(
-                          icon,
-                          color: AppColors.appBarColor.withOpacity(0.8),
-                        ),
-                      ],
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.r),
+                          color: AppColors.settingdsColor),
+                      child: Icon(
+                        icon,
+                        color: AppColors.darkColor,
+                        size: 24.r,
+                      ),
                     ),
             ),
-            const SizedBox(
-              width: 10,
+            SizedBox(
+              width: 16.w,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
                   text: text,
-                  fontWeight: FontWeight.bold,
-                  size: 14.sp,
+                  fontWeight: FontWeight.normal,
+                  size: 16.sp,
                 ),
                 /* const SizedBox(
                   height: 10,
@@ -111,8 +114,8 @@ class SettingsWidget extends StatelessWidget {
                 },
                 icon: Icon(
                   Icons.arrow_forward_ios_sharp,
-                  size: 20.r,
-                  color: AppColors.appBarColor,
+                  size: 24.r,
+                  color: AppColors.darkColor,
                 ),
               ),
           ],

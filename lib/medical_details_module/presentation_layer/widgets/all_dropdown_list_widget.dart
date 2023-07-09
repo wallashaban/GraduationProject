@@ -4,15 +4,15 @@ import 'dropdown_list_widget.dart';
 
 class AllDropdownListWidget extends StatelessWidget {
   final bool isRecorded;
-  AllDropdownListWidget({
+ const AllDropdownListWidget({
     super.key,
     required this.isRecorded,
   });
-  var user = Hive.box('UserDataCach').get('user');
+  //var user = Hive.box('UserDataCach').get('user');
   @override
   Widget build(BuildContext context) {
-    var medicalSetails =
-        Hive.box('userDataCach').get('medicalDetails${user.id}');
+    /*  var cubit.medical =
+        Hive.box('userDataCach').get('medicalDetails${user.id}'); */
     var cubit = BlocProvider.of<MedicalCubit>(context);
     return Column(
       children: [
@@ -20,15 +20,15 @@ class AllDropdownListWidget extends StatelessWidget {
           hint: AppStrings.bloodType,
           items: cubit.bloodTypes.map(AppConstants.buildMenuItem).toList(),
           onChanged: (bloodType) {
-            //  debugPrint('gen ${medicalSetails.genticDisease}');
+            //  debugPrint('gen ${cubit.medical.genticDisease}');
             cubit.changeBloodTypeValue(bloodType);
           },
           value: isRecorded && cubit.bloodType == null
-              ? medicalSetails.bloodType
+              ? cubit.medical?.bloodType
               : cubit.bloodType,
         ),
         SizedBox(
-          height: 15.h,
+          height: 16.h,
         ),
         CustomDropdownList(
           hint: AppStrings.allergy,
@@ -37,11 +37,11 @@ class AllDropdownListWidget extends StatelessWidget {
             cubit.changeAllergyValue(allergy);
           },
           value: isRecorded && cubit.allergyValue == null
-              ? medicalSetails.allergy
+              ? cubit.medical?.allergy
               : cubit.allergyValue,
         ),
         SizedBox(
-          height: 15.h,
+          height: 16.h,
         ),
         CustomDropdownList(
           hint: AppStrings.chronicDisease,
@@ -50,7 +50,7 @@ class AllDropdownListWidget extends StatelessWidget {
             cubit.changeChronicDiseaseValue(chronicDisease);
           },
           value: isRecorded && cubit.chronicDiseaseValue == null
-              ? medicalSetails.chronicDisease
+              ? cubit.medical?.chronicDisease
               : cubit.chronicDiseaseValue,
         ),
       ],

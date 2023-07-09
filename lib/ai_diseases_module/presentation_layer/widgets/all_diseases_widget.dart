@@ -1,4 +1,3 @@
-
 import '../../../core/caching_data/ai_disease_cach.dart';
 import '../../../core/utils/exports.dart';
 
@@ -12,8 +11,9 @@ class AllDiseasesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
-      margin: EdgeInsets.all(4.r),
+      padding:
+          EdgeInsets.only(top: 16.h, bottom: 16.sp, right: 16.w, left: 12.w),
+      margin: EdgeInsets.symmetric(vertical: 8.h),
       decoration: BoxDecoration(
         color: AppColors.backColor,
         borderRadius: BorderRadius.circular(
@@ -22,7 +22,7 @@ class AllDiseasesWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
               color: Colors.grey[400]!,
-              blurRadius: 5,
+              blurRadius: 2,
               blurStyle: BlurStyle.outer),
         ],
       ),
@@ -31,9 +31,10 @@ class AllDiseasesWidget extends StatelessWidget {
         children: [
           CustomText(
             text: disease.createdAt,
+            size: 14.sp,
           ),
           SizedBox(
-            height: 10.h,
+            height: 8.h,
           ),
           Row(
             children: [
@@ -41,17 +42,20 @@ class AllDiseasesWidget extends StatelessWidget {
                 AppImages.cameraImage,
               ),
               SizedBox(
-                width: 10.w,
+                width: 8.w,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: disease.disease == 'allergy'
+                    size: 14.sp,
+                    text: disease
+                        .disease /* == 'allergy'
                         ? AppStrings.allergyDisease
                         : disease.disease == 'bacteria'
                             ? AppStrings.bacteria
-                            : AppStrings.allergyDisease,
+                            : AppStrings.allergyDisease */
+                    ,
                   ),
                   /*  SizedBox(
                     height: 5.h,
@@ -73,7 +77,7 @@ class AllDiseasesWidget extends StatelessWidget {
                 icon: Icon(
                   Icons.delete_outline,
                   color: AppColors.appBarColor,
-                  size: 27.r,
+                  size: 24.r,
                 ),
               ),
             ],

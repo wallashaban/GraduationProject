@@ -28,160 +28,160 @@ class AddReminderScreen extends StatelessWidget {
     logger.e('error add reminder');
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: const Icon(
-                Icons.arrow_back,
-              )),
-          title: const CustomText(
-            text: AppStrings.medicationReminder,
+      child: WillPopScope(
+        onWillPop: () async {
+          bool willPop = true;
+          days = [];
+          BlocProvider.of<MedicationReminderCubit>(context).medicineTime = null;
+          return willPop;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(
+                  Icons.arrow_back,
+                )),
+            title: const CustomText(
+              text: AppStrings.medicationReminder,
+            ),
           ),
-        ),
-        body: BlocConsumer<MedicationReminderCubit, ReminderState>(
-          listener: (context, state) {
-            if (state is StoreReminderErrorState) {
-              AppConstants.showSnackbar(
-                context: context,
-                content: state.error,
-              );
-            }
-            if (state is StoreReminderSuccessState) {
-              AppConstants.showSnackbar(
-                context: context,
-                content: AppStrings.saveSuccess,
-              );
-            }
-          },
-          builder: (context, state) {
-            var cubit = BlocProvider.of<MedicationReminderCubit>(context);
-            return Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: 30.h,
-                horizontal: 15.w,
-              ),
-              child: ListView(
-                children: [
-                  Form(
-                      key: formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomTextFormField(
-                            controller: medicineNAmeController,
-                            obscureText: false,
-                            labelText: AppStrings.medicineName,
-                            validator: (value) {},
-                          ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          CustomDropdownList(
-                            hint: AppStrings.timeUsage,
-                            items: cubit.medicineTimes
-                                .map(AppConstants.buildMenuItem)
-                                .toList(),
-                            onChanged: (time) {
-                              logger.e('error timer reminder');
-
-                              cubit.changeReminderTimeValue(time);
-                            },
-                            value: cubit.medicineTime,
-                          ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          if (cubit.medicineTime == null)
-                            DoseTimeWidget(
-                              timeController: timeController,
-                            ),
-                          if (cubit.medicineTime == 'شهريا')
-                            MonthlyReminderWidget(
-                              dateController: dateController,
-                              timeController: timeController,
-                            ),
-                          if (cubit.medicineTime == 'اسبوعيا')
-                            WeeklyReminderWidget(
-                              timeController: timeController,
-                              days: days,
-                            ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          if (cubit.medicineTime == 'يوميا')
-                            AddNewDoseWidget(
-                              timerController: cubit.timerController,
-                            ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              endDateController.text =
-                                  await AppConstants.showDate(context);
-                            },
-                            child: CustomTextFormField(
-                              controller: endDateController,
-                              enabled: false,
+          body: BlocConsumer<MedicationReminderCubit, ReminderState>(
+            listener: (context, state) {
+              if (state is StoreReminderErrorState) {
+                AppConstants.showSnackbar(
+                  context: context,
+                  content: state.error,
+                );
+              }
+              if (state is StoreReminderSuccessState) {
+                AppConstants.showSnackbar(
+                  context: context,
+                  content: AppStrings.saveSuccess,
+                );
+              }
+            },
+            builder: (context, state) {
+              var cubit = BlocProvider.of<MedicationReminderCubit>(context);
+              return Padding(
+                padding: EdgeInsets.only(
+                    top: 32.h, left: 32.w, right: 24, bottom: 32.h),
+                child: ListView(
+                  children: [
+                    Form(
+                        key: formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomTextFormField(
+                              controller: medicineNAmeController,
                               obscureText: false,
-                              labelText: AppStrings.stopMedicineTime,
+                              labelText: AppStrings.medicineName,
                               validator: (value) {},
-                              suffix: Icons.date_range_outlined,
                             ),
-                          ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          if (state is StoreReminderLoadingState)
-                            CustomButton(
-                              isLoading: true,
+                            SizedBox(
+                              height: 16.h,
                             ),
-                          if (state is! StoreReminderLoadingState)
-                            CustomButton(
-                              text: AppStrings.saveData,
-                              onPressed: () async {
-                                if (await AppConstants.checkConnectivity() ==
-                                    ConnectivityResult.none) {
-                                  AppConstants.showSnackbar(
-                                    context: context,
-                                    content: AppStrings.noInternet,
-                                  );
-                                } else {
-                                  await AppConstants.addTime(
-                                    context: context,
-                                    dateController: dateController,
-                                    timeController: timeController,
-                                    days: days,
-                                    timerController: cubit.timerController,
-                                  ).then((value) {
-                                    if (cubit.medicineTime == 'اسبوعيا' &&
-                                        days.isEmpty) {
-                                      AppConstants.showSnackbar(
-                                        context: context,
-                                        content: 'من فضلك قم باضافه الايام',
-                                      );
-                                    } else {
-                                      cubit.storeMedicationReminder(
-                                        ReminderParameters(
-                                          medicineName:
-                                              medicineNAmeController.text,
-                                          appointment: cubit.medicineTime,
-                                          endDate: endDateController.text,
-                                          times: value,
-                                        ),
-                                      );
-                                    }
-                                  });
-                                }
+                            CustomDropdownList(
+                              hint: AppStrings.timeUsage,
+                              items: cubit.medicineTimes
+                                  .map(AppConstants.buildMenuItem)
+                                  .toList(),
+                              onChanged: (time) {
+                                logger.e('error timer reminder');
+
+                                cubit.changeReminderTimeValue(time);
                               },
+                              value: cubit.medicineTime,
                             ),
-                        ],
-                      )),
-                ],
-              ),
-            );
-          },
+                            if (cubit.medicineTime == null)
+                              DoseTimeWidget(
+                                timeController: timeController,
+                              ),
+                            if (cubit.medicineTime == 'شهريا')
+                              MonthlyReminderWidget(
+                                dateController: dateController,
+                                timeController: timeController,
+                              ),
+                            if (cubit.medicineTime == 'اسبوعيا')
+                              WeeklyReminderWidget(
+                                timeController: timeController,
+                                days: days,
+                              ),
+                            if (cubit.medicineTime == 'يوميا')
+                              AddNewDoseWidget(
+                                timerController: cubit.timerController,
+                              ),
+                            SizedBox(
+                              height: 16.h,
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                endDateController.text =
+                                    await AppConstants.showDate(context);
+                              },
+                              child: CustomTextFormField(
+                                controller: endDateController,
+                                enabled: false,
+                                obscureText: false,
+                                labelText: AppStrings.stopMedicineTime,
+                                validator: (value) {},
+                                suffix: Icons.calendar_today_outlined,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            if (state is StoreReminderLoadingState)
+                              CustomButton(
+                                isLoading: true,
+                              ),
+                            if (state is! StoreReminderLoadingState)
+                              CustomButton(
+                                text: AppStrings.saveData,
+                                onPressed: () async {
+                                  if (await AppConstants.checkConnectivity() ==
+                                      ConnectivityResult.none) {
+                                    AppConstants.showSnackbar(
+                                      context: context,
+                                      content: AppStrings.noInternet,
+                                    );
+                                  } else {
+                                    await AppConstants.addTime(
+                                      context: context,
+                                      dateController: dateController,
+                                      timeController: timeController,
+                                      days: days,
+                                      timerController: cubit.timerController,
+                                    ).then((value) {
+                                      if (cubit.medicineTime == 'اسبوعيا' &&
+                                          days.isEmpty) {
+                                        AppConstants.showSnackbar(
+                                          context: context,
+                                          content: 'من فضلك قم باضافه الايام',
+                                        );
+                                      } else {
+                                        cubit.storeMedicationReminder(
+                                          ReminderParameters(
+                                            medicineName:
+                                                medicineNAmeController.text,
+                                            appointment: cubit.medicineTime,
+                                            endDate: endDateController.text,
+                                            times: value,
+                                          ),
+                                        );
+                                      }
+                                    });
+                                  }
+                                },
+                              ),
+                          ],
+                        )),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

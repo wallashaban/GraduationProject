@@ -1,6 +1,5 @@
 // ignore_for_file: unused_local_variable, unnecessary_string_interpolations
 
-import 'package:graduation_project/authentication_module/presentaion_layer/widgets/cutom_circular.dart';
 import 'package:graduation_project/core/caching_data/test_cach.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/medical_tests_module/presentation_layer/controllers/medical_tests_state.dart';
@@ -61,35 +60,38 @@ class PreviousTestsScreen extends StatelessWidget {
                         arguments: testsParameters,
                       );
                     } else {
-                      return Column(
-                        children: [
-                          ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: dataa.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return InkWell(
-                                onTap: () {
-                                  TestsParameters toothParameters =
-                                      TestsParameters(
-                                          isEdit: true,
-                                          medicalTests: dataa[index]);
-                                  AppConstants.navigateTo(
-                                    context: context,
-                                    routeName: AppRoutes.addToothScreen,
-                                    arguments: toothParameters,
-                                  );
-                                },
-                                child: TestsPrescriptionBlock(
-                                  model: dataa[index],
-                                  isPrescription: false,
-                                ),
-                              );
-                            },
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(20.0.r),
-                            child: CustomButton(
+                      return Padding(
+                        padding: EdgeInsets.only(top: 20.h),
+                        child: Column(
+                          children: [
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: dataa.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return InkWell(
+                                  onTap: () {
+                                    TestsParameters toothParameters =
+                                        TestsParameters(
+                                            isEdit: true,
+                                            medicalTests: dataa[index]);
+                                    AppConstants.navigateTo(
+                                      context: context,
+                                      routeName: AppRoutes.addToothScreen,
+                                      arguments: toothParameters,
+                                    );
+                                  },
+                                  child: TestsPrescriptionBlock(
+                                    model: dataa[index],
+                                    isPrescription: false,
+                                  ),
+                                );
+                              },
+                            ),
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                            CustomButton(
                               text: AppStrings.addNewTest,
                               onPressed: () {
                                 AppConstants.navigateTo(
@@ -98,12 +100,12 @@ class PreviousTestsScreen extends StatelessWidget {
                                   routeName: AppRoutes.newTestScreen,
                                 );
                               },
-                              color: AppColors.textColor,
-                              size: 18.sp,
-                              fontWeight: FontWeight.bold,
                             ),
-                          ),
-                        ],
+                            SizedBox(
+                              height: 32.h,
+                            ),
+                          ],
+                        ),
                       );
                     }
                   },

@@ -38,8 +38,8 @@ class TeethDevelopmentScreen extends StatelessWidget {
             return SingleChildScrollView(
               child: Padding(
                 padding: EdgeInsets.symmetric(
-                  vertical: 10.h,
-                  horizontal: 20.w,
+                  vertical: 24.h,
+                  horizontal: 8.w,
                 ),
                 child: ValueListenableBuilder(
                   valueListenable: Hive.box('teethCach').listenable(),
@@ -92,33 +92,47 @@ class TeethDevelopmentScreen extends StatelessWidget {
                             },
                           ),
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.03,
+                            height: 32.h,
                           ),
-                          CircleAvatar(
-                            backgroundColor: AppColors.appBarColor,
-                            radius: 26.r,
-                            child: Center(
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Icon(
-                                      Icons.light_mode_rounded,
-                                      color: AppColors.white,
-                                      size: 22.r,
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.w),
+                            child: InkWell(
+                              onTap: () {
+                                AppConstants.navigateTo(
+                                  context: context,
+                                  routeName: AppRoutes.tipsScreen,
+                                );
+                              },
+                              child: CircleAvatar(
+                                backgroundColor: AppColors.appBarColor,
+                                radius: 32.r,
+                                child: Center(
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        SvgPicture.asset(
+                                          AppImages.lightWhiteImage,
+                                          height: 24.h,
+                                          width: 24.w,
+                                        ),
+                                        SizedBox(
+                                          height: 2.h,
+                                        ),
+                                        CustomText(
+                                          text: AppStrings.tips,
+                                          color: AppColors.white,
+                                          size: 9.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ],
                                     ),
-                                    CustomText(
-                                      text: AppStrings.tips,
-                                      color: AppColors.white,
-                                      size: 9.sp,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                           SizedBox(
-                            height: 25.h,
+                            height: 32.h,
                           ),
                           CustomButton(
                             text: AppStrings.addNewRecord,

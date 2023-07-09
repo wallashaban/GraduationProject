@@ -40,13 +40,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: CustomText(
                 text: AppStrings.skip,
                 color: AppColors.darkColor,
-                size: 15.sp,
+                size: 12.sp,
               )),
         ),
         body: Padding(
           padding: EdgeInsets.only(
-            left: 20.w,
-            right: 20.w,
+            left: 25.w,
+            right: 25.w,
             bottom: 30.h,
           ),
           child: Column(
@@ -97,7 +97,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             );
                           }
                           pageController.nextPage(
-                            duration: const Duration(seconds: 2),
+                            duration: const Duration(milliseconds: 500),
                             curve: Curves.easeInOut,
                           );
                         },

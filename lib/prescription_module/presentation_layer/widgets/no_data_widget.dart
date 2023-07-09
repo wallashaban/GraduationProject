@@ -29,31 +29,29 @@ class NoDataWidget extends StatelessWidget {
         ),
         Center(child: SvgPicture.asset(image)),
         SizedBox(
-          height: 15.h,
+          height: 16.h,
         ),
         CustomText(
           text: text,
-          color: AppColors.appBarColor,
+          color: AppColors.disabledColor,
           size: 16.sp,
         ),
-        if (!isReport)
+        if ((!isReport) || textButton != null)
           Column(
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.1,
+                height: 32.h,
               ),
-              SizedBox(
-                height: 40.h,
-              ),
-              CustomButton(
-                text: textButton,
-                onPressed: () {
-                  AppConstants.navigateTo(
-                      context: context,
-                      routeName: screen!,
-                      arguments: arguments);
-                },
-              ),
+              if (textButton != null)
+                CustomButton(
+                  text: textButton,
+                  onPressed: () {
+                    AppConstants.navigateTo(
+                        context: context,
+                        routeName: screen!,
+                        arguments: arguments);
+                  },
+                ),
             ],
           )
       ],

@@ -9,6 +9,7 @@ class ReportTextWidget extends StatelessWidget {
     return Center(
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10.r, horizontal: 15.r),
+        margin: EdgeInsets.zero,
         decoration: BoxDecoration(
           color: AppColors.backColor,
           borderRadius: BorderRadius.all(
@@ -16,7 +17,7 @@ class ReportTextWidget extends StatelessWidget {
           ),
           boxShadow: [
             BoxShadow(
-                color: Colors.grey[400]!,
+                color: AppColors.appBarColor.withOpacity(0.45),
                 blurRadius: 5,
                 blurStyle: BlurStyle.outer),
           ],
@@ -25,7 +26,7 @@ class ReportTextWidget extends StatelessWidget {
           text: text,
           color: AppColors.textColor,
           size: 14.sp,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );

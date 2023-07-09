@@ -4,6 +4,7 @@ import 'package:graduation_project/core/caching_data/growth_cach.dart';
 import 'package:graduation_project/core/utils/exports.dart';
 import 'package:graduation_project/growth_module/domain_layer/entities/growth.dart';
 import 'package:graduation_project/growth_module/presentation_layer/widgets/reminder_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../medical_tests_module/presentation_layer/widgets/date_text_form_field.dart';
 
@@ -49,7 +50,7 @@ class GrowthScreen extends StatelessWidget {
 
         body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: EdgeInsets.only(top: 32.h, left: 32.w, right: 24.w),
             child: BlocConsumer<GrowthCubit, GrowthState>(
               listener: (context, state) async {
                 if ((state is ClaculateGrowthErrorSatate)) {
@@ -90,15 +91,15 @@ class GrowthScreen extends StatelessWidget {
                           text: AppStrings.measureDate,
                           color: AppColors.appBarColor,
                           size: 16.sp,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
                       SizedBox(
-                        height: 10.h,
+                        height: 8.h,
                       ),
                       const DateTextFormField(),
                       SizedBox(
-                        height: 20.h,
+                        height: 24.h,
                       ),
                       CustomTextFormField(
                         controller: weightController,
@@ -108,7 +109,7 @@ class GrowthScreen extends StatelessWidget {
                         validator: (value) {},
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 16.h,
                       ),
                       CustomTextFormField(
                         controller: heightController,
@@ -118,14 +119,29 @@ class GrowthScreen extends StatelessWidget {
                         validator: (value) {},
                       ),
                       SizedBox(
-                        height: 20.h,
+                        height: 32.h,
                       ),
-                      CustomText(
-                        text: AppStrings.video,
-                        size: 16.sp,
-                      ),
+                      TextButton(
+                          onPressed: () async {
+                            final Uri uri = Uri.parse(
+                             'https://youtu.be/U5S8dzs7hSs',
+                              //scheme: 'https',
+                              // host: 'https://youtu.be/U5S8dzs7hSs',
+                            );
+                            //if(! await launchUrl(uri,mode: LaunchMode.externalApplication,))
+
+                            await launchUrl(
+                              uri,
+                              mode: LaunchMode.externalApplication,
+                            );
+                          },
+                          child: CustomText(
+                            text: AppStrings.video,
+                            size: 16.sp,
+                            color: AppColors.appBarColor,
+                          )),
                       SizedBox(
-                        height: 30.h,
+                        height: 32.h,
                       ),
                       if ((state is ClaculateGrowthLoadingSatate) ||
                           (state is EditGrowthLoadingSatate))

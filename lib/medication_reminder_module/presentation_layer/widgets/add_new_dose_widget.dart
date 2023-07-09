@@ -1,4 +1,3 @@
-
 import '../../../core/utils/exports.dart';
 import '../controllers/medication_reminder_cubit.dart';
 import 'dose_time_widget.dart';
@@ -15,6 +14,9 @@ class AddNewDoseWidget extends StatelessWidget {
     var cubit = BlocProvider.of<MedicationReminderCubit>(context);
     return Column(
       children: [
+        /* SizedBox(
+          height: 16.h,
+        ), */
         ListView.separated(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -39,7 +41,7 @@ class AddNewDoseWidget extends StatelessWidget {
         InkWell(
           onTap: () {
             cubit.addTimer();
-            
+
             cubit.addNewDose();
           },
           child: Row(

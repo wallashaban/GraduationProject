@@ -15,7 +15,9 @@ class EnterEmailScreen extends StatelessWidget {
       child: Scaffold(
         body: SafeArea(
             child: Padding(
-          padding: const EdgeInsets.all(30),
+          padding: EdgeInsets.only(
+            top: 16.h,
+          ),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -23,14 +25,15 @@ class EnterEmailScreen extends StatelessWidget {
                 Center(
                   child: CustomText(
                     text: AppStrings.resetPasswordTitle,
-                    color: AppColors.darkGreyColor,
+                    color: AppColors.black,
                     size: 20.sp,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 SizedBox(
-                  height: 20.h,
+                  height: 40.h,
                 ),
-                CustomText(
+                /* CustomText(
                   text: AppStrings.forgetpassword,
                   color: AppColors.darkGreyColor,
                   size: 20.sp,
@@ -45,22 +48,25 @@ class EnterEmailScreen extends StatelessWidget {
                 ),
                 SizedBox(
                   height: 40.h,
-                ),
+                ), */
                 Center(child: SvgPicture.asset(AppImages.forgetPasswordImage)),
                 SizedBox(
                   height: 40.h,
                 ),
-                CustomTextFormField(
-                  obscureText: false,
-                  controller: emailController,
-                  keyBoardType: TextInputType.emailAddress,
-                  labelText: AppStrings.enteremail,
-                  validator: (value) {
-                    return AppStrings.confirmText;
-                  },
+                Padding(
+                  padding: EdgeInsets.only(right: 24.w, left: 32.w),
+                  child: CustomTextFormField(
+                    obscureText: false,
+                    controller: emailController,
+                    keyBoardType: TextInputType.emailAddress,
+                    labelText: AppStrings.enteremail,
+                    validator: (value) {
+                      return AppStrings.confirmText;
+                    },
+                  ),
                 ),
                 SizedBox(
-                  height: 40.h,
+                  height: 32.h,
                 ),
                 Center(
                   child: BlocConsumer<AuthenticationCubit, AuthenticationState>(
@@ -91,7 +97,7 @@ class EnterEmailScreen extends StatelessWidget {
                     }
                     return CustomButton(
                       text: AppStrings.sendcode,
-                      onPressed: () async{
+                      onPressed: () async {
                         if (await AppConstants.checkConnectivity() ==
                             ConnectivityResult.none) {
                           AppConstants.showSnackbar(

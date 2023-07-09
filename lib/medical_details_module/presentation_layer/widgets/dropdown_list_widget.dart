@@ -1,3 +1,5 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../../../core/utils/exports.dart';
 
 class CustomDropdownList extends StatelessWidget {
@@ -22,16 +24,20 @@ class CustomDropdownList extends StatelessWidget {
       height: 48.h,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20.r),
-          border: Border.all(
-              color: AppColors.appBarColor.withOpacity(0.8), width: 2.w)),
+          borderRadius: BorderRadius.circular(18.r),
+          border: Border.all(color: AppColors.disabledColor, width: 1.5.w)),
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
           items: items,
           value: value,
+          /*   icon: Icon(
+            Icons.arrow_downward,
+          ), */
           onChanged: onChanged,
           isExpanded: true,
-          iconSize: 35.r,
+          iconSize: 24.r,
+          iconDisabledColor: AppColors.appBarColor,
+          iconEnabledColor: AppColors.greyColor,
           selectedItemBuilder: (BuildContext context) {
             return items.map((item) {
               return CustomText(
@@ -44,6 +50,7 @@ class CustomDropdownList extends StatelessWidget {
             child: CustomText(
               text: hint,
               size: 12.sp,
+              color: AppColors.greyColor,
             ),
           ),
         ),

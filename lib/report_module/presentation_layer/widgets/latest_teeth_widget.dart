@@ -19,7 +19,7 @@ class LatestTeethWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(top: 15.h),
+      margin: EdgeInsets.only(bottom: 16.h),
       padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 5.h, bottom: 15.h),
       decoration: BoxDecoration(
         color: AppColors.backColor,

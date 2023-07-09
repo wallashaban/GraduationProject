@@ -32,8 +32,9 @@ class VaccinationScreen extends StatelessWidget {
                   routeName: AppRoutes.vaccineReminderScreen,
                 );
               },
-              icon: const Icon(
-                Icons.notification_add,
+              icon: Icon(
+                Icons.notifications,
+                size: 24.r,
               ),
             ),
           ],
@@ -55,8 +56,12 @@ class VaccinationScreen extends StatelessWidget {
                       return const CustomCircularProgress();
                     } else {
                       return Padding(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 20.r, horizontal: 10.r),
+                          padding: EdgeInsets.only(
+                            top: 20.r,
+                            left: 24.w,
+                            right: 16.w,
+                            bottom: 32.h,
+                          ),
                           child: /* cubit.allVaccinations != null
                                       ? */
                               SingleChildScrollView(
@@ -80,6 +85,9 @@ class VaccinationScreen extends StatelessWidget {
                                       ),
                                     ],
                                   ),
+                                ),
+                                SizedBox(
+                                  height: 8.h,
                                 ),
                                 if (cubit.allVaccinations != null)
                                   ListView.builder(

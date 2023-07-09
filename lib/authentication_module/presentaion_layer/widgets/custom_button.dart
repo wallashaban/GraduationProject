@@ -38,8 +38,8 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: btnColor,
-        ),
+            backgroundColor: btnColor,
+            shadowColor: AppColors.appBarColor.withOpacity(0.5)),
         child: isLoading
             ? CircularProgressIndicator(
                 color: AppColors.white,

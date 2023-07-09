@@ -117,8 +117,10 @@ class HealthMedicalRecord extends StatelessWidget {
                             );
                           }
                         },
+                        imageHeight: 80.h,
+                        imageWidth: 50.w,
                         text: AppStrings.growth,
-                        image: AppImages.growthImage,
+                        image: AppImages.developImage,
                       ),
                       BlockWidget(
                         isMedicalHealthRecord: true,
@@ -183,7 +185,7 @@ class HealthMedicalRecord extends StatelessWidget {
                         onTap: () {
                           AppConstants.navigateTo(
                             context: context,
-                            routeName: AppRoutes.subjectWithQuestionScreen,
+                            routeName: AppRoutes.historyDevelopmentFlowScreen,
                           );
                         },
                         text: AppStrings.development,

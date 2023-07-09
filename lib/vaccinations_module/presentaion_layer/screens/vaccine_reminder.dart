@@ -27,12 +27,12 @@ class VaccinationReminderScreen extends StatelessWidget {
         body: BlocBuilder<VaccinationsCubit, VaccinationsState>(
           builder: (context, state) => Container(
             padding: EdgeInsets.symmetric(horizontal: 20.r, vertical: 10.h),
-            margin: EdgeInsets.only(top: 20.h),
+            margin: EdgeInsets.only(top: 32.h),
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
                     color: Colors.grey[400]!,
-                    blurRadius: 10,
+                    blurRadius: 2,
                     blurStyle: BlurStyle.outer),
               ],
               color: AppColors.backColor,
@@ -74,7 +74,7 @@ class VaccinationReminderScreen extends StatelessWidget {
                                 ) ==
                                 true
                         ? AppColors.appBarColor
-                        : AppColors.greyColor,
+                        : AppColors.greyColor.withOpacity(0.8),
                   ),
                 ),
               ],

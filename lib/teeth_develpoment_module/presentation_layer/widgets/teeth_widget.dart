@@ -1,7 +1,6 @@
 import 'package:graduation_project/core/caching_data/teeth_cach%20.dart';
 
 import '../../../core/utils/exports.dart';
-import '../../domain_layer/entities/teeth.dart';
 
 class TeethWidget extends StatelessWidget {
   final TeethCach teeth;
@@ -14,17 +13,20 @@ class TeethWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        vertical: 15.h,
-        horizontal: 10.w,
+        vertical: 8.h,
+        horizontal: 8.w,
       ),
-      margin: EdgeInsets.symmetric(
-        vertical: 10.h,
+      margin: EdgeInsets.only(
+        left: 16.w,
+        right: 8.w,
+        top: 8.h,
+        bottom: 8.h,
       ),
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
               color: Colors.grey[400]!,
-              blurRadius: 4,
+              blurRadius: 2,
               blurStyle: BlurStyle.outer),
         ],
         color: AppColors.backColor,
@@ -39,16 +41,16 @@ class TeethWidget extends StatelessWidget {
             fontWeight: FontWeight.normal,
           ),
           SizedBox(
-            height: 5.h,
+            height: 8.h,
           ),
           CustomText(
             text:
-                '${AppStrings.age} : ${teeth.ageInMonth} ${AppStrings.month} , ${teeth.ageInYears} ${AppStrings.year}',
+                '${AppStrings.age} :  ${teeth.ageInMonth} ${AppStrings.month} , ${teeth.ageInYears} ${AppStrings.year}',
             size: 14.sp,
             fontWeight: FontWeight.normal,
           ),
           SizedBox(
-            height: 5.h,
+            height: 8.h,
           ),
           Row(
             children: [
@@ -59,7 +61,7 @@ class TeethWidget extends StatelessWidget {
                 fit: BoxFit.fill,
               ),
               SizedBox(
-                width: 5.w,
+                width: 8.w,
               ),
               CustomText(
                 text: ' ${teeth.teeth}',

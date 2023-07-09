@@ -37,7 +37,7 @@ class BlockWidget extends StatelessWidget {
           boxShadow: [
             BoxShadow(
                 color: Colors.grey[400]!,
-                blurRadius: isMedicalHealthRecord ? 4 : 10,
+                blurRadius: isMedicalHealthRecord ? 2 : 2,
                 blurStyle: BlurStyle.outer),
           ],
         ),
@@ -54,7 +54,7 @@ class BlockWidget extends StatelessWidget {
             children: [
               CustomText(
                 color: AppColors.appBarColor,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w600,
                 size: isMedicalHealthRecord ? 16.sp : textSize,
                 text: text,
               ),

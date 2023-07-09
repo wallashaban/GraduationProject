@@ -2,15 +2,14 @@
 
 import 'package:graduation_project/core/utils/exports.dart';
 
-
-Future showMessageComponent({context,required bool isOn}) async {
+Future showMessageComponent({context, required bool isOn}) async {
   return await showDialog(
     context: context,
-    
     builder: (ctx) => Stack(
       alignment: Alignment.topCenter,
       children: [
         AlertDialog(
+          clipBehavior: Clip.none,
           shadowColor: Colors.grey[400]!,
           elevation: 123,
           shape: RoundedRectangleBorder(
@@ -21,8 +20,13 @@ Future showMessageComponent({context,required bool isOn}) async {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                SizedBox(
+                  height: 12.h,
+                ),
                 CustomText(
-                  text:isOn? AppStrings.textMessage:AppStrings.textMessageOff,
+                  text: isOn
+                      ? AppStrings.textMessage
+                      : AppStrings.textMessageOff,
                   size: 14.sp,
                   maxLines: 7,
                   textAlign: TextAlign.end,
@@ -40,19 +44,20 @@ Future showMessageComponent({context,required bool isOn}) async {
                 child: CustomText(
                   text: AppStrings.iKnow,
                   color: AppColors.appBarColor,
-                  size: 18.sp,
+                  size: 16.sp,
                   //textAlign: TextAlign.start,
                 ),
               ),
             ),
           ],
         ),
-      if(isOn)  Positioned(
-          top: MediaQuery.of(context).size.height * 0.33,
-          child: SvgPicture.asset(
-            AppImages.alarmImage,
+        if (isOn)
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.31,
+            child: SvgPicture.asset(
+              AppImages.alarmImage,
+            ),
           ),
-        ),
       ],
     ),
   );

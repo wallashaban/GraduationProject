@@ -51,15 +51,18 @@ class AllMedicationReminderScreen extends StatelessWidget {
                                 cubit.allReminders!.isEmpty
                             ? const NoDataWidget(
                                 text: 'لا يوجد مواعيد مضافه',
-                                image: AppImages.noteImage,
+                                image: AppImages.noDiseaseImage,
                                 textButton: AppStrings.addReminder,
                                 screen: AppRoutes.addMedicationReminderScreen,
                               )
                             : cubit.allReminders != null &&
                                     cubit.allReminders!.isNotEmpty
                                 ? Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 5.w, vertical: 15.h),
+                                    padding: EdgeInsets.only(
+                                        left: 24.w,
+                                        right: 16.w,
+                                        top: 24.h,
+                                        bottom: 32.h),
                                     child: Column(
                                       children: [
                                         ListView.builder(

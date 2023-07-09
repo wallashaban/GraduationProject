@@ -54,13 +54,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             .then((value) {
                           AppConstants.navigateTo(
                             context: context,
-                            routeName: AppRoutes.homeAiDiseaseScreen,
+                            routeName: AppRoutes.previousDiseasesScreen,
                           );
                         });
                       } else {
                         AppConstants.navigateTo(
                           context: context,
-                          routeName: AppRoutes.homeAiDiseaseScreen,
+                          routeName: AppRoutes.previousDiseasesScreen,
                         );
                       }
                       /* AppConstants.navigateTo(

@@ -90,25 +90,35 @@ class DiseaseRemoteDataSource implements BaseDiseaseRemoteDataSource {
 
   @override
   Future<String> predictDisease(PredictDiseaseParameters parameters) async {
-    FormData data = FormData.fromMap({
-      "fileup": await MultipartFile.fromFile(
-        parameters.photo,
-      ),
-    });
-    String disease = parameters.field == 'lgp'
-        ? AppConstants.lgp
-        : parameters.field == 'skin'
-            ? AppConstants.skin
-            : AppConstants.mpc;
-    final Response response = await DioHelper.postData(
-      url: '${AppConstants.aiBaseUrl}$disease',
-      data: data,
-      token: CashHelper.getData(key: 'token'),
-    );
+   // try {
+      FormData data = FormData.fromMap({
+        "fileup": await MultipartFile.fromFile(
+          parameters.photo,
+        ),
+      });
+      String disease = parameters.field == 'lgp'
+          ? AppConstants.lgp
+          : parameters.field == 'skin'
+              ? AppConstants.skin
+              : AppConstants.mpc;
+      final Response response = await DioHelper.postData(
+        url: '${AppConstants.aiBaseUrl}$disease',
+        data: data,
+        token: CashHelper.getData(key: 'token'),
+      );
 
-    //if (response.data['status'] == true) {
-    debugPrint('predict  remote data ${response.data['prediction']}');
-    return response.data['prediction'];
+      //if (response.data['status'] == true) {
+      debugPrint('predict  remote data ${response.data['prediction']}');
+      return response.data['prediction'];
+   /*  } on DioError catch (e) {
+      debugPrint('statement $e');
+      if (e.type == DioErrorType.connectionTimeout) {
+        debugPrint('statement in  $e');
+
+        return 'حاول مره اخرى';
+      }
+      return e.message.toString();
+    } */
     /*  } else {
       throw ServerException(
         errorMessageModel: ErrorMessageModel.fromJson(response.data),

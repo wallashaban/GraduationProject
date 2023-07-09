@@ -3,14 +3,13 @@ import 'package:graduation_project/development_flow_module/data_layer/model/get_
 import 'package:graduation_project/development_flow_module/data_layer/model/get_question_model.dart';
 
 import '../../../core/utils/dio_helper.dart';
-import '../model/development_flow_parameters.dart';
 import '../model/get_subjects_with_question_model.dart';
 
 abstract class BaseDevelopmentFlowRemoteDataSource {
   Future<List<AllTipsModel>> allTips();
   Future<List<QuestionsOfTipModel>> questionsOfTip(int id);
   Future<List<SubjectWithQuestionsModel>> subjectsWithQuestions();
-  Future<GeneralModel> updateTips(List parameters);
+  Future<GeneralModel> updateTips(UpdateTipsParameters parameters);
   Future<GeneralModel> createTips(List parameters);
 }
 
@@ -34,6 +33,7 @@ class DevelopmentFlowRemoteDataSource
   Future<List<AllTipsModel>> allTips() async {
     final Response response = await DioHelper.getData(
       url: AppConstants.getAllTips,
+      bearerToken: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
       debugPrint('allTips   remote data ${response.data}');
@@ -70,7 +70,7 @@ class DevelopmentFlowRemoteDataSource
   @override
   Future<List<QuestionsOfTipModel>> questionsOfTip(int id) async {
     final Response response = await DioHelper.getData(
-      url: AppConstants.questionsOfTips,
+      url: '${AppConstants.questionsOfTips}$id',
       bearerToken: CashHelper.getData(key: 'token'),
     );
     if (response.data['status'] == true) {
@@ -86,12 +86,12 @@ class DevelopmentFlowRemoteDataSource
   }
 
   @override
-  Future<GeneralModel> updateTips(List parameters) async {
+  Future<GeneralModel> updateTips(UpdateTipsParameters parameters) async {
     Map<dynamic, dynamic> data = {
-      'answers': parameters,
+      'answers': parameters.tips,
     };
     final Response response = await DioHelper.postData(
-      url: AppConstants.updateTips,
+      url: '${AppConstants.updateTips}${parameters.id}',
       data: data,
       token: CashHelper.getData(key: 'token'),
     );

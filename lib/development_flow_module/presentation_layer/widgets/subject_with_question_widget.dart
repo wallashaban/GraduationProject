@@ -3,7 +3,7 @@ import 'package:graduation_project/development_flow_module/domain_layer/entity/s
 import '../../../core/utils/exports.dart';
 
 class SubjectWithQuestionWidget extends StatefulWidget {
-  final SubjectWithQuestion subjectWithQuestion;
+  final subjectWithQuestion;
   final TipsParameters tipsParameters;
   const SubjectWithQuestionWidget(
       {super.key,
@@ -19,14 +19,14 @@ class _SubjectWithQuestionWidgetState extends State<SubjectWithQuestionWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10.h),
+      margin: EdgeInsets.symmetric(vertical: 8.h),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.r),
+        borderRadius: BorderRadius.circular(16.r),
         color: AppColors.backColor,
         boxShadow: [
           BoxShadow(
               color: Colors.grey[400]!,
-              blurRadius: 8,
+              blurRadius: 2,
               blurStyle: BlurStyle.outer),
         ],
       ),
@@ -36,7 +36,7 @@ class _SubjectWithQuestionWidgetState extends State<SubjectWithQuestionWidget> {
             width: 99.w,
             height: 110,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.r),
+              borderRadius: BorderRadius.circular(16.r),
               color:
                   widget.subjectWithQuestion.subject == 'تطور الحركات الكبيره'
                       ? AppColors.pinkColor
@@ -60,16 +60,19 @@ class _SubjectWithQuestionWidgetState extends State<SubjectWithQuestionWidget> {
                   text: widget.subjectWithQuestion.subject,
                   size: 16.sp,
                   color: AppColors.white,
-                  maxLines: 2,
+                  maxLines: 3,
                   textAlign: TextAlign.center,
                 ),
               ),
             ),
           ),
           SizedBox(
-            width: 10.w,
+            width: 16.w,
           ),
           buidCheckBox(widget.tipsParameters),
+          SizedBox(
+            width: 8.w,
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(5.0),

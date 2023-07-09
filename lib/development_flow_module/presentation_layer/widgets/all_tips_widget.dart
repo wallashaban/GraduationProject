@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import '../../../core/utils/app_strings.dart';
-import '../../domain_layer/entity/get_all_tips.dart';
+import '../../domain_layer/entity/all_tips.dart';
 
 class AllTipsWidget extends StatelessWidget {
     final AllTips allTipsDetails;

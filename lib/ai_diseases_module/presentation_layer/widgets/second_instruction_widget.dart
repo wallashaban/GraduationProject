@@ -7,20 +7,28 @@ class SecondInstructionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(30.r),
+      padding: EdgeInsets.only(
+        right: 24.w,
+      ),
       child: Column(
         children: [
+          CustomText(
+            text: AppStrings.please,
+            size: 14.sp,
+            fontWeight: FontWeight.w600,
+          ),
           SvgPicture.asset(
             AppImages.cameraTakeImage,
+            height: 220.h,
           ),
           SizedBox(
-            height: 30.h,
+            height: 24.h,
           ),
           const InstructionWidget(
             text: AppStrings.advice1,
           ),
           SizedBox(
-            height: 20.h,
+            height: 16.h,
           ),
           const InstructionWidget(
             text: AppStrings.advice2,

@@ -6,7 +6,12 @@ import '../../../core/utils/exports.dart';
 import 'first_instruction_widget.dart';
 
 class PageviewWidget extends StatelessWidget {
-  PageviewWidget({super.key});
+  final String field;
+
+  PageviewWidget({
+    super.key,
+    required this.field,
+  });
   var pageController = PageController(initialPage: 0);
 
   @override
@@ -14,7 +19,8 @@ class PageviewWidget extends StatelessWidget {
     return Column(
       //mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Expanded(
+        SizedBox(
+          height: 405.h,
           child: PageView(
             reverse: true,
             controller: pageController,
@@ -27,6 +33,9 @@ class PageviewWidget extends StatelessWidget {
             ],
           ),
         ),
+        SizedBox(
+          height: 20.h,
+        ),
         CustomButton(
           text: AppStrings.next,
           onPressed: () {
@@ -36,6 +45,7 @@ class PageviewWidget extends StatelessWidget {
               AppConstants.navigateReplacement(
                 context: context,
                 routeName: AppRoutes.uploadPhotoOfDiseaseScreen,
+                arguments: field,
               );
             }
             pageController.animateToPage(

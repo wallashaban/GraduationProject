@@ -13,28 +13,34 @@ class DoseTimeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<MedicationReminderCubit>(context);
-    return InkWell(
-      onTap: () {
-        showTimePicker(
-          
-          context: context,
-          initialTime: TimeOfDay.now(),
-        ).then(
-            (value) => timeController.text = '${value!.hour}:${value.minute}');
-      },
-      child: CustomTextFormField(
-        enabled: false,
-        controller: timeController,
-        obscureText: false,
-        labelText: AppStrings.time,
-        validator: (value) {},
-        suffix: isDaily ? Icons.alarm_off : Icons.alarm,
-        sufixPressed: () {
-          if (isDaily) {
-            cubit.deleteDose();
-          }
-        },
-      ),
+    return Column(
+      children: [
+        SizedBox(
+          height: 16.h,
+        ),
+        InkWell(
+          onTap: () {
+            showTimePicker(
+              context: context,
+              initialTime: TimeOfDay.now(),
+            ).then((value) =>
+                timeController.text = '${value!.hour}:${value.minute}');
+          },
+          child: CustomTextFormField(
+            enabled: false,
+            controller: timeController,
+            obscureText: false,
+            labelText: AppStrings.time,
+            validator: (value) {},
+            suffix: isDaily ? Icons.alarm_off : Icons.alarm,
+            sufixPressed: () {
+              if (isDaily) {
+                cubit.deleteDose();
+              }
+            },
+          ),
+        ),
+      ],
     );
   }
 }

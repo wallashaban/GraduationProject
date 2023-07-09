@@ -7,47 +7,61 @@ class NormalGrowWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var cubit = BlocProvider.of<GrowthCubit>(context);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 20.h),
+      padding: EdgeInsets.only(right: 8.w, left: 8.h, top: 8.h, bottom: 8.h),
       decoration: BoxDecoration(
         color: AppColors.backColor,
         borderRadius: BorderRadius.circular(25.r),
         boxShadow: [
           BoxShadow(
               color: Colors.grey[400]!,
-              blurRadius: 10,
+              blurRadius: 3,
               blurStyle: BlurStyle.outer),
         ],
       ),
       child: Column(
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SvgPicture.asset(
-                AppImages.growthImage,
+              Icon(
+                Icons.star,
+                color: Colors.yellow,
+                size: 24.r,
               ),
               SizedBox(
-                width: 15.w,
+                width: 8.h,
+              ),
+              CustomText(
+                text: AppStrings.average,
+                size: 16.sp,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 16.h,
+          ),
+          Row(
+            children: [
+              SvgPicture.asset(
+                AppImages.developImage,
+                height: 84.h,
+                width: 56.w,
+              ),
+              SizedBox(
+                width: 16.w,
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: AppStrings.average,
+                    text:
+                        '${AppStrings.height}  ${cubit.rangeGrowth!.heightStart} : ${cubit.rangeGrowth!.heightEnd} ${AppStrings.cm}',
                     size: 16.sp,
                   ),
                   SizedBox(
-                    height: 15.h,
+                    height: 8.h,
                   ),
                   CustomText(
-                    text: '${AppStrings.height}  ${cubit.rangeGrowth!.heightStart} : ${cubit.rangeGrowth!.heightEnd} ${AppStrings.cm}',
-                    size: 16.sp,
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  CustomText(
-                    text: '${AppStrings.weight}  ${cubit.rangeGrowth!.weightStart} : ${cubit.rangeGrowth!.weightEnd} ${AppStrings.kg}',
+                    text:
+                        '${AppStrings.weight}  ${cubit.rangeGrowth!.weightStart} : ${cubit.rangeGrowth!.weightEnd} ${AppStrings.kg}',
                     size: 16.sp,
                   ),
                   SizedBox(
@@ -63,7 +77,7 @@ class NormalGrowWidget extends StatelessWidget {
               text: AppStrings.compare,
               size: 12.sp,
               textAlign: TextAlign.end,
-              color: AppColors.darkGreyColor,
+              color: AppColors.appBarColor,
               fontWeight: FontWeight.w300,
             ),
           ),

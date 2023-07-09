@@ -11,7 +11,7 @@ class LatestGrowthWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(top: 15.h),
+      margin: EdgeInsets.only(bottom: 16.h),
       padding: EdgeInsets.only(left: 15.w, right: 15.w, top: 5.h, bottom: 15.h),
       decoration: BoxDecoration(
         color: AppColors.backColor,
@@ -21,7 +21,7 @@ class LatestGrowthWidget extends StatelessWidget {
         boxShadow: [
           BoxShadow(
               color: Colors.grey[400]!,
-              blurRadius: 5,
+              blurRadius: 2,
               blurStyle: BlurStyle.outer),
         ],
       ),
@@ -68,7 +68,7 @@ class LatestGrowthWidget extends StatelessWidget {
                   CustomText(
                     size: 13.sp,
                     text: growth.heightStatus,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.normal,
                     color: growth.heightStatus.contains('طبيعي')
                         ? AppColors.greenColor
                         : AppColors.redColor,
@@ -112,7 +112,7 @@ class LatestGrowthWidget extends StatelessWidget {
                   ),
                   CustomText(
                     text: growth.weightStatus,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.normal,
                     size: 13.sp,
                     color: growth.weightStatus.contains('طبيعي')
                         ? AppColors.greenColor
