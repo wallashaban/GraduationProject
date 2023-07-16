@@ -8,7 +8,6 @@ import 'package:graduation_project/development_flow_module/domain_layer/use_case
 import 'package:graduation_project/development_flow_module/domain_layer/use_case/update_tips_usecase.dart';
 import 'package:graduation_project/development_flow_module/presentation_layer/controllers/development_flow_state.dart';
 import '../../../core/utils/exports.dart';
-import '../../data_layer/model/development_flow_parameters.dart';
 import '../../domain_layer/entity/subject_questions.dart';
 
 class DevelopmentFlowCubit extends Cubit<DevelopmentFlowState> {
@@ -132,6 +131,7 @@ class DevelopmentFlowCubit extends Cubit<DevelopmentFlowState> {
       },
       (r) {
         general = r;
+        toGetAllTips();
         emit(CreateTipsSuccessState());
       },
     );

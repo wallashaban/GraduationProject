@@ -12,9 +12,9 @@ class NoNotificationWidget extends StatelessWidget {
           SvgPicture.asset(
             AppImages.notificationImage,
             height: 82.h,
-            width: 74.w,
+            width: 74.w
           ),
-          SizedBox(
+          SizedBox(    
             height: 40.h,
           ),
           CustomText(

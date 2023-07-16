@@ -28,6 +28,7 @@ class HistoryDevelopmentWidget extends StatelessWidget {
       child: Container(
           padding:
               EdgeInsets.only(right: 8.w, left: 16.h, top: 8.h, bottom: 12.h),
+          margin: EdgeInsets.only(bottom: 16.h),
           decoration: BoxDecoration(
             color: AppColors.backColor,
             borderRadius: BorderRadius.circular(16.r),

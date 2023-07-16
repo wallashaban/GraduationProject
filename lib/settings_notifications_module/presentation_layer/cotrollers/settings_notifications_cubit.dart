@@ -9,6 +9,7 @@ import 'package:graduation_project/settings_notifications_module/presentation_la
 import 'package:graduation_project/settings_notifications_module/presentation_layer/screens/notifications_screen.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../development_flow_module/presentation_layer/controllers/development_flow_cubit.dart';
 import '../../domain_layer/entities/notifications.dart';
 
 class SettingsNotificationsCubit extends Cubit<SettingsNotificationsState> {
@@ -93,6 +94,7 @@ class SettingsNotificationsCubit extends Cubit<SettingsNotificationsState> {
         BlocProvider.of<ReportCubit>(context).latestDevelopment = null;
         BlocProvider.of<ReportCubit>(context).latestTeeth = null;
         BlocProvider.of<ReportCubit>(context).growth = null;
+        BlocProvider.of<DevelopmentFlowCubit>(context).allTips = null;
         CashHelper.deleteData(key: 'token');
         emit(LogOutSuccessState());
       },

@@ -62,10 +62,11 @@ class AllMedicationReminderScreen extends StatelessWidget {
                                         left: 24.w,
                                         right: 16.w,
                                         top: 24.h,
-                                        bottom: 32.h),
+                                        bottom: 32.h,
+                                        ),
                                     child: Column(
                                       children: [
-                                        ListView.builder(
+                                        ListView.builder( 
                                           shrinkWrap: true,
                                           physics:
                                               const NeverScrollableScrollPhysics(),
